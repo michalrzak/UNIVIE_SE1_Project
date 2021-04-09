@@ -1,24 +1,15 @@
 package execution;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import halfMap.HalfMapGenerator;
+import networking.NetworkEndpoint;
 import networking.NetworkTranslator;
 
 public class Controller {
-	// ADDITONAL TIPS ON THIS MATTER ARE GIVEN THROUGHOUT THE TUTORIAL SESSION!
 
-	/*
-	 * Below you can find an example how to use both required HTTP operations i.e.,
-	 * POST and GET to communicate with the server.
-	 * 
-	 * Note, this is only an example, hence, your own implementation should NOT
-	 * place all the logic in a single main method!
-	 * 
-	 * Further, I would recommend that you check out: a) The JavaDoc of the network
-	 * message library which describes all messages, and their ctors/methods. You
-	 * can find it here http://swe.wst.univie.ac.at/ b) The informal network
-	 * documentation given in Moodle which describes which messages must be used
-	 * when and how.
-	 */
+	private static Logger logger = LoggerFactory.getLogger(NetworkEndpoint.class);
 
 	// it is OK to say throws here. Since I know i wont be using multiple threads
 	// this won't ever be an issue. Theoreticaly there is imporovement potential
@@ -57,20 +48,21 @@ public class Controller {
 		String serverBaseUrl = args[1];
 		String gameId = args[2];
 
-		// this class will hold a NetworkTranslator not a NetworkEndpoint. This is just
-		// temporary
 		NetworkTranslator net = new NetworkTranslator(serverBaseUrl, gameId);
 
 		net.registerPlayer("Michal Robert", "Zak", "11922222");
 
+		// if a client fails to register this will result in an infinite loop!!!
 		while (!net.myTurn())
 			Thread.sleep(400);
 
-		System.out.println("test");
+		logger.debug("Both players registered, starting to generate HalfMap");
 		HalfMapGenerator hmgen = new HalfMapGenerator();
-		net.sendHalfMap(hmgen.generateMap());
+		logger.debug("HalfMap generated");
 
-		System.out.println("My Turn :)");
+		net.sendHalfMap(hmgen.generateMap());
+		logger.debug("HalfMap sent to server");
+
 		/*
 		 * TIP: Check out the network protocol documentation. It shows you with a nice
 		 * sequence diagram all the steps which are required to be executed by your

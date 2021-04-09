@@ -73,6 +73,10 @@ public class HalfMapData {
 
 	private static boolean validateTerrainIslands(HashMap<Position, ETerrain> testing) {
 		// TODO: THIS DOES NOTHING YET
+		// the easiest way is probably to try to generate a path to every node from
+		// every node
+		// I am not able to find a simple algorithmic solution that takes a look at
+		// water tiles and finds islands
 		return true;
 	}
 
