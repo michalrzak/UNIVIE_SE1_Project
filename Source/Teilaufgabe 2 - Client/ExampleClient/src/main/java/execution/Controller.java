@@ -1,6 +1,7 @@
-package Execution;
+package execution;
 
-import Networking.NetworkTranslator;
+import halfMap.HalfMapGenerator;
+import networking.NetworkTranslator;
 
 public class Controller {
 	// ADDITONAL TIPS ON THIS MATTER ARE GIVEN THROUGHOUT THE TUTORIAL SESSION!
@@ -18,7 +19,11 @@ public class Controller {
 	 * documentation given in Moodle which describes which messages must be used
 	 * when and how.
 	 */
-	public static void main(String[] args) {
+
+	// it is OK to say throws here. Since I know i wont be using multiple threads
+	// this won't ever be an issue. Theoreticaly there is imporovement potential
+	// though
+	public static void main(String[] args) throws InterruptedException {
 
 		/*
 		 * IMPORTANT: Parsing/Handling of starting parameters. args[0] = Game Mode, you
@@ -58,6 +63,14 @@ public class Controller {
 
 		net.registerPlayer("Michal Robert", "Zak", "11922222");
 
+		while (!net.myTurn())
+			Thread.sleep(400);
+
+		System.out.println("test");
+		HalfMapGenerator hmgen = new HalfMapGenerator();
+		net.sendHalfMap(hmgen.generateMap());
+
+		System.out.println("My Turn :)");
 		/*
 		 * TIP: Check out the network protocol documentation. It shows you with a nice
 		 * sequence diagram all the steps which are required to be executed by your
