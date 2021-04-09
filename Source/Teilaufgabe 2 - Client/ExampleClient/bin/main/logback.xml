@@ -1,0 +1,24 @@
+<configuration>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+   <!-- Configure the general logging behaviour for all subpackages of "client" -->
+   <logger name="client" level="DEBUG"/>
+
+   <!-- The logger configurations below significantly reduce the very chatty output of webflux -->
+   <logger name="reactor" level="ERROR"/>
+   <logger name="reactor.Mono" level="ERROR"/>
+   <logger name="reactor.Flux" level="ERROR"/>
+   <logger name="org.springframework.web" level="ERROR"/>
+  
+    <root level="WARN">
+        <appender-ref ref="stdout"/>
+    </root>
+
+</configuration>

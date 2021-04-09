@@ -1,0 +1,116 @@
+//downloads libraries directly from a webserver - we use this for the provided network messag implementation
+def urlFile = { url, name ->
+    File file = new File("$buildDir/download/${name}.jar")
+    file.parentFile.mkdirs()
+    if (!file.exists()) {
+        new URL(url).withInputStream { downloadStream ->
+            file.withOutputStream { fileOut ->
+                fileOut << downloadStream
+            }
+        }
+    }
+    files(file.absolutePath)
+}
+
+//integrates spring, gives source for libraries
+buildscript {
+ 	ext {
+        springBootVersion = '2.3.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+// Apply the java plugin to add support for Java
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+//ensures that the res folder (with the logback config) is recognized correctly
+sourceSets {
+    main {
+        resources {
+            srcDirs "res"
+        }
+    }
+}
+
+test {
+    // enables the build in jUnit 5 support for gradle
+    // useful if you want to run unit tests as part of gradle check or gradle test
+    useJUnitPlatform()
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+//specifies the expected java versions
+//Note, not all libraries officially support higher versions
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
+bootJar {
+    manifest {
+        attributes(
+            'Built-By'       : System.properties['user.name'],
+            'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+            'Created-By'     : "Gradle ${gradle.gradleVersion}",
+            'Build-Jdk'      : "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+            'Build-OS'       : "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}"
+        )
+    }
+}
+
+dependencies {
+
+	// you will need at least gradle 5 to get this working as we are using Java 11, this project and its gradle wrapper is configured accordingly
+
+	// spring boot
+	// note the latest spring boot version is required as it added support for Java 11
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+
+    //java 11 removed java EE components, so we need to get the jaxb reference implementation for marshalling
+    implementation "com.sun.xml.bind:jaxb-impl:2.3.3"
+    implementation "javax.xml.bind:jaxb-api:2.3.1"
+    implementation "com.sun.istack:istack-commons-runtime:3.0.11"
+    
+    // valiation commands on jaxb entities
+    implementation "javax.validation:validation-api:2.0.1.Final"
+    implementation "org.hibernate:hibernate-validator:6.1.5.Final"
+    implementation "org.hibernate:hibernate-validator-annotation-processor:6.1.5.Final"
+    implementation "javax.el:javax.el-api:3.0.0"
+    implementation "org.glassfish:javax.el:3.0.0"
+    
+    // Use JUnit test framework, we support only version 5
+    // JUnit 4 should no longer be used, check out the unit testing slides on Moodle 
+    // to get some assistance when transitioning existing tests from 4 to 5
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.7.1' //for data driven tests
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.7.1'
+    
+    // brings support for mockito
+    testImplementation 'org.mockito:mockito-core:3.8.0'
+    
+    // Use LogBack with the slf facade
+    implementation group: 'org.slf4j', name:'slf4j-api', version: '1.7.30'
+    implementation group: 'ch.qos.logback', name:'logback-classic', version: '1.2.3'
+    implementation group: 'ch.qos.logback', name:'logback-core', version: '1.2.3'
+
+    // Network Messages, ensure that you always use the ones suitable for the current semester
+    // based on this jar file also a range of reference implementations for various marshalling libraries will be provided
+    // as Java 9 and later removed such implementations when removing Java EE
+    implementation urlFile('https://homepage.univie.ac.at/kristof.boehmer/SE1/Network_Library/Jar/1.2.0.jar', 'swe_messages_1.2.0_WS2020')
+}
