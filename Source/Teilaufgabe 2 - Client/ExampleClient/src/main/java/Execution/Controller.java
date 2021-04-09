@@ -9,7 +9,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import MessagesBase.ERequestState;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.ResponseEnvelope;
+import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
+import Networking.NetworkEndpoint;
 import reactor.core.publisher.Mono;
 
 public class Controller {
@@ -52,43 +54,13 @@ public class Controller {
 		// parse the parameters, otherwise the automatic evaluation will not work on http://swe.wst.univie.ac.at
 		String serverBaseUrl = args[1];
 		String gameId = args[2];
-				
-		// template webclient configuration, will be reused/customized for each individual endpoint
-		// TIP: create it once in the CTOR of your network class and subsequently use it in each communication method
-		WebClient baseWebClient = WebClient.builder().baseUrl(serverBaseUrl + "/games")
-				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE) //the network protocol uses XML
-			    .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE)
-			    .build();
-			
-		/*
-		 * Note, EACH client must only register a SINGLE player (i.e., you) ONCE!
-		 * It is OK if you hard code your private data in your code.
-		 * Here, this example shows you how to perform a POST request (and a client registration),
-		 * you can build on this example to implement all the other messages which use POST.
-		 * An example how to use GET requests is given below.
-		 */		
+		
+		//this class will hold a NetworkTranslator not a NetworkEndpoint. This is just temporary
+		NetworkEndpoint ne = new NetworkEndpoint(serverBaseUrl, new UniqueGameIdentifier(gameId));
+		
 		PlayerRegistration playerReg = new PlayerRegistration("Michal Robert", "Zak", "11922222");
-		Mono<ResponseEnvelope> webAccess = baseWebClient.method(HttpMethod.POST)
-				.uri("/" + gameId + "/players")
-				.body(BodyInserters.fromValue(playerReg)) // specify the data which is set to the server
-				.retrieve()
-				.bodyToMono(ResponseEnvelope.class); // specify the object returned by the server
+		ne.registerPlayer(playerReg);
 
-		//WebClient support asynchronous message exchange, in SE1 we use a synchronous one for the sake of simplicity. So calling block is fine.
-		ResponseEnvelope<UniquePlayerIdentifier> resultReg = webAccess.block();
-	
-		// always check for errors, and if some are reported at least print them to the console  (logging should be preferred)
-		// so that you become aware of them during debugging! The provided server gives you very helpful error messages.
-		if(resultReg.getState() == ERequestState.Error) {
-			//typically happens if you forgot to create a new game before the client execution or
-			//forgot to adapt the run configuration so that it supplies the id of the new game to the client
-			//open http://swe.wst.univie.ac.at:18235/games  in your browser to create a new game and obtain its game id
-			System.out.println("Client error, errormessage: " + resultReg.getExceptionMessage());
-		}
-		else {
-			UniquePlayerIdentifier uniqueID = resultReg.getData().get();
-			System.out.println("My Player ID:"+uniqueID.getUniquePlayerID());
-		}
 		
 		/* TIP: Check out the network protocol documentation. It shows you with a nice sequence diagram all
 		 * the steps which are required to be executed by your client along with a general overview on the required behavior (e.g., 
