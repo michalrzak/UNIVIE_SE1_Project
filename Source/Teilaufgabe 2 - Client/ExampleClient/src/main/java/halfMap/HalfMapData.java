@@ -22,7 +22,7 @@ public class HalfMapData {
 		Set<Position> positions = testing.keySet();
 
 		if (positions.size() != 32) {
-			logger.error("HalfMap size is not 32, size is: ", positions.size());
+			logger.error("HalfMap size is not 32, size is: " + positions.size());
 			return false;
 		}
 
@@ -41,8 +41,8 @@ public class HalfMapData {
 		long countMountain = t.stream().filter(ter -> ter == ETerrain.MOUNTAIN).count();
 
 		if (countGrass < 15 || countWater < 4 || countMountain < 3) {
-			logger.error("HalfMap terrain does not contain enough of a certain terrain type countGrass: ", countGrass,
-					", countWater: ", countWater, ", countMountain:", countMountain);
+			logger.error("HalfMap terrain does not contain enough of a certain terrain type countGrass: " + countGrass
+					+ ", countWater: " + countWater + ", countMountain:" + countMountain);
 			return false;
 		}
 
@@ -64,19 +64,47 @@ public class HalfMapData {
 				.count();
 
 		if (leftEdgeCount >= 2 || rightEdgeCount >= 2 || topEdgeCount >= 4 || botEdgeCount >= 4) {
-			logger.error("HalfMap terrain generated too much on one of the edges left: ", leftEdgeCount, ", right: ",
-					rightEdgeCount, ", top: ", topEdgeCount, ", bottom: ", botEdgeCount);
+			logger.error("HalfMap terrain generated too much on one of the edges left: " + leftEdgeCount + ", right: "
+					+ rightEdgeCount + ", top: " + topEdgeCount + ", bottom: " + botEdgeCount);
 			return false;
 		}
 		return true;
 	}
 
+	private static void floodfill(Position node, HashMap<Position, ETerrain> nodes) {
+		// THE HASHMAP PASSES AS ARGUMENT HERE WILL BE MODIFIED. PROVIDE A COPY
+		// THE START NODE CANNOT BE WATER
+		if (!nodes.containsKey(node) || nodes.get(node) == ETerrain.WATER)
+			return;
+
+		nodes.remove(node);
+
+		// north
+		if (node.gety() - 1 >= 0)
+			floodfill(new Position(node.getx(), node.gety() - 1), nodes);
+
+		floodfill(new Position(node.getx(), node.gety() + 1), nodes);
+		// east
+		if (node.getx() - 1 >= 0)
+			floodfill(new Position(node.getx() - 1, node.gety()), nodes);
+		// west
+		floodfill(new Position(node.getx() + 1, node.gety()), nodes);
+	}
+
 	private static boolean validateTerrainIslands(HashMap<Position, ETerrain> testing) {
-		// TODO: THIS DOES NOTHING YET
-		// the easiest way is probably to try to generate a path to every node from
-		// every node
-		// I am not able to find a simple algorithmic solution that takes a look at
-		// water tiles and finds islands
+		// provide a copy of the hashmap to floodfill
+		var copy = (HashMap<Position, ETerrain>) testing.clone();
+
+		// start floodfill from 0, 0
+		floodfill(new Position(0, 0), copy);
+
+		// map contains islands if it is not empty and at least one node inside is not
+		// water
+		if (copy.size() != 0 && !copy.values().stream().allMatch(ele -> ele == ETerrain.WATER)) {
+			logger.error("HalfMap contains an Island!");
+			return false;
+		}
+
 		return true;
 	}
 
@@ -93,14 +121,19 @@ public class HalfMapData {
 
 		if (myCastlePosition.getx() >= 8 || myCastlePosition.gety() >= 4) {
 			logger.error(
-					"HalfMapData constructor received a myFortPosition object with position outside of halfmap; Received: ",
-					myCastlePosition);
+					"HalfMapData constructor received a myFortPosition object with position outside of halfmap; Received: "
+							+ myCastlePosition);
 			throw new IllegalArgumentException("myFortPosition x must be in range [0; 8) and y in range [0; 4)");
 		}
 
 		if (!validateTerrain(terrain)) {
 			logger.error("HalfMapData constructor received an invalid Terrain map!");
 			throw new IllegalArgumentException("terrain is an invalid HalfMap");
+		}
+
+		if (terrain.get(myCastlePosition) != ETerrain.GRASS) {
+			logger.error("Castle is not placed on a grass field!");
+			throw new IllegalArgumentException("Castle is not placed on a grass field");
 		}
 
 		// maybe make this copy the object
