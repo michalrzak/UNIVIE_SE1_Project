@@ -127,19 +127,4 @@ public class HalfMapValidation_Tests {
 				"An exception was expected because the the castle was placed on a mountain!");
 	}
 
-	@Test
-	public void ParseMap_ValidMap_shouldSucceed() {
-
-		char[][] nodes = { { 'm', 'w', 'w', 'g', 'g', 'g', 'g', 'g' }, { 'g', 'm', 'm', 'g', 'g', 'g', 'm', 'm' },
-				{ 'm', 'w', 'w', 'g', 'g', 'g', 'g', 'g' }, { 'g', 'm', 'w', 'g', 'g', 'g', 'm', 'm' } };
-		HashMap<Position, ETerrain> testMap = arrayToMap(nodes);
-
-		Executable halfMapInit = () -> {
-			var t = new HalfMapData(testMap, new Position(0, 0));
-		};
-
-		Assertions.assertThrows(IllegalArgumentException.class, halfMapInit,
-				"An exception was expected because the the castle was placed on a mountain!");
-	}
-
 }
