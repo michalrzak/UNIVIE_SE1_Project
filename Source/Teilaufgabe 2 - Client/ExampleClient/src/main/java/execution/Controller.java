@@ -57,10 +57,7 @@ public class Controller {
 			Thread.sleep(400);
 
 		logger.debug("Both players registered, starting to generate HalfMap");
-		HalfMapGenerator hmgen = new HalfMapGenerator();
-		logger.debug("HalfMap generated");
-
-		net.sendHalfMap(hmgen.generateMap());
+		net.sendHalfMap(HalfMapGenerator.generateMap());
 		logger.debug("HalfMap sent to server");
 
 		/*

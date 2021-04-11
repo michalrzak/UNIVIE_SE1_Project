@@ -1,6 +1,9 @@
 package halfMap;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,37 +15,72 @@ public class HalfMapGenerator {
 
 	private static Logger logger = LoggerFactory.getLogger(HalfMapGenerator.class);
 
-	private Position placeTreasure(HashMap<Position, ETerrain> terrain) {
-		// temporary treasure placement
-		return new Position(0, 0);
+	private static Position placeCastle(HashMap<Position, ETerrain> terrain) {
+		Random rnd = new Random();
+
+		Position castle = new Position(rnd.nextInt(8), rnd.nextInt(4));
+		while (terrain.get(castle) != ETerrain.GRASS)
+			castle = new Position(rnd.nextInt(8), rnd.nextInt(4));
+
+		return castle;
 	}
 
-	private HashMap<Position, ETerrain> generateTerrain() {
-		// temporary terrain generation
+	private static HashMap<Position, ETerrain> generateTerrain() {
+
+		// i can maybe delegate this to HalfMapData
+		int grassCount = 15;
+		int mountainCount = 4;
+		int waterCount = 3;
+
+		Stack<ETerrain> nodes = new Stack<>();
+
+		// insert all grassFields
+		for (int i = 0; i < grassCount; ++i)
+			nodes.push(ETerrain.GRASS);
+
+		// insert all mountainFields
+		for (int i = 0; i < mountainCount; ++i)
+			nodes.push(ETerrain.MOUNTAIN);
+
+		// insert all mountainFields
+		for (int i = 0; i < waterCount; ++i)
+			nodes.push(ETerrain.WATER);
+
+		// insert rest of fields
+		Random rnd = new Random();
+		for (int i = grassCount + mountainCount + waterCount; i < 32; ++i) {
+			int res = rnd.nextInt(100);
+			if (res < 75) // higher chance to generate mountain
+				nodes.push(ETerrain.MOUNTAIN);
+			else
+				nodes.push(ETerrain.WATER);
+		}
+
+		Collections.shuffle(nodes);
+
 		HashMap<Position, ETerrain> terrain = new HashMap<>();
-		int i = 0;
-		// insert 15 grass fields
-		for (; i < 15; ++i)
-			terrain.put(new Position(i - (i / 8) * 8, i / 8), ETerrain.GRASS);
-		// insert 4 water fields
-		for (; i < 19; ++i)
-			terrain.put(new Position(i - (i / 8) * 8, i / 8), ETerrain.WATER);
-		// insert the rest as mountain
-		for (; i < 32; ++i)
-			terrain.put(new Position(i - (i / 8) * 8, i / 8), ETerrain.MOUNTAIN);
+		for (int y = 0; y < 4; ++y)
+			for (int x = 0; x < 8; ++x)
+				terrain.put(new Position(x, y), nodes.pop());
 
 		return terrain;
 	}
 
-	public HalfMapData generateMap() {
+	public static HalfMapData generateMap() {
 
 		// temporary Map creation
 		// TODO: make this a valid map creation
 
 		HashMap<Position, ETerrain> terrain = generateTerrain();
-		Position treasure = placeTreasure(terrain);
+		Position castle = placeCastle(terrain);
 
-		return new HalfMapData(terrain, treasure);
+		HalfMapData hmd;
+		try {
+			hmd = new HalfMapData(terrain, castle);
+		} catch (IllegalArgumentException e) {
+			hmd = generateMap();
+		}
+		return hmd;
 	}
 
 }
