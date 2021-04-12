@@ -21,7 +21,6 @@ public class NetworkEndpoint {
 
 	private static Logger logger = LoggerFactory.getLogger(NetworkEndpoint.class);
 
-	private UniquePlayerIdentifier playerID;
 	private UniqueGameIdentifier gameID;
 	private String gameURL;
 	private WebClient baseWebClient;
@@ -37,19 +36,11 @@ public class NetworkEndpoint {
 
 	}
 
-	protected UniquePlayerIdentifier getPlayerID() {
-		if (playerID == null)
-			throw new RuntimeException("playerID not set yet; Player did not register on the server");
-		return playerID;
-	}
-
-	public void registerPlayer(PlayerRegistration playerReg) {
-		if (playerReg == null)
+	public UniquePlayerIdentifier registerPlayer(PlayerRegistration playerReg) {
+		if (playerReg == null) {
+			logger.error("PlayerRegistration passed to registerPlayer is null");
 			throw new IllegalArgumentException("the playerReg passed is null");
-
-		if (playerID != null)
-			// maybe make this a custom class?
-			throw new RuntimeException("playerID already set; Player already registered on the servere");
+		}
 
 		Mono<ResponseEnvelope> webAccess = baseWebClient.method(HttpMethod.POST)
 				// specify the data which is set to the server
@@ -62,17 +53,19 @@ public class NetworkEndpoint {
 		// console (logging should be preferred)
 		// so that you become aware of them during debugging! The provided server gives
 		// you very helpful error messages.
-		if (result.getState() == ERequestState.Error)
+		if (result.getState() == ERequestState.Error) {
 			// here i will prob. need a new class
+			logger.error("PlayerRegistration failed, exception: " + result.getExceptionMessage());
 			throw new RuntimeException(result.getExceptionMessage());
+		}
 
-		playerID = result.getData().get();
+		return result.getData().get();
 
 	}
 
-	public GameState getGameState() {
+	public GameState getGameState(UniquePlayerIdentifier playerID) {
 		if (playerID == null)
-			throw new RuntimeException("Player is not yet registered");
+			throw new RuntimeException("The PlayerID passed is null");
 
 		// maybe make the next section a private method? it is repeated mostly the same
 		// in both methods
