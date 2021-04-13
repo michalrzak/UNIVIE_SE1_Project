@@ -3,6 +3,7 @@ package execution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fullMap.FullMapData;
 import halfMap.HalfMapGenerator;
 import networking.NetworkEndpoint;
 import networking.NetworkTranslator;
@@ -48,17 +49,32 @@ public class Controller {
 		String serverBaseUrl = args[1];
 		String gameId = args[2];
 
+		// start network communication
 		NetworkTranslator net = new NetworkTranslator(serverBaseUrl, gameId);
 
+		// register player
 		net.registerPlayer("Michal Robert", "Zak", "11922222");
 
+		// wait for other client to register
 		// if a client fails to register this will result in an infinite loop!!!
 		while (!net.myTurn())
 			Thread.sleep(400);
 
 		logger.debug("Both players registered, starting to generate HalfMap");
+
+		// generate & send a HalfMap
 		net.sendHalfMap(HalfMapGenerator.generateMap());
 		logger.debug("HalfMap sent to server");
+
+		// Wait for other client to send HalfMap as well
+		// if a client fails to register this will result in an infinite loop!!!
+		while (!net.myTurn())
+			Thread.sleep(400);
+
+		logger.debug("Both players sent HalfMaps, retrieving FullMap from server");
+
+		// retrieve FullMap
+		FullMapData map = net.getFullMap();
 
 		/*
 		 * TIP: Check out the network protocol documentation. It shows you with a nice

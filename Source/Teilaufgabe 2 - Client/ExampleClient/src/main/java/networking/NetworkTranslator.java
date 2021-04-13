@@ -123,7 +123,7 @@ public class NetworkTranslator {
 
 			Position pos = new Position(ele.getX(), ele.getY());
 
-			terrain.put(new Position(ele.getX(), ele.getY()), t);
+			terrain.put(pos, t);
 
 			if (ele.getFortState() == MessagesGameState.EFortState.MyFortPresent)
 				gameEntities.put(EGameEntity.MYCASTLE, pos);
