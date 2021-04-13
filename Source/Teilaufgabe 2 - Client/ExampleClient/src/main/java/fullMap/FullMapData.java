@@ -66,6 +66,25 @@ public class FullMapData {
 		changes.firePropertyChange("gameEntities", old, gameEntityPosition);
 	}
 
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	// this is dangerous as the returned terrain can be modified which modifies the
+	// saved MapData as well
+	public HashMap<Position, ETerrain> getTerrain() {
+		// maybe return a copy? or just a stream?
+		return terrain;
+	}
+
+	public HashMap<EGameEntity, Position> getGameEntities() {
+		return gameEntityPosition;
+	}
+
 	public void addListener(PropertyChangeListener view) {
 		changes.addPropertyChangeListener(view);
 	}
