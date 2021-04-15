@@ -16,6 +16,8 @@ import mapHelpers.Position;
 
 public class CLI implements PropertyChangeListener {
 
+	// TODO: rethink how this class works!
+
 	private static Logger logger = LoggerFactory.getLogger(CLI.class);
 
 	// Maybe just save a FullMap instance? Not sure what to do here.
