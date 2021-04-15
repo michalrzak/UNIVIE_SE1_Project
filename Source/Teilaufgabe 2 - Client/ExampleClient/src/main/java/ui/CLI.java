@@ -31,6 +31,7 @@ public class CLI implements PropertyChangeListener {
 		terrain = hashMapToListList(fm.getTerrain(), fm.getWidth(), fm.getHeight());
 		gameEntities = fm.getGameEntities();
 
+		// maybe remove this and only print after the first move?
 		printData();
 	}
 
