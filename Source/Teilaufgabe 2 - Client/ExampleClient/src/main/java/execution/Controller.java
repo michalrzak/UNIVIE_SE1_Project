@@ -7,6 +7,7 @@ import fullMap.FullMapData;
 import halfMap.HalfMapGenerator;
 import networking.NetworkEndpoint;
 import networking.NetworkTranslator;
+import ui.CLI;
 
 public class Controller {
 
@@ -75,6 +76,8 @@ public class Controller {
 
 		// retrieve FullMap
 		FullMapData map = net.getFullMap();
+
+		CLI ui = new CLI(map);
 
 		/*
 		 * TIP: Check out the network protocol documentation. It shows you with a nice

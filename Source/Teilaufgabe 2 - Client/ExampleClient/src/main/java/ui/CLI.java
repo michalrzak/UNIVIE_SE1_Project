@@ -20,66 +20,80 @@ public class CLI implements PropertyChangeListener {
 
 	// Maybe just save a FullMap instance? Not sure what to do here.
 	HashMap<EGameEntity, Position> gameEntities;
-	HashMap<Position, ETerrain> terrain;
-	int width;
-	int height;
+	List<List<Character>> terrain;
 
 	public CLI(FullMapData fm) {
 		fm.addListener(this);
 
 		// this may need to get changed I am not sure this method is the best idea
-		terrain = fm.getTerrain();
+		terrain = hashMapToListList(fm.getTerrain(), fm.getWidth(), fm.getHeight());
 		gameEntities = fm.getGameEntities();
 
-		width = fm.getWidth();
-		height = fm.getHeight();
+		printData();
 	}
 
-	public void printData() {
-
-		List<List<Character>> printing = new ArrayList<>();
+	private static List<List<Character>> hashMapToListList(HashMap<Position, ETerrain> map, int width, int height) {
+		List<List<Character>> ret = new ArrayList<>();
 
 		for (int y = 0; y < height; ++y) {
-			printing.add(new ArrayList<>());
+			ret.add(new ArrayList<>());
 			for (int x = 0; x < width; ++x) {
 
-				switch (terrain.get(new Position(x, y))) {
+				switch (map.get(new Position(x, y))) {
 				case GRASS:
-					printing.get(printing.size() - 1).add('#');
+					ret.get(ret.size() - 1).add('#');
 					break;
 				case MOUNTAIN:
-					printing.get(printing.size() - 1).add('A');
+					ret.get(ret.size() - 1).add('A');
 					break;
 				case WATER:
-					printing.get(printing.size() - 1).add('~');
+					ret.get(ret.size() - 1).add('~');
 					break;
 				}
 			}
 		}
 
+		return ret;
+	}
+
+	private List<List<Character>> assignedGameEntities() {
+		List<List<Character>> ret = new ArrayList<>(terrain);
+
 		gameEntities.entrySet().stream().forEach(ele -> {
 			switch (ele.getKey()) {
-			case MYPLAYER:
-				printing.get(ele.getValue().getx()).set(ele.getValue().gety(), '1');
-				break;
-
-			case ENEMYPLAYER:
-				printing.get(ele.getValue().getx()).set(ele.getValue().gety(), '2');
-				break;
 
 			case ENEMYCASTLE:
 			case MYCASTLE:
-				printing.get(ele.getValue().getx()).set(ele.getValue().gety(), 'M');
+				ret.get(ele.getValue().gety()).set(ele.getValue().getx(), 'M');
 				break;
 
 			case MYTREASURE:
-				printing.get(ele.getValue().getx()).set(ele.getValue().gety(), '=');
+				ret.get(ele.getValue().gety()).set(ele.getValue().getx(), '=');
+				break;
+
+			case MYPLAYER:
+				ret.get(ele.getValue().gety()).set(ele.getValue().getx(), '1');
+				break;
+
+			case ENEMYPLAYER:
+				ret.get(ele.getValue().gety()).set(ele.getValue().getx(), '2');
 				break;
 			}
-			// printing.get(ele.getValue().gety()).get(ele.getValue().getx()) = ;
 		});
 
-		// TODO: print the results
+		return ret;
+	}
+
+	public void printData() {
+
+		List<List<Character>> printing = assignedGameEntities();
+
+		for (var y : printing) {
+			for (var x : y) {
+				System.out.print(x);
+			}
+			System.out.print("\n");
+		}
 
 	}
 
@@ -107,7 +121,7 @@ public class CLI implements PropertyChangeListener {
 			throw new RuntimeException("Unrecogniszed property change! Change was: " + event.getPropertyName());
 		}
 
-		// TODO: add actuall printing
+		printData();
 	}
 
 }

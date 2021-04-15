@@ -1,13 +1,4 @@
-/Networking/
-/Execution/
-/HalfMapGeneration/
-/Map/
-/helper/
-/halfMapGeneration/
+/ui/
 /execution/
 /networking/
-/map/
-/mapHelpers/
-/halfMap/
 /fullMap/
-/ui/

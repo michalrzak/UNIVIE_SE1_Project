@@ -85,6 +85,8 @@ public class NetworkTranslator {
 		 * (player.getUniquePlayerID().equals(id)) { me = player; break; } }
 		 */
 
+		logger.debug("Game state is: " + me.getState().toString());
+
 		return me.getState() == EPlayerGameState.ShouldActNext;
 	}
 

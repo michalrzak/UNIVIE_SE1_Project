@@ -36,15 +36,17 @@ public class FullMapData {
 		// extract width and height from terrain
 		// stream is probably slower as I know the map is a rectangle and can use this
 		// to limit the loops
-		int width;
-		for (width = 0; terrain.containsKey(new Position(0, width)); ++width)
-			;
-		this.width = width;
+		int i = 0;
+		while (terrain.containsKey(new Position(i, 0)))
+			++i;
+		this.width = i;
+		logger.debug("FullMap width is: " + i);
 
-		int height;
-		for (height = 0; terrain.containsKey(new Position(height, 0)); ++height)
-			;
-		this.height = height;
+		i = 0;
+		while (terrain.containsKey(new Position(0, i)))
+			++i;
+		this.height = i;
+		logger.debug("FullMap height is: " + i);
 
 	}
 
