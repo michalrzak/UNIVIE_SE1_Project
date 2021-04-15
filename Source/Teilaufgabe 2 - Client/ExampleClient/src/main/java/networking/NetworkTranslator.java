@@ -117,21 +117,6 @@ public class NetworkTranslator {
 			for (EGameEntity ent : entities)
 				gameEntities.put(ent, pos);
 
-			if (ele.getFortState() == MessagesGameState.EFortState.MyFortPresent)
-				gameEntities.put(EGameEntity.MYCASTLE, pos);
-			if (ele.getFortState() == MessagesGameState.EFortState.EnemyFortPresent)
-				gameEntities.put(EGameEntity.ENEMYCASTLE, pos);
-
-			if (ele.getPlayerPositionState() == MessagesGameState.EPlayerPositionState.MyPosition
-					|| ele.getPlayerPositionState() == MessagesGameState.EPlayerPositionState.BothPlayerPosition)
-				gameEntities.put(EGameEntity.MYPLAYER, pos);
-			if (ele.getPlayerPositionState() == MessagesGameState.EPlayerPositionState.EnemyPlayerPosition
-					|| ele.getPlayerPositionState() == MessagesGameState.EPlayerPositionState.BothPlayerPosition)
-				gameEntities.put(EGameEntity.ENEMYPLAYER, pos);
-
-			if (ele.getTreasureState() == MessagesGameState.ETreasureState.MyTreasureIsPresent)
-				gameEntities.put(EGameEntity.MYTREASURE, pos);
-
 		}
 
 		return new FullMapData(terrain, gameEntities);
