@@ -6,6 +6,9 @@ import mapHelpers.EGameEntity;
 import mapHelpers.ETerrain;
 import mapHelpers.Position;
 
+// DEPRECATED !!!!
+// THIS WILL PROBABLY GET REMOVED
+
 public class MapDataFactory {
 	private HashMap<Position, ETerrain> terrain;
 	private HashMap<EGameEntity, Position> gameEntityPosition;
