@@ -16,7 +16,7 @@ public class FullMapAccesser {
 
 	private FullMapData fmd;
 
-	private static Logger logger = LoggerFactory.getLogger(FullMapData.class);
+	private static Logger logger = LoggerFactory.getLogger(FullMapAccesser.class);
 
 	public FullMapAccesser(FullMapData fmd) {
 		if (fmd == null) {
