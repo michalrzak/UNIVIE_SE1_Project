@@ -2,3 +2,6 @@
 /execution/
 /networking/
 /fullMap/
+/moveGeneration/
+/exceptions/
+/mapHelpers/

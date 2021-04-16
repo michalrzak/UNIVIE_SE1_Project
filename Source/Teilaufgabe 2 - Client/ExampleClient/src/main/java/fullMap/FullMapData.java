@@ -13,10 +13,10 @@ import mapHelpers.Position;
 
 public class FullMapData {
 	private HashMap<Position, ETerrain> terrain;
-	protected HashMap<EGameEntity, Position> gameEntityPosition;
-	protected int width;
-	protected int height;
-	protected boolean treasureCollected = false;
+	private HashMap<EGameEntity, Position> gameEntityPosition;
+	private int width;
+	private int height;
+	private boolean treasureCollected = false;
 
 	private static Logger logger = LoggerFactory.getLogger(FullMapData.class);
 
@@ -74,6 +74,18 @@ public class FullMapData {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public boolean getTreasureCollected() {
+		return treasureCollected;
+	}
+
+	public void collectTreasure() {
+		if (treasureCollected) {
+			logger.warn("Treassure was already collected yet calling collectTreasure again!");
+		}
+
+		treasureCollected = true;
 	}
 
 	// this is dangerous as the returned terrain can be modified which modifies the

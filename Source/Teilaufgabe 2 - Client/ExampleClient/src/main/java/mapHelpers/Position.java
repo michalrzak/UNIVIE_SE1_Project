@@ -39,4 +39,9 @@ public class Position {
 		return pos.getx() == getx() && pos.gety() == gety();
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + "; x = " + x + ", y = " + y;
+	}
+
 }
