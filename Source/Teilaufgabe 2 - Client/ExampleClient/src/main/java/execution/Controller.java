@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import fullMap.FullMapData;
 import halfMap.HalfMapGenerator;
+import moveGeneration.FullMapAccesser;
+import moveGeneration.MoveGenerator;
 import networking.NetworkEndpoint;
 import networking.NetworkTranslator;
 import ui.CLI;
@@ -78,6 +80,21 @@ public class Controller {
 		FullMapData map = net.getFullMap();
 
 		CLI ui = new CLI(map);
+
+		MoveGenerator mg = new MoveGenerator(new FullMapAccesser(map));
+
+		int count = 0;
+		while (true) { // TODO: change this true to something meaningfull
+			while (!net.myTurn())
+				Thread.sleep(400);
+
+			net.sendMove(mg.getMove());
+			Thread.sleep(400);
+			map.updateEntities(net.getEntities());
+			Thread.sleep(400);
+			++count;
+			logger.debug("Round number: " + count);
+		}
 
 		/*
 		 * TIP: Check out the network protocol documentation. It shows you with a nice

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import MessagesBase.HalfMap;
 import MessagesBase.HalfMapNode;
+import MessagesBase.PlayerMove;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
@@ -24,6 +25,7 @@ import halfMap.HalfMapData;
 import mapHelpers.EGameEntity;
 import mapHelpers.ETerrain;
 import mapHelpers.Position;
+import moveHelpers.EMove;
 
 public class NetworkTranslator {
 	private NetworkEndpoint ne;
@@ -122,6 +124,22 @@ public class NetworkTranslator {
 		return new FullMapData(terrain, gameEntities);
 	}
 
+	private static MessagesBase.EMove internalMovetoNetwork(EMove ele) {
+		switch (ele) {
+		case UP:
+			return MessagesBase.EMove.Up;
+		case DOWN:
+			return MessagesBase.EMove.Down;
+		case LEFT:
+			return MessagesBase.EMove.Left;
+		case RIGHT:
+			return MessagesBase.EMove.Right;
+		default:
+			logger.error("Received unexpected EMove value that could not be mapped to any network representation");
+			throw new IllegalArgumentException("ele cannot be translated to the network representation");
+		}
+	}
+
 	// PUBLIC METHODS
 	public void registerPlayer(String firstName, String lastName, String id) {
 		playerID = ne.registerPlayer(new PlayerRegistration(firstName, lastName, id));
@@ -157,5 +175,38 @@ public class NetworkTranslator {
 		}
 
 		return networkMapToInternalMap(fm.getMapNodes());
+	}
+
+	public void sendMove(EMove dir) {
+		if (dir == null) {
+			logger.error("sendMove received null argument");
+			throw new IllegalArgumentException("dir cannot be null");
+		}
+
+		MessagesBase.EMove d = internalMovetoNetwork(dir);
+
+		ne.sendMove(PlayerMove.of(playerID, d));
+	}
+
+	public HashMap<EGameEntity, Position> getEntities() {
+		MessagesGameState.FullMap fm;
+		try {
+			// this can fail and throw a NoSuchElementException
+			fm = ne.getGameState(playerID).getMap().get();
+		} catch (NoSuchElementException e) {
+			logger.error("The returned gamestate did not contain any fullmap");
+			throw e; // TODO: This really needs to be a new type
+		}
+
+		// ofload to seperate function
+		HashMap<EGameEntity, Position> ret = new HashMap<>();
+
+		for (var ele : fm.getMapNodes())
+			for (var ent : extractGameEntitiesFromNode(ele))
+				ret.put(ent, new Position(ele.getX(), ele.getY()));
+
+		return ret;
+
+		// return networkMapToInternalMap(fm.getMapNodes());
 	}
 }

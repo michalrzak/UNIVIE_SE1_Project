@@ -1,9 +1,9 @@
 package moveGeneration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -31,7 +31,8 @@ public class PathGenerator {
 	private EMove getDirection(Position from, Position to) {
 		int distance = Math.abs(from.getx() - to.getx()) + Math.abs(from.gety() - to.gety());
 		if (distance != 1) {
-			logger.error("Trying to get direction to not adjescend node!");
+			logger.error("Trying to get direction to not adjescend node! from: " + from.toString() + " to: "
+					+ to.toString());
 			throw new IllegalArgumentException("Arguments must be adjescent to oneanother");
 		}
 
@@ -48,13 +49,18 @@ public class PathGenerator {
 
 	}
 
-	private List<EMove> positionsToDirections(List<Position> positions) {
-		List<EMove> ret = new ArrayList<>();
+	private Queue<EMove> positionsToDirections(Queue<Position> positions) {
+		Queue<EMove> ret = new LinkedList<>();
+
+		for (var ele : positions)
+			System.out.println(ele.toString());
 
 		Position prev = null;
 		for (Position pos : positions) {
 			if (prev != null) {
-				ret.add(getDirection(prev, pos));
+				// this is kind of scuffed. Maybe change this later.
+				for (int i = 0; i < fma.getTerrainAt(prev).cost() + fma.getTerrainAt(pos).cost(); ++i)
+					ret.add(getDirection(prev, pos));
 			}
 
 			prev = pos;
@@ -64,19 +70,22 @@ public class PathGenerator {
 	}
 
 	// TODO: Refactor this class
-	public List<EMove> getPathTo(Position pos) {
+	public Queue<EMove> getPathTo(Position pos) {
 		Position current = fma.getEntityPosition(EGameEntity.MYPLAYER);
 
 		HashMap<Position, Integer> cost = new HashMap<>();
-		HashMap<Position, List<Position>> pathTo = new HashMap<>();
+		HashMap<Position, Queue<Position>> pathTo = new HashMap<>();
 
-		Set<Position> neighbours = new HashSet<>();
 		Set<Position> visited = new HashSet<>();
+		Set<Position> frontier = new HashSet<>();
 
 		cost.put(current, 0);
-		pathTo.put(current, new ArrayList<>());
+		pathTo.put(current, new LinkedList<>());
+		pathTo.get(current).add(current);
 
 		while (!visited.contains(pos)) {
+			Set<Position> neighbours = new HashSet<>();
+
 			visited.add(current);
 
 			// up
@@ -84,11 +93,13 @@ public class PathGenerator {
 				neighbours.add(new Position(current.getx(), current.gety() - 1));
 
 			// dowm
-			if (current.gety() < fma.getHeight() && !visited.contains(new Position(current.getx(), current.gety() + 1)))
+			if (current.gety() < fma.getHeight() - 1
+					&& !visited.contains(new Position(current.getx(), current.gety() + 1)))
 				neighbours.add(new Position(current.getx(), current.gety() + 1));
 
 			// right
-			if (current.getx() < fma.getWidth() && !visited.contains(new Position(current.getx() + 1, current.gety())))
+			if (current.getx() < fma.getWidth() - 1
+					&& !visited.contains(new Position(current.getx() + 1, current.gety())))
 				neighbours.add(new Position(current.getx() + 1, current.gety()));
 
 			// left
@@ -101,22 +112,31 @@ public class PathGenerator {
 
 					cost.put(p, cost.get(current) + fma.getTerrainAt(current).cost() + fma.getTerrainAt(p).cost());
 
-					@SuppressWarnings("unchecked") // I know this is Stack<Position> and it cannot be anything else
-					List<Position> temp = new ArrayList<>(pathTo.get(current));
+					Queue<Position> temp = new LinkedList<>(pathTo.get(current));
 					temp.add(p);
+
 					pathTo.put(p, temp);
 				}
+				frontier.add(p);
 			}
 
-			current = neighbours.stream().max((Position lhs, Position rhs) -> {
+			current = frontier.stream().min((Position lhs, Position rhs) -> {
 				return cost.get(lhs) - cost.get(rhs);
 			}).get();
 
-			neighbours.remove(current);
+			logger.debug("Current node in dijkstra: " + current + " Cost: " + cost.get(current));
+
+			frontier.remove(current);
 
 		}
 
 		logger.debug("Dijkstra cost of destination node: " + cost.get(pos));
+
+		for (var ele : pathTo.get(pos))
+			System.out.println(ele);
+		System.out.println("------------------");
+
+		// return pathTo.get(pos);
 
 		return positionsToDirections(pathTo.get(pos));
 	}

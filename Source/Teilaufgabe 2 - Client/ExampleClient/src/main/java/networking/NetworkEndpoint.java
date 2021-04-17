@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import MessagesBase.ERequestState;
 import MessagesBase.HalfMap;
+import MessagesBase.PlayerMove;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.ResponseEnvelope;
 import MessagesBase.UniqueGameIdentifier;
@@ -103,9 +104,28 @@ public class NetworkEndpoint {
 			// here i will prob. need a new class
 			throw new RuntimeException(result.getExceptionMessage());
 
-		System.out.println("sending halfmap");
-		System.out.println(result.getState().toString());
+	}
 
+	public void sendMove(PlayerMove pm) {
+		if (pm == null) {
+			logger.error("sendMove received null as PlayerMove");
+			throw new RuntimeException("Given PlayerMove is null");
+		}
+
+		Mono<ResponseEnvelope> webAccess = baseWebClient.method(HttpMethod.POST)
+				// specify the data which is set to the server
+				.uri("/" + gameID.getUniqueGameID() + "/moves").body(BodyInserters.fromValue(pm)).retrieve()
+				.bodyToMono(ResponseEnvelope.class); // specify the object returned by the server
+
+		ResponseEnvelope<UniquePlayerIdentifier> result = webAccess.block();
+
+		// always check for errors, and if some are reported at least print them to the
+		// console (logging should be preferred)
+		// so that you become aware of them during debugging! The provided server gives
+		// you very helpful error messages.
+		if (result.getState() == ERequestState.Error)
+			// here i will prob. need a new class
+			throw new RuntimeException(result.getExceptionMessage());
 	}
 
 }

@@ -1,7 +1,7 @@
 package mapHelpers;
 
 public enum ETerrain {
-	GRASS(1), WATER(100), MOUNTAIN(2);
+	GRASS(1), WATER(1000), MOUNTAIN(2);
 
 	private final int cost;
 
