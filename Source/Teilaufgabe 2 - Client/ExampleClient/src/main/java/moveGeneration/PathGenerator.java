@@ -1,5 +1,6 @@
 package moveGeneration;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,16 +28,53 @@ public class PathGenerator {
 		this.fma = fma;
 	}
 
+	private EMove getDirection(Position from, Position to) {
+		int distance = Math.abs(from.getx() - to.getx()) + Math.abs(from.gety() - to.gety());
+		if (distance != 1) {
+			logger.error("Trying to get direction to not adjescend node!");
+			throw new IllegalArgumentException("Arguments must be adjescent to oneanother");
+		}
+
+		if (from.getx() - to.getx() == 1)
+			return EMove.LEFT;
+		if (from.getx() - to.getx() == -1)
+			return EMove.RIGHT;
+		if (from.gety() - to.gety() == 1)
+			return EMove.UP;
+		if (from.gety() - to.gety() == -1)
+			return EMove.DOWN;
+
+		throw new RuntimeException("Distance check must have failed!");
+
+	}
+
+	private List<EMove> positionsToDirections(List<Position> positions) {
+		List<EMove> ret = new ArrayList<>();
+
+		Position prev = null;
+		for (Position pos : positions) {
+			if (prev != null) {
+				ret.add(getDirection(prev, pos));
+			}
+
+			prev = pos;
+		}
+
+		return ret;
+	}
+
 	// TODO: Refactor this class
 	public List<EMove> getPathTo(Position pos) {
 		Position current = fma.getEntityPosition(EGameEntity.MYPLAYER);
 
 		HashMap<Position, Integer> cost = new HashMap<>();
+		HashMap<Position, List<Position>> pathTo = new HashMap<>();
 
 		Set<Position> neighbours = new HashSet<>();
 		Set<Position> visited = new HashSet<>();
 
 		cost.put(current, 0);
+		pathTo.put(current, new ArrayList<>());
 
 		while (!visited.contains(pos)) {
 			visited.add(current);
@@ -59,8 +97,15 @@ public class PathGenerator {
 
 			for (Position p : neighbours) {
 				if (cost.get(p) == null || cost.get(p) >= cost.get(current) + fma.getTerrainAt(current).cost()
-						+ fma.getTerrainAt(p).cost())
+						+ fma.getTerrainAt(p).cost()) {
+
 					cost.put(p, cost.get(current) + fma.getTerrainAt(current).cost() + fma.getTerrainAt(p).cost());
+
+					@SuppressWarnings("unchecked") // I know this is Stack<Position> and it cannot be anything else
+					List<Position> temp = new ArrayList<>(pathTo.get(current));
+					temp.add(p);
+					pathTo.put(p, temp);
+				}
 			}
 
 			current = neighbours.stream().max((Position lhs, Position rhs) -> {
@@ -73,8 +118,6 @@ public class PathGenerator {
 
 		logger.debug("Dijkstra cost of destination node: " + cost.get(pos));
 
-		// TODO: figure out how to get a path to the destination node and not just the
-		// cost to get there!
-		return null;
+		return positionsToDirections(pathTo.get(pos));
 	}
 }
