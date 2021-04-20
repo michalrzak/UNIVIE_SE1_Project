@@ -73,13 +73,16 @@ public class PathGenerator {
 	public Queue<EMove> getPathTo(Position pos) {
 		Position current = fma.getEntityPosition(EGameEntity.MYPLAYER);
 
+		// this can technicaly be grouped to one; maybe offload to different class?
 		HashMap<Position, Integer> cost = new HashMap<>();
 		HashMap<Position, Queue<Position>> pathTo = new HashMap<>();
 
 		Set<Position> visited = new HashSet<>();
 		Set<Position> frontier = new HashSet<>();
 
+		// initialize the cost with 0 at the start
 		cost.put(current, 0);
+		// initialize the path with an queue containing just the start at the start
 		pathTo.put(current, new LinkedList<>());
 		pathTo.get(current).add(current);
 
