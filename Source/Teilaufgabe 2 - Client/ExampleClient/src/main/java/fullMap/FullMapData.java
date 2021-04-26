@@ -66,7 +66,12 @@ public class FullMapData {
 		}
 
 		HashMap<EGameEntity, Position> old = gameEntityPosition;
+
 		gameEntityPosition = gameEntities;
+
+		if (old.containsKey(EGameEntity.MYTREASURE) && !gameEntityPosition.containsKey(EGameEntity.MYTREASURE))
+			collectTreasure();
+
 		changes.firePropertyChange("gameEntities", old, gameEntityPosition);
 	}
 
@@ -87,6 +92,7 @@ public class FullMapData {
 			logger.warn("Treassure was already collected yet calling collectTreasure again!");
 		}
 
+		logger.debug("Treasure collected!");
 		treasureCollected = true;
 	}
 

@@ -198,7 +198,7 @@ public class NetworkTranslator {
 			throw e; // TODO: This really needs to be a new type
 		}
 
-		// ofload to seperate function
+		// ofload to separate function
 		HashMap<EGameEntity, Position> ret = new HashMap<>();
 
 		for (var ele : fm.getMapNodes())

@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,12 +61,8 @@ public class CLI implements PropertyChangeListener {
 	}
 
 	private List<List<Character>> assignedGameEntities() {
-		List<List<Character>> ret = new ArrayList<>();
+		List<List<Character>> ret = terrain.stream().map(row -> new ArrayList<>(row)).collect(Collectors.toList());
 
-		/*
-		 * terrain.stream().map(row -> {List<Character> ret = new ArrayList<>();
-		 * ret.addAll(terrain); return ret;})
-		 */
 		gameEntities.entrySet().stream().forEach(ele -> {
 			switch (ele.getKey()) {
 
@@ -99,8 +96,9 @@ public class CLI implements PropertyChangeListener {
 			for (var x : y) {
 				System.out.print(x);
 			}
-			System.out.print("\n");
+			System.out.print('\n');
 		}
+		System.out.println('\n');
 
 	}
 

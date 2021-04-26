@@ -5,7 +5,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import mapHelpers.EGameEntity;
+import mapHelpers.EMapHalf;
 import mapHelpers.ETerrain;
 import mapHelpers.Position;
 import moveGeneration.FullMapAccesser;
@@ -17,6 +21,8 @@ public class TreasureFinder {
 	private Queue<Position> pathToNextNode = null;
 	private boolean goingToTreasure = false;
 
+	private static Logger logger = LoggerFactory.getLogger(TreasureFinder.class);
+
 	public TreasureFinder(FullMapAccesser fma) {
 		this.fma = fma;
 
@@ -27,37 +33,29 @@ public class TreasureFinder {
 	// used to help the constructor find nodes to visit
 	private static Set<Position> getInterestingNodes(FullMapAccesser fma) {
 
-		// this section is not very nice
-		Position fromMyMap;
-		Position toMyMap;
+		EMapHalf myHalf;
 
 		if (fma.getHeight() == 4) {
 			int xsep = fma.getWidth() / 2;
 
-			if (fma.getEntityPosition(EGameEntity.MYCASTLE).getx() < xsep) {
-				fromMyMap = new Position(0, 0);
-				toMyMap = new Position(xsep - 1, fma.getHeight() - 1);
-			} else {
-				fromMyMap = new Position(xsep, 0);
-				toMyMap = new Position(fma.getWidth() - 1, fma.getHeight() - 1);
-			}
+			if (fma.getEntityPosition(EGameEntity.MYCASTLE).getx() < xsep)
+				myHalf = EMapHalf.LONGMAPORIGIN;
+			else
+				myHalf = EMapHalf.LONGMAPOPPOSITE;
 		} else {
 			int ysep = fma.getHeight() / 2;
 
-			if (fma.getEntityPosition(EGameEntity.MYCASTLE).gety() < ysep) {
-				fromMyMap = new Position(0, 0);
-				toMyMap = new Position(fma.getWidth() - 1, ysep - 1);
-			} else {
-				fromMyMap = new Position(0, ysep);
-				toMyMap = new Position(fma.getWidth() - 1, fma.getHeight() - 1);
-			}
+			if (fma.getEntityPosition(EGameEntity.MYCASTLE).gety() < ysep)
+				myHalf = EMapHalf.SQUAREMAPORIGIN;
+			else
+				myHalf = EMapHalf.SQUAREMAPOPPOSITE;
 		}
 
 		Set<Position> ret = new HashSet<>();
 
 		// first add all grass fields
-		for (int y = fromMyMap.gety(); y <= toMyMap.gety(); ++y) {
-			for (int x = fromMyMap.getx(); x <= toMyMap.getx(); ++x) {
+		for (int y = myHalf.getyLowerBound(); y <= myHalf.getyUpperBound(); ++y) {
+			for (int x = myHalf.getxLowerBound(); x <= myHalf.getxUpperBound(); ++x) {
 				Position cur = new Position(x, y);
 				if (fma.getTerrainAt(cur) == ETerrain.GRASS && !fma.getEntityPosition(EGameEntity.MYCASTLE).equals(cur))
 					ret.add(cur);
@@ -66,8 +64,8 @@ public class TreasureFinder {
 
 		// then add some mountains and remove grass around them where this is more
 		// efficient
-		for (int y = fromMyMap.gety(); y <= toMyMap.gety(); ++y) {
-			for (int x = fromMyMap.getx(); x <= toMyMap.getx(); ++x) {
+		for (int y = myHalf.getyLowerBound(); y <= myHalf.getyUpperBound(); ++y) {
+			for (int x = myHalf.getxLowerBound(); x <= myHalf.getxUpperBound(); ++x) {
 				Position cur = new Position(x, y);
 				if (fma.getTerrainAt(cur) == ETerrain.MOUNTAIN) {
 
@@ -132,9 +130,14 @@ public class TreasureFinder {
 		}
 
 		// check if I am not going anywhere
-		if (pathToNextNode == null || pathToNextNode.size() == 0)
+		if (pathToNextNode == null || pathToNextNode.size() == 0) {
+			// if this evaluates to true then i have just arrived on the treasure!
+			if (goingToTreasure)
+				logger.warn("Trying to find the treasure even though it has already been collected!");
+
 			// throws if visitOrder is empty!
 			pathToNextNode = PathFinder.pathTo(fma.getEntityPosition(EGameEntity.MYPLAYER), visitOrder.remove(), fma);
+		}
 
 		return pathToNextNode.remove();
 	}

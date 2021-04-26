@@ -17,7 +17,7 @@
    <logger name="reactor.Flux" level="ERROR"/>
    <logger name="org.springframework.web" level="ERROR"/>
   
-    <root level="DEBUG">
+    <root level="WARN">
         <appender-ref ref="stdout"/>
     </root>
 
