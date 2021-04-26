@@ -4,9 +4,9 @@ import mapHelpers.EGameEntity;
 import mapHelpers.EMapHalf;
 import moveGeneration.FullMapAccesser;
 
-public class TreasureFinder extends NodeFinder {
+public class CastleFinder extends NodeFinder {
 
-	public TreasureFinder(FullMapAccesser fma) {
+	public CastleFinder(FullMapAccesser fma) {
 		super(fma, getMapHalf(fma));
 	}
 
@@ -16,16 +16,16 @@ public class TreasureFinder extends NodeFinder {
 			int xsep = fma.getWidth() / 2;
 
 			if (fma.getEntityPosition(EGameEntity.MYCASTLE).getx() < xsep)
-				ret = EMapHalf.LONGMAPORIGIN;
-			else
 				ret = EMapHalf.LONGMAPOPPOSITE;
+			else
+				ret = EMapHalf.LONGMAPORIGIN;
 		} else {
 			int ysep = fma.getHeight() / 2;
 
 			if (fma.getEntityPosition(EGameEntity.MYCASTLE).gety() < ysep)
-				ret = EMapHalf.SQUAREMAPORIGIN;
-			else
 				ret = EMapHalf.SQUAREMAPOPPOSITE;
+			else
+				ret = EMapHalf.SQUAREMAPORIGIN;
 		}
 		return ret;
 	}

@@ -14,7 +14,7 @@ import moveHelpers.EMove;
 public class MoveGenerator {
 
 	private FullMapAccesser fma;
-	private TreasureFinder nodeFinder;
+	private NodeFinder nodeFinder;
 
 	// group together into one class?
 	private Queue<EMove> toMove;
@@ -71,8 +71,11 @@ public class MoveGenerator {
 	}
 
 	public EMove getNextMove() {
-		if (toMove == null || toMove.size() == 0)
+		if (toMove == null || toMove.size() == 0) {
+			if (fma.treasureCollected())
+				nodeFinder = new CastleFinder(fma);
 			toMove = movesToAdjascentNode(nodeFinder.getNextPosition(), fma);
+		}
 
 		return toMove.remove();
 	}
