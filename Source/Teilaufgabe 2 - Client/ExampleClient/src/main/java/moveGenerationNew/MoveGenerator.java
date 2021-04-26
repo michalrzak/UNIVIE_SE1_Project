@@ -19,7 +19,7 @@ public class MoveGenerator {
 	// group together into one class?
 	private Queue<EMove> toMove;
 
-	private static Logger logger = LoggerFactory.getLogger(PathFinder.class);
+	private static Logger logger = LoggerFactory.getLogger(MoveGenerator.class);
 
 	public MoveGenerator(FullMapAccesser fma) {
 		nodeFinder = new TreasureFinder(fma);

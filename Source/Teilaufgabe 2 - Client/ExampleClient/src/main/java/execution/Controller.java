@@ -7,13 +7,12 @@ import fullMap.FullMapData;
 import halfMap.HalfMapGenerator;
 import moveGeneration.FullMapAccesser;
 import moveGenerationNew.MoveGenerator;
-import networking.NetworkEndpoint;
 import networking.NetworkTranslator;
 import ui.CLI;
 
 public class Controller {
 
-	private static Logger logger = LoggerFactory.getLogger(NetworkEndpoint.class);
+	private static Logger logger = LoggerFactory.getLogger(Controller.class);
 
 	// it is OK to say throws here. Since I know i wont be using multiple threads
 	// this won't ever be an issue. Theoreticaly there is imporovement potential

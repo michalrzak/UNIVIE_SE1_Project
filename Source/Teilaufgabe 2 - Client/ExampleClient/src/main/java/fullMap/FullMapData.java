@@ -26,8 +26,10 @@ public class FullMapData {
 	// as it comes from the server. Hence I dont conduct any validation
 	public FullMapData(HashMap<Position, ETerrain> terrain, HashMap<EGameEntity, Position> gameEntityPosition) {
 
-		if (terrain == null || gameEntityPosition == null)
+		if (terrain == null || gameEntityPosition == null) {
+			logger.error("Parameters cannot be null!");
 			throw new IllegalArgumentException("Parameters cannot be null!");
+		}
 
 		// maybe clone all attributes?
 		this.terrain = terrain;

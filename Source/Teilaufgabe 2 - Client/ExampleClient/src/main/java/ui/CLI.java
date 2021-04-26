@@ -60,8 +60,12 @@ public class CLI implements PropertyChangeListener {
 	}
 
 	private List<List<Character>> assignedGameEntities() {
-		List<List<Character>> ret = new ArrayList<>(terrain);
+		List<List<Character>> ret = new ArrayList<>();
 
+		/*
+		 * terrain.stream().map(row -> {List<Character> ret = new ArrayList<>();
+		 * ret.addAll(terrain); return ret;})
+		 */
 		gameEntities.entrySet().stream().forEach(ele -> {
 			switch (ele.getKey()) {
 
