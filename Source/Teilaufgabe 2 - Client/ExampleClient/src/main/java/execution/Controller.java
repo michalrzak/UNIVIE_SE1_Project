@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import fullMap.FullMapData;
 import halfMap.HalfMapGenerator;
 import moveGeneration.FullMapAccesser;
-import moveGeneration.MoveGenerator;
+import moveGenerationNew.MoveGenerator;
 import networking.NetworkEndpoint;
 import networking.NetworkTranslator;
 import ui.CLI;
@@ -88,7 +88,7 @@ public class Controller {
 			while (!net.myTurn())
 				Thread.sleep(400);
 
-			net.sendMove(mg.getMove());
+			net.sendMove(mg.getNextMove());
 			Thread.sleep(400);
 			map.updateEntities(net.getEntities());
 			Thread.sleep(400);

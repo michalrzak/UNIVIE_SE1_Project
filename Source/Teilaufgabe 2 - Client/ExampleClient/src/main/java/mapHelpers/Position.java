@@ -44,4 +44,8 @@ public class Position {
 		return super.toString() + "; x = " + x + ", y = " + y;
 	}
 
+	public static double distance(Position x1, Position x2) {
+		return Math.sqrt(Math.pow(x1.getx() - x2.getx(), 2) + Math.pow(x1.gety() - x2.gety(), 2));
+	}
+
 }
