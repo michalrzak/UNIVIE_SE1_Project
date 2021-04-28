@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.InvalidHalfMapGeneratedException;
+import exceptions.PositionOutOfBoundsException;
 import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
 
@@ -126,7 +127,8 @@ public class HalfMapData {
 			logger.error(
 					"HalfMapData constructor received a myFortPosition object with position outside of halfmap; Received: "
 							+ myCastlePosition);
-			throw new IllegalArgumentException("myFortPosition x must be in range [0; 8) and y in range [0; 4)");
+			throw new PositionOutOfBoundsException("myFortPosition x must be in range [0; 8) and y in range [0; 4)",
+					myCastlePosition);
 		}
 
 		if (!validateTerrain(terrain)) {
