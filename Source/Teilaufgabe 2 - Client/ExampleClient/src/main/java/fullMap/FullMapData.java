@@ -18,8 +18,6 @@ public class FullMapData {
 	private int height;
 	private boolean treasureCollected = false;
 
-	private int counter = 0;
-
 	private static Logger logger = LoggerFactory.getLogger(FullMapData.class);
 
 	private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
@@ -37,21 +35,26 @@ public class FullMapData {
 		this.terrain = terrain;
 		this.gameEntityPosition = gameEntityPosition;
 
-		// extract width and height from terrain
-		// stream is probably slower as I know the map is a rectangle and can use this
-		// to limit the loops
+		this.width = extractWidth(terrain);
+		logger.debug("FullMap width is: " + this.width);
+
+		this.height = extractHeight(terrain);
+		logger.debug("FullMap height is: " + this.height);
+
+	}
+
+	private static int extractWidth(Map<Position, ETerrain> terrain) {
 		int i = 0;
 		while (terrain.containsKey(new Position(i, 0)))
 			++i;
-		this.width = i;
-		logger.debug("FullMap width is: " + i);
+		return i;
+	}
 
-		i = 0;
+	private static int extractHeight(Map<Position, ETerrain> terrain) {
+		int i = 0;
 		while (terrain.containsKey(new Position(0, i)))
 			++i;
-		this.height = i;
-		logger.debug("FullMap height is: " + i);
-
+		return i;
 	}
 
 	// maybe it is a good idea to pass entities one by one?
