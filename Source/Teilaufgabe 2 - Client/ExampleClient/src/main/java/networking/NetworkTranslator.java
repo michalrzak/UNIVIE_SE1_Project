@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -104,8 +105,8 @@ public class NetworkTranslator {
 	}
 
 	private static FullMapData networkMapToInternalMap(Collection<MessagesGameState.FullMapNode> nodes) {
-		HashMap<Position, ETerrain> terrain = new HashMap<>();
-		HashMap<EGameEntity, Position> gameEntities = new HashMap<>();
+		Map<Position, ETerrain> terrain = new HashMap<>();
+		Map<EGameEntity, Position> gameEntities = new HashMap<>();
 
 		for (var ele : nodes) {
 
@@ -188,7 +189,7 @@ public class NetworkTranslator {
 		ne.sendMove(PlayerMove.of(playerID, d));
 	}
 
-	public HashMap<EGameEntity, Position> getEntities() {
+	public Map<EGameEntity, Position> getEntities() {
 		MessagesGameState.FullMap fm;
 		try {
 			// this can fail and throw a NoSuchElementException
@@ -199,7 +200,7 @@ public class NetworkTranslator {
 		}
 
 		// ofload to separate function
-		HashMap<EGameEntity, Position> ret = new HashMap<>();
+		Map<EGameEntity, Position> ret = new HashMap<>();
 
 		for (var ele : fm.getMapNodes())
 			for (var ent : extractGameEntitiesFromNode(ele))

@@ -3,8 +3,8 @@ package ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class CLI implements PropertyChangeListener {
 	private static Logger logger = LoggerFactory.getLogger(CLI.class);
 
 	// Maybe just save a FullMap instance? Not sure what to do here.
-	HashMap<EGameEntity, Position> gameEntities;
+	Map<EGameEntity, Position> gameEntities;
 	List<List<Character>> terrain;
 
 	public CLI(FullMapData fm) {
@@ -36,7 +36,7 @@ public class CLI implements PropertyChangeListener {
 		printData();
 	}
 
-	private static List<List<Character>> hashMapToListList(HashMap<Position, ETerrain> map, int width, int height) {
+	private static List<List<Character>> hashMapToListList(Map<Position, ETerrain> map, int width, int height) {
 		List<List<Character>> ret = new ArrayList<>();
 
 		for (int y = 0; y < height; ++y) {
@@ -111,14 +111,14 @@ public class CLI implements PropertyChangeListener {
 		switch (event.getPropertyName()) {
 
 		case "gameEntities":
-			if (!(received instanceof HashMap<?, ?>)) {
+			if (!(received instanceof Map<?, ?>)) {
 				logger.error(
 						"The event with name 'gameEntities' was triggered but the received object was not of type HashMap<EGameEntity, Position>");
 				throw new RuntimeException(
 						"The event with name 'gameEntities' was triggered but the received object was not of type HashMap<EGameEntity, Position>");
 			}
 
-			gameEntities = (HashMap<EGameEntity, Position>) received;
+			gameEntities = (Map<EGameEntity, Position>) received;
 			break;
 
 		default:

@@ -2,6 +2,7 @@ package halfMap;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -13,12 +14,12 @@ import mapHelpers.ETerrain;
 import mapHelpers.Position;
 
 public class HalfMapData {
-	private HashMap<Position, ETerrain> terrain;
+	private Map<Position, ETerrain> terrain;
 	private Position myCastlePosition;
 
 	private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 
-	private static boolean validateTerrainDimensions(HashMap<Position, ETerrain> testing) {
+	private static boolean validateTerrainDimensions(Map<Position, ETerrain> testing) {
 		Set<Position> positions = testing.keySet();
 
 		if (positions.size() != 32) {
@@ -33,7 +34,7 @@ public class HalfMapData {
 		return true;
 	}
 
-	private static boolean validateTerrainFieldCount(HashMap<Position, ETerrain> testing) {
+	private static boolean validateTerrainFieldCount(Map<Position, ETerrain> testing) {
 		Collection<ETerrain> t = testing.values();
 
 		long countGrass = t.stream().filter(ter -> ter == ETerrain.GRASS).count();
@@ -49,7 +50,7 @@ public class HalfMapData {
 		return true;
 	}
 
-	private static boolean validateTerrainEdges(HashMap<Position, ETerrain> testing) {
+	private static boolean validateTerrainEdges(Map<Position, ETerrain> testing) {
 		// check if half of the edge is made up of water
 
 		var mapset = testing.entrySet();
@@ -71,7 +72,7 @@ public class HalfMapData {
 		return true;
 	}
 
-	private static void floodfill(Position node, HashMap<Position, ETerrain> nodes) {
+	private static void floodfill(Position node, Map<Position, ETerrain> nodes) {
 		// THE HASHMAP PASSES AS ARGUMENT HERE WILL BE MODIFIED. PROVIDE A COPY
 		// THE START NODE CANNOT BE WATER
 		if (!nodes.containsKey(node) || nodes.get(node) == ETerrain.WATER)
@@ -91,9 +92,9 @@ public class HalfMapData {
 		floodfill(new Position(node.getx() + 1, node.gety()), nodes);
 	}
 
-	private static boolean validateTerrainIslands(HashMap<Position, ETerrain> testing) {
+	private static boolean validateTerrainIslands(Map<Position, ETerrain> testing) {
 		// provide a copy of the hashmap to floodfill
-		var copy = (HashMap<Position, ETerrain>) testing.clone();
+		var copy = new HashMap<Position, ETerrain>(testing);
 
 		// start floodfill from 0, 0
 		floodfill(new Position(0, 0), copy);
@@ -108,12 +109,12 @@ public class HalfMapData {
 		return true;
 	}
 
-	private static boolean validateTerrain(HashMap<Position, ETerrain> testing) {
+	private static boolean validateTerrain(Map<Position, ETerrain> testing) {
 		return validateTerrainDimensions(testing) && validateTerrainFieldCount(testing) && validateTerrainEdges(testing)
 				&& validateTerrainIslands(testing);
 	}
 
-	public HalfMapData(HashMap<Position, ETerrain> terrain, Position myCastlePosition) {
+	public HalfMapData(Map<Position, ETerrain> terrain, Position myCastlePosition) {
 		if (terrain == null || myCastlePosition == null) {
 			logger.error("HalfMapData constructor received a null parameter");
 			throw new IllegalArgumentException("Arguments cannot be null!");

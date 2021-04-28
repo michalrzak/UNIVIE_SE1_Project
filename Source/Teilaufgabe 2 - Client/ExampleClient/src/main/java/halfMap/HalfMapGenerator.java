@@ -2,6 +2,7 @@ package halfMap;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
@@ -15,7 +16,7 @@ public class HalfMapGenerator {
 
 	private static Logger logger = LoggerFactory.getLogger(HalfMapGenerator.class);
 
-	private static Position placeCastle(HashMap<Position, ETerrain> terrain) {
+	private static Position placeCastle(Map<Position, ETerrain> terrain) {
 		Random rnd = new Random();
 
 		Position castle = new Position(rnd.nextInt(8), rnd.nextInt(4));
@@ -25,7 +26,7 @@ public class HalfMapGenerator {
 		return castle;
 	}
 
-	private static HashMap<Position, ETerrain> generateTerrain() {
+	private static Map<Position, ETerrain> generateTerrain() {
 
 		// i can maybe delegate this to HalfMapData
 		int grassCount = 15;
@@ -58,7 +59,7 @@ public class HalfMapGenerator {
 
 		Collections.shuffle(nodes);
 
-		HashMap<Position, ETerrain> terrain = new HashMap<>();
+		Map<Position, ETerrain> terrain = new HashMap<>();
 		for (int y = 0; y < 4; ++y)
 			for (int x = 0; x < 8; ++x)
 				terrain.put(new Position(x, y), nodes.pop());
@@ -71,7 +72,7 @@ public class HalfMapGenerator {
 		// temporary Map creation
 		// TODO: make this a valid map creation
 
-		HashMap<Position, ETerrain> terrain = generateTerrain();
+		Map<Position, ETerrain> terrain = generateTerrain();
 		Position castle = placeCastle(terrain);
 
 		HalfMapData hmd;

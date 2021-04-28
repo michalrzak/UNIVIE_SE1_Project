@@ -3,6 +3,7 @@ package moveGeneration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -18,8 +19,8 @@ public class PathFinder {
 	public static Queue<Position> pathTo(Position start, Position dest, FullMapAccesser fma) {
 
 		// this can technically be grouped to one; maybe offload to different class?
-		HashMap<Position, Integer> cost = new HashMap<>();
-		HashMap<Position, Queue<Position>> pathTo = new HashMap<>();
+		Map<Position, Integer> cost = new HashMap<>();
+		Map<Position, Queue<Position>> pathTo = new HashMap<>();
 
 		Set<Position> visited = new HashSet<>();
 		Set<Position> frontier = new HashSet<>();

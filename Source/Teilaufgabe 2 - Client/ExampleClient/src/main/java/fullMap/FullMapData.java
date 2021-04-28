@@ -2,7 +2,7 @@ package fullMap;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,8 @@ import mapHelpers.ETerrain;
 import mapHelpers.Position;
 
 public class FullMapData {
-	private HashMap<Position, ETerrain> terrain;
-	private HashMap<EGameEntity, Position> gameEntityPosition;
+	private Map<Position, ETerrain> terrain;
+	private Map<EGameEntity, Position> gameEntityPosition;
 	private int width;
 	private int height;
 	private boolean treasureCollected = false;
@@ -24,7 +24,7 @@ public class FullMapData {
 
 	// I assume the map data (terrain and gameEntityPosition) passed here is valid
 	// as it comes from the server. Hence I dont conduct any validation
-	public FullMapData(HashMap<Position, ETerrain> terrain, HashMap<EGameEntity, Position> gameEntityPosition) {
+	public FullMapData(Map<Position, ETerrain> terrain, Map<EGameEntity, Position> gameEntityPosition) {
 
 		if (terrain == null || gameEntityPosition == null) {
 			logger.error("Parameters cannot be null!");
@@ -53,7 +53,7 @@ public class FullMapData {
 	}
 
 	// maybe it is a good idea to pass entities one by one?
-	public void updateEntities(HashMap<EGameEntity, Position> gameEntities) {
+	public void updateEntities(Map<EGameEntity, Position> gameEntities) {
 		if (gameEntities == null) {
 			logger.error("Tried passing gameEntities == null");
 			throw new IllegalArgumentException("Arguments cannot be null");
@@ -65,7 +65,7 @@ public class FullMapData {
 			throw new IllegalArgumentException("gameEntities must contain EGameEntity.MYPLAYER");
 		}
 
-		HashMap<EGameEntity, Position> old = gameEntityPosition;
+		Map<EGameEntity, Position> old = gameEntityPosition;
 
 		gameEntityPosition = gameEntities;
 
@@ -98,12 +98,12 @@ public class FullMapData {
 
 	// this is dangerous as the returned terrain can be modified which modifies the
 	// saved MapData as well
-	public HashMap<Position, ETerrain> getTerrain() {
+	public Map<Position, ETerrain> getTerrain() {
 		// maybe return a copy? or just a stream?
 		return terrain;
 	}
 
-	public HashMap<EGameEntity, Position> getGameEntities() {
+	public Map<EGameEntity, Position> getGameEntities() {
 		return gameEntityPosition;
 	}
 
