@@ -20,7 +20,7 @@ public class PathFinder {
 
 		logger.debug("trying to find path from:" + start.toString() + " to: " + dest.toString());
 
-		// this can technically be grouped to one; maybe offload to different class?
+		// this can technically be grouped to one; maybe ofload to different class?
 		Map<Position, Integer> cost = new HashMap<>();
 		Map<Position, Queue<Position>> pathTo = new HashMap<>();
 
@@ -34,14 +34,14 @@ public class PathFinder {
 		// pathTo.get(start).add(start);
 
 		while (!visited.contains(dest)) {
-			// get all unvisited neighbours
+			// get all unvisited neighbors
 			Set<Position> neighbours = getNeighbours(start, fma);
 			neighbours.removeAll(visited);
 
 			// add current node as visited
 			visited.add(start);
 
-			// update costs of neighbours
+			// update costs of neighbors
 			for (Position p : neighbours) {
 				if (cost.get(p) == null || cost.get(p) >= cost.get(start) + fma.getTerrainAt(start).cost()
 						+ fma.getTerrainAt(p).cost()) {
@@ -80,7 +80,7 @@ public class PathFinder {
 		if (pos.gety() > 0)
 			ret.add(new Position(pos.getx(), pos.gety() - 1));
 
-		// dowm
+		// down
 		if (pos.gety() < fma.getHeight() - 1)
 			ret.add(new Position(pos.getx(), pos.gety() + 1));
 

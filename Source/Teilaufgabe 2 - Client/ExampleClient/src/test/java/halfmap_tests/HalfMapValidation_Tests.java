@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+import exceptions.InvalidHalfMapGeneratedException;
 import helpers.Helper;
 import map.halfMap.HalfMapData;
 import map.mapHelpers.ETerrain;
@@ -23,7 +24,7 @@ public class HalfMapValidation_Tests {
 			var t = new HalfMapData(testMap, new Position(0, 0));
 		};
 
-		Assertions.assertThrows(IllegalArgumentException.class, halfMapInit,
+		Assertions.assertThrows(InvalidHalfMapGeneratedException.class, halfMapInit,
 				"An exception was expected because the passed terrain nodes are not of sufficient size!");
 	}
 
@@ -42,7 +43,7 @@ public class HalfMapValidation_Tests {
 			var t = new HalfMapData(testMap, new Position(0, 0));
 		};
 
-		Assertions.assertThrows(IllegalArgumentException.class, halfMapInit,
+		Assertions.assertThrows(InvalidHalfMapGeneratedException.class, halfMapInit,
 				"An exception was expected because a Position index in the passed map was out of bounds!");
 	}
 
@@ -57,7 +58,7 @@ public class HalfMapValidation_Tests {
 			var t = new HalfMapData(testMap, new Position(0, 0));
 		};
 
-		Assertions.assertThrows(IllegalArgumentException.class, halfMapInit,
+		Assertions.assertThrows(InvalidHalfMapGeneratedException.class, halfMapInit,
 				"An exception was expected because there were not enough WATER fields parsed!");
 	}
 
@@ -72,7 +73,7 @@ public class HalfMapValidation_Tests {
 			var t = new HalfMapData(testMap, new Position(0, 0));
 		};
 
-		Assertions.assertThrows(IllegalArgumentException.class, halfMapInit,
+		Assertions.assertThrows(InvalidHalfMapGeneratedException.class, halfMapInit,
 				"An exception was expected because the passed terrain nodes contain too much water on the northern edge!");
 	}
 
@@ -87,7 +88,7 @@ public class HalfMapValidation_Tests {
 			var t = new HalfMapData(testMap, new Position(0, 0));
 		};
 
-		Assertions.assertThrows(IllegalArgumentException.class, halfMapInit,
+		Assertions.assertThrows(InvalidHalfMapGeneratedException.class, halfMapInit,
 				"An exception was expected because the passed terrain contains an Island!");
 	}
 
@@ -102,7 +103,7 @@ public class HalfMapValidation_Tests {
 			var t = new HalfMapData(testMap, new Position(0, 0));
 		};
 
-		Assertions.assertThrows(IllegalArgumentException.class, halfMapInit,
+		Assertions.assertThrows(RuntimeException.class, halfMapInit,
 				"An exception was expected because the the castle was placed on a mountain!");
 	}
 
