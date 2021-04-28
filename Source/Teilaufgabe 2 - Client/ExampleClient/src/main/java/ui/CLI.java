@@ -40,6 +40,7 @@ public class CLI implements PropertyChangeListener {
 
 	private static List<List<Character>> hashMapToListList(Map<Position, ETerrain> map, int width, int height) {
 		List<List<Character>> ret = new ArrayList<>();
+		System.out.println("height: " + height);
 
 		for (int y = 0; y < height; ++y) {
 			ret.add(new ArrayList<>());
@@ -64,7 +65,6 @@ public class CLI implements PropertyChangeListener {
 
 	private List<List<Character>> assignedGameEntities() {
 		List<List<Character>> ret = terrain.stream().map(row -> new ArrayList<>(row)).collect(Collectors.toList());
-
 		gameEntities.entrySet().stream().forEach(ele -> {
 			switch (ele.getKey()) {
 

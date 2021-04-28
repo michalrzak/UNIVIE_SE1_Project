@@ -6,7 +6,7 @@ import mapHelpers.EMapHalf;
 public class CastleFinder extends NodeFinder {
 
 	public CastleFinder(FullMapAccesser fma) {
-		super(fma, getMapHalf(fma));
+		super(fma, getMapHalf(fma), EGameEntity.ENEMYCASTLE);
 	}
 
 	private static EMapHalf getMapHalf(FullMapAccesser fma) {

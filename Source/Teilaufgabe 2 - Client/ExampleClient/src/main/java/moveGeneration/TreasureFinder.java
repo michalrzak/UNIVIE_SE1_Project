@@ -6,7 +6,7 @@ import mapHelpers.EMapHalf;
 public class TreasureFinder extends NodeFinder {
 
 	public TreasureFinder(FullMapAccesser fma) {
-		super(fma, getMapHalf(fma));
+		super(fma, getMapHalf(fma), EGameEntity.MYTREASURE);
 	}
 
 	private static EMapHalf getMapHalf(FullMapAccesser fma) {

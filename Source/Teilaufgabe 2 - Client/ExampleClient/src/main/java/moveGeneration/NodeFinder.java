@@ -18,14 +18,22 @@ public abstract class NodeFinder {
 	private Queue<Position> visitOrder;
 	private Queue<Position> pathToNextNode = null;
 	private boolean goingToTreasure = false;
+	private EGameEntity lookingFor;
 
 	private static Logger logger = LoggerFactory.getLogger(TreasureFinder.class);
 
-	public NodeFinder(FullMapAccesser fma, EMapHalf myHalf) {
+	public NodeFinder(FullMapAccesser fma, EMapHalf myHalf, EGameEntity lookingFor) {
+
+		// TODO: CHECKS!
+
 		this.fma = fma;
+		this.lookingFor = lookingFor;
 
 		Set<Position> toVisit = getInterestingNodes(fma, myHalf);
 		this.visitOrder = visitInOrder(toVisit, fma.getEntityPosition(EGameEntity.MYPLAYER));
+
+		if (visitOrder.stream().distinct().count() != visitOrder.size())
+			logger.warn("The algorithm wants to visit a node more then once!");
 	}
 
 	// used to help the constructor find nodes to visit
@@ -104,10 +112,11 @@ public abstract class NodeFinder {
 	public Position getNextPosition() {
 
 		// if Position of MyTreasure is known, go there
-		if (fma.getEntityPosition(EGameEntity.MYTREASURE) != null && !goingToTreasure) {
+		if (fma.getEntityPosition(lookingFor) != null && !goingToTreasure) {
 			pathToNextNode = PathFinder.pathTo(fma.getEntityPosition(EGameEntity.MYPLAYER),
-					fma.getEntityPosition(EGameEntity.MYTREASURE), fma);
+					fma.getEntityPosition(lookingFor), fma);
 			goingToTreasure = true;
+			System.out.println("ola");
 		}
 
 		// check if I am not going anywhere
@@ -115,6 +124,8 @@ public abstract class NodeFinder {
 			// if this evaluates to true then i have just arrived on the treasure!
 			if (goingToTreasure)
 				logger.warn("Trying to find the treasure even though it has already been collected!");
+
+			logger.debug("Next stop is: " + visitOrder.peek().toString());
 
 			// throws if visitOrder is empty!
 			pathToNextNode = PathFinder.pathTo(fma.getEntityPosition(EGameEntity.MYPLAYER), visitOrder.remove(), fma);

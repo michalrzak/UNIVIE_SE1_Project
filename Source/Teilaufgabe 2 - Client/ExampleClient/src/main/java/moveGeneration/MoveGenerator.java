@@ -71,7 +71,8 @@ public class MoveGenerator {
 
 	public EMove getNextMove() {
 		if (toMove == null || toMove.size() == 0) {
-			if (fma.treasureCollected())
+			// maybe change the instance of to a boolean variable?
+			if (fma.treasureCollected() && nodeFinder instanceof TreasureFinder)
 				nodeFinder = new CastleFinder(fma);
 			toMove = movesToAdjascentNode(nodeFinder.getNextPosition(), fma);
 		}

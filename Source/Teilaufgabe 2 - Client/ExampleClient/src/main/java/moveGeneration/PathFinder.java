@@ -18,6 +18,8 @@ public class PathFinder {
 
 	public static Queue<Position> pathTo(Position start, Position dest, FullMapAccesser fma) {
 
+		logger.debug("trying to find path from:" + start.toString() + " to: " + dest.toString());
+
 		// this can technically be grouped to one; maybe offload to different class?
 		Map<Position, Integer> cost = new HashMap<>();
 		Map<Position, Queue<Position>> pathTo = new HashMap<>();
