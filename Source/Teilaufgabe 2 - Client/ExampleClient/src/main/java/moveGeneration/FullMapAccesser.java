@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.PositionOutOfBoundsException;
-import fullMap.FullMapData;
-import mapHelpers.EGameEntity;
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.fullMap.FullMapData;
+import map.mapHelpers.EGameEntity;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 // TODO: think about this:
 // THIS CLASS IS USED TO ACCESS DATA CONTAINED IN FULLMAPDATA

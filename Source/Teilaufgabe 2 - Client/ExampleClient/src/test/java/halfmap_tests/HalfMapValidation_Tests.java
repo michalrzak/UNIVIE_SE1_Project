@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import halfMap.HalfMapData;
 import helpers.Helper;
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.halfMap.HalfMapData;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public class HalfMapValidation_Tests {
 

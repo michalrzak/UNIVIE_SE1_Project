@@ -10,7 +10,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mapHelpers.Position;
+import map.mapHelpers.Position;
 
 public class PathFinder {
 

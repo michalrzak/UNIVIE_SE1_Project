@@ -1,6 +1,6 @@
 package exceptions;
 
-import mapHelpers.Position;
+import map.mapHelpers.Position;
 
 public class PositionOutOfBoundsException extends IllegalArgumentException {
 	public PositionOutOfBoundsException(String s, Position pos) {

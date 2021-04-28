@@ -1,4 +1,4 @@
-package mapHelpers;
+package map.mapHelpers;
 
 public class Position {
 	private int x;

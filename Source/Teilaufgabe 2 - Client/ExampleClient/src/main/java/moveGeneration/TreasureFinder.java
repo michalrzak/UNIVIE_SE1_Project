@@ -1,7 +1,7 @@
 package moveGeneration;
 
-import mapHelpers.EGameEntity;
-import mapHelpers.EMapHalf;
+import map.mapHelpers.EGameEntity;
+import map.mapHelpers.EMapHalf;
 
 public class TreasureFinder extends NodeFinder {
 

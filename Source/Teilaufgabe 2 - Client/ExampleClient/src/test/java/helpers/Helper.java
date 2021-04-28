@@ -2,8 +2,8 @@ package helpers;
 
 import java.util.HashMap;
 
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public class Helper {
 	public static HashMap<Position, ETerrain> arrayToMap(char[][] nodes) {

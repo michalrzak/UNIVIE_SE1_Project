@@ -1,4 +1,4 @@
-package fullMap;
+package map.fullMap;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -7,9 +7,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mapHelpers.EGameEntity;
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.mapHelpers.EGameEntity;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public class FullMapData {
 	private Map<Position, ETerrain> terrain;

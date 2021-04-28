@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fullMap.FullMapData;
-import mapHelpers.EGameEntity;
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.fullMap.FullMapData;
+import map.mapHelpers.EGameEntity;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public class CLI implements PropertyChangeListener {
 

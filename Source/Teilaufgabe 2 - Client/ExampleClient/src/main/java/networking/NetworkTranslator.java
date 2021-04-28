@@ -21,11 +21,11 @@ import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.EPlayerGameState;
 import MessagesGameState.GameState;
 import MessagesGameState.PlayerState;
-import fullMap.FullMapData;
-import halfMap.HalfMapData;
-import mapHelpers.EGameEntity;
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.fullMap.FullMapData;
+import map.halfMap.HalfMapData;
+import map.mapHelpers.EGameEntity;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 import moveHelpers.EMove;
 
 public class NetworkTranslator {

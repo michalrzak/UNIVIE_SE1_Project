@@ -3,8 +3,8 @@ package execution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fullMap.FullMapData;
-import halfMap.HalfMapGenerator;
+import map.fullMap.FullMapData;
+import map.halfMap.HalfMapGenerator;
 import moveGeneration.FullMapAccesser;
 import moveGeneration.MoveGenerator;
 import networking.NetworkTranslator;

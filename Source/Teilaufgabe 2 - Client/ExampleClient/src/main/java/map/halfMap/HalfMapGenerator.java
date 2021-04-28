@@ -1,4 +1,4 @@
-package halfMap;
+package map.halfMap;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,8 +9,9 @@ import java.util.Stack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import exceptions.InvalidHalfMapGeneratedException;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public class HalfMapGenerator {
 
@@ -68,17 +69,14 @@ public class HalfMapGenerator {
 	}
 
 	public static HalfMapData generateMap() {
-
-		// temporary Map creation
-		// TODO: make this a valid map creation
-
 		Map<Position, ETerrain> terrain = generateTerrain();
 		Position castle = placeCastle(terrain);
 
 		HalfMapData hmd;
 		try {
 			hmd = new HalfMapData(terrain, castle);
-		} catch (IllegalArgumentException e) {
+		} catch (InvalidHalfMapGeneratedException e) {
+			logger.warn("Received invalid map, re generating");
 			hmd = generateMap();
 		}
 		return hmd;

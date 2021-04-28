@@ -1,4 +1,4 @@
-package halfMap;
+package map.halfMap;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,8 +10,9 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import exceptions.InvalidHalfMapGeneratedException;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public class HalfMapData {
 	private Map<Position, ETerrain> terrain;
@@ -114,7 +115,8 @@ public class HalfMapData {
 				&& validateTerrainIslands(testing);
 	}
 
-	public HalfMapData(Map<Position, ETerrain> terrain, Position myCastlePosition) {
+	public HalfMapData(Map<Position, ETerrain> terrain, Position myCastlePosition)
+			throws InvalidHalfMapGeneratedException {
 		if (terrain == null || myCastlePosition == null) {
 			logger.error("HalfMapData constructor received a null parameter");
 			throw new IllegalArgumentException("Arguments cannot be null!");
@@ -129,12 +131,12 @@ public class HalfMapData {
 
 		if (!validateTerrain(terrain)) {
 			logger.error("HalfMapData constructor received an invalid Terrain map!");
-			throw new IllegalArgumentException("terrain is an invalid HalfMap");
+			throw new InvalidHalfMapGeneratedException();
 		}
 
 		if (terrain.get(myCastlePosition) != ETerrain.GRASS) {
 			logger.error("Castle is not placed on a grass field!");
-			throw new IllegalArgumentException("Castle is not placed on a grass field");
+			throw new RuntimeException("Castle is not placed on a grass field");
 		}
 
 		// maybe make this copy the object

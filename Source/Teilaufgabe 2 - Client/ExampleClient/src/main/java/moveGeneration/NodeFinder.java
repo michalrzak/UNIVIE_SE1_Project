@@ -8,10 +8,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mapHelpers.EGameEntity;
-import mapHelpers.EMapHalf;
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.mapHelpers.EGameEntity;
+import map.mapHelpers.EMapHalf;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public abstract class NodeFinder {
 	private FullMapAccesser fma;

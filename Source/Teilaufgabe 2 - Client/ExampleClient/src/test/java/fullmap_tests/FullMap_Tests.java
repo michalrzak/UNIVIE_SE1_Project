@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import fullMap.FullMapData;
 import helpers.Helper;
-import mapHelpers.EGameEntity;
-import mapHelpers.ETerrain;
-import mapHelpers.Position;
+import map.fullMap.FullMapData;
+import map.mapHelpers.EGameEntity;
+import map.mapHelpers.ETerrain;
+import map.mapHelpers.Position;
 
 public class FullMap_Tests {
 
