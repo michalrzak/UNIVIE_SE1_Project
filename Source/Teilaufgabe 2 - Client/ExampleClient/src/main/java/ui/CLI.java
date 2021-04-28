@@ -17,13 +17,14 @@ import mapHelpers.Position;
 
 public class CLI implements PropertyChangeListener {
 
-	// TODO: rethink how this class works!
+	// TODO: re think how this class works!
 
 	private static Logger logger = LoggerFactory.getLogger(CLI.class);
 
 	// Maybe just save a FullMap instance? Not sure what to do here.
-	Map<EGameEntity, Position> gameEntities;
-	List<List<Character>> terrain;
+	private Map<EGameEntity, Position> gameEntities;
+	private final List<List<Character>> terrain;
+	private boolean treasureCollected;
 
 	public CLI(FullMapData fm) {
 		fm.addListener(this);
@@ -31,6 +32,7 @@ public class CLI implements PropertyChangeListener {
 		// this may need to get changed I am not sure this method is the best idea
 		terrain = hashMapToListList(fm.getTerrain(), fm.getWidth(), fm.getHeight());
 		gameEntities = fm.getGameEntities();
+		treasureCollected = fm.getTreasureCollected();
 
 		// maybe remove this and only print after the first move?
 		printData();
@@ -98,6 +100,7 @@ public class CLI implements PropertyChangeListener {
 			}
 			System.out.print('\n');
 		}
+		System.out.println("Your trerasure state: " + (treasureCollected ? "collected" : "not collected"));
 		System.out.println('\n');
 
 	}
@@ -113,20 +116,33 @@ public class CLI implements PropertyChangeListener {
 		case "gameEntities":
 			if (!(received instanceof Map<?, ?>)) {
 				logger.error(
-						"The event with name 'gameEntities' was triggered but the received object was not of type HashMap<EGameEntity, Position>");
+						"The event with name 'gameEntities' was triggered but the received object was not of type Map<EGameEntity, Position>");
 				throw new RuntimeException(
-						"The event with name 'gameEntities' was triggered but the received object was not of type HashMap<EGameEntity, Position>");
+						"The event with name 'gameEntities' was triggered but the received object was not of type Map<EGameEntity, Position>");
 			}
 
 			gameEntities = (Map<EGameEntity, Position>) received;
+
+			// if new gameEntities are received (the player position among them, reprint the
+			// map
+			printData();
+			break;
+
+		case "treasureCollected":
+			if (!(received instanceof Boolean)) {
+				logger.error(
+						"The event with name 'treasureCollected' was triggered but the received object was not of type Boolean");
+				throw new RuntimeException(
+						"The event with name 'treasureCollected' was triggered but the received object was not of type Boolean");
+			}
+
+			treasureCollected = (Boolean) received;
 			break;
 
 		default:
 			logger.error("An unrecognised propertyChange occured. Name: " + event.getPropertyName());
 			throw new RuntimeException("Unrecogniszed property change! Change was: " + event.getPropertyName());
 		}
-
-		printData();
 	}
 
 }

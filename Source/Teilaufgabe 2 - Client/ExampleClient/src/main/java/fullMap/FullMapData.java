@@ -88,12 +88,15 @@ public class FullMapData {
 	}
 
 	public void collectTreasure() {
-		if (treasureCollected) {
+		if (treasureCollected)
 			logger.warn("Treassure was already collected yet calling collectTreasure again!");
-		}
+
+		Boolean treasureOld = treasureCollected;
 
 		logger.debug("Treasure collected!");
 		treasureCollected = true;
+
+		changes.firePropertyChange("treasureCollected", treasureOld, (Boolean) treasureCollected);
 	}
 
 	// this is dangerous as the returned terrain can be modified which modifies the
