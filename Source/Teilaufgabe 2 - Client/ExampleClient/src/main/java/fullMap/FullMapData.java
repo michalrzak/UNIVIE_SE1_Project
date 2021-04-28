@@ -18,6 +18,8 @@ public class FullMapData {
 	private int height;
 	private boolean treasureCollected = false;
 
+	private int counter = 0;
+
 	private static Logger logger = LoggerFactory.getLogger(FullMapData.class);
 
 	private final PropertyChangeSupport changes = new PropertyChangeSupport(this);

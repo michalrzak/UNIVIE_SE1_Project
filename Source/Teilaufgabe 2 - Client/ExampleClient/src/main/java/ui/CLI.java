@@ -26,6 +26,8 @@ public class CLI implements PropertyChangeListener {
 	private final List<List<Character>> terrain;
 	private boolean treasureCollected;
 
+	private int roundCounter = 0;
+
 	public CLI(FullMapData fm) {
 		fm.addListener(this);
 
@@ -100,6 +102,7 @@ public class CLI implements PropertyChangeListener {
 			System.out.print('\n');
 		}
 		System.out.println("Your trerasure state: " + (treasureCollected ? "collected" : "not collected"));
+		System.out.println("Round number: " + roundCounter);
 		System.out.println('\n');
 
 	}
@@ -124,6 +127,7 @@ public class CLI implements PropertyChangeListener {
 
 			// if new gameEntities are received (the player position among them, reprint the
 			// map
+			++roundCounter;
 			printData();
 			break;
 
