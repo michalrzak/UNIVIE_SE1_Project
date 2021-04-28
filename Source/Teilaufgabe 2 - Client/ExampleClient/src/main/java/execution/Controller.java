@@ -83,7 +83,7 @@ public class Controller {
 		MoveGenerator mg = new MoveGenerator(new FullMapAccesser(map));
 
 		int count = 0;
-		while (true) { // TODO: change this true to something meaningfull
+		while (true) { // TODO: change this true to something meaningful
 			while (!net.myTurn())
 				Thread.sleep(400);
 
