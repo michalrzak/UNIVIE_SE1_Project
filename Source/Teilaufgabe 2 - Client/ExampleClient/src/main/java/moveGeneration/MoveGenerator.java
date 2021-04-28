@@ -6,6 +6,7 @@ import java.util.Queue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import exceptions.PositionOutOfBoundsException;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.Position;
 import moveHelpers.EMove;
@@ -35,12 +36,12 @@ public class MoveGenerator {
 
 		if (from.getx() >= fma.getWidth() || from.gety() >= fma.getHeight()) {
 			logger.error("Position from out of bounds!");
-			throw new IllegalArgumentException("Position from out of bounds");
+			throw new PositionOutOfBoundsException("Position from out of bounds", from);
 		}
 
 		if (to.getx() >= fma.getWidth() || to.gety() >= fma.getHeight()) {
 			logger.error("Position to out of bounds!");
-			throw new IllegalArgumentException("Position to out of bounds");
+			throw new PositionOutOfBoundsException("Position to out of bounds", to);
 		}
 
 		// ofload to another method?
