@@ -1,8 +1,7 @@
-package moveGenerationNew;
+package moveGeneration;
 
 import mapHelpers.EGameEntity;
 import mapHelpers.EMapHalf;
-import moveGeneration.FullMapAccesser;
 
 public class CastleFinder extends NodeFinder {
 

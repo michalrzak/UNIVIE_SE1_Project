@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import fullMap.FullMapData;
 import halfMap.HalfMapGenerator;
 import moveGeneration.FullMapAccesser;
-import moveGenerationNew.MoveGenerator;
+import moveGeneration.MoveGenerator;
 import networking.NetworkTranslator;
 import ui.CLI;
 
