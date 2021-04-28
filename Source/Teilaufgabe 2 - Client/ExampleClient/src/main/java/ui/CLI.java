@@ -40,7 +40,6 @@ public class CLI implements PropertyChangeListener {
 
 	private static List<List<Character>> hashMapToListList(Map<Position, ETerrain> map, int width, int height) {
 		List<List<Character>> ret = new ArrayList<>();
-		System.out.println("height: " + height);
 
 		for (int y = 0; y < height; ++y) {
 			ret.add(new ArrayList<>());
