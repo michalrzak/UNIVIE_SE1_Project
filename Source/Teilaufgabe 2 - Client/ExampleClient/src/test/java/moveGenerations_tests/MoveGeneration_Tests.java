@@ -31,6 +31,7 @@ public class MoveGeneration_Tests {
 		validMap = new FullMapData(testMap, entities);
 	}
 
+	// @Test
 	public void MoveGeneration_From_OutOfBoundsOfMap() {
 		// TODO: Finnish this!!
 		MoveGenerator mg = new MoveGenerator(new FullMapAccesser(validMap));
