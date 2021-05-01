@@ -98,8 +98,10 @@ public class NetworkTranslator {
 				|| node.getPlayerPositionState() == MessagesGameState.EPlayerPositionState.BothPlayerPosition)
 			ret.add(EGameEntity.ENEMYPLAYER);
 
-		if (node.getTreasureState() == MessagesGameState.ETreasureState.MyTreasureIsPresent)
+		if (node.getTreasureState() == MessagesGameState.ETreasureState.MyTreasureIsPresent) {
 			ret.add(EGameEntity.MYTREASURE);
+			logger.debug("I see my treasure!!!");
+		}
 
 		return ret;
 	}
@@ -152,7 +154,7 @@ public class NetworkTranslator {
 	}
 
 	public boolean myTurn() {
-		GameState gs = ne.getGameState(playerID);
+		GameState gs = ne.getGameState(playerID, true);
 
 		Set<PlayerState> players = gs.getPlayers();
 
@@ -169,7 +171,7 @@ public class NetworkTranslator {
 		MessagesGameState.FullMap fm;
 		try {
 			// this can fail and throw a NoSuchElementException
-			fm = ne.getGameState(playerID).getMap().get();
+			fm = ne.getGameState(playerID, true).getMap().get();
 		} catch (NoSuchElementException e) {
 			logger.error("The returned gamestate did not contain any fullmap");
 			throw e; // TODO: This really needs to be a new type
@@ -193,7 +195,7 @@ public class NetworkTranslator {
 		MessagesGameState.FullMap fm;
 		try {
 			// this can fail and throw a NoSuchElementException
-			fm = ne.getGameState(playerID).getMap().get();
+			fm = ne.getGameState(playerID, false).getMap().get();
 		} catch (NoSuchElementException e) {
 			logger.error("The returned gamestate did not contain any fullmap");
 			throw e; // TODO: This really needs to be a new type
@@ -209,5 +211,13 @@ public class NetworkTranslator {
 		return ret;
 
 		// return networkMapToInternalMap(fm.getMapNodes());
+	}
+
+	public boolean collectedTreasure() {
+		// find my player state
+		MessagesGameState.PlayerState ps = ne.getGameState(playerID, false).getPlayers().stream()
+				.filter(ele -> ele.equals(playerID)).findFirst().get();
+
+		return ps.hasCollectedTreasure();
 	}
 }

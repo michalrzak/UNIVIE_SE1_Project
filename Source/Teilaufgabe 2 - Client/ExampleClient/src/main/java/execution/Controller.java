@@ -60,7 +60,7 @@ public class Controller {
 		// wait for other client to register
 		// if a client fails to register this will result in an infinite loop!!!
 		while (!net.myTurn())
-			Thread.sleep(400);
+			/* do nothing */;
 
 		logger.debug("Both players registered, starting to generate HalfMap");
 
@@ -71,7 +71,7 @@ public class Controller {
 		// Wait for other client to send HalfMap as well
 		// if a client fails to register this will result in an infinite loop!!!
 		while (!net.myTurn())
-			Thread.sleep(400);
+			/* do nothing */;
 
 		logger.debug("Both players sent HalfMaps, retrieving FullMap from server");
 
@@ -85,12 +85,13 @@ public class Controller {
 		int count = 0;
 		while (true) { // TODO: change this true to something meaningful
 			while (!net.myTurn())
-				Thread.sleep(400);
+				/* do nothing */;
 
 			net.sendMove(mg.getNextMove());
-			Thread.sleep(400);
 			map.updateEntities(net.getEntities());
-			Thread.sleep(400);
+			if (net.collectedTreasure())
+				map.collectTreasure();
+
 			++count;
 			logger.debug("Round number: " + count);
 		}

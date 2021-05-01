@@ -34,6 +34,9 @@ public abstract class NodeFinder {
 
 		if (visitOrder.stream().distinct().count() != visitOrder.size())
 			logger.warn("The algorithm wants to visit a node more then once!");
+
+		logger.debug("Printing nodes to visit:");
+		visitOrder.stream().forEach(ele -> logger.debug("Going to: " + ele.toString()));
 	}
 
 	// used to help the constructor find nodes to visit
@@ -66,7 +69,8 @@ public abstract class NodeFinder {
 								continue;
 							if (x + xDiff >= 0 && x + xDiff < fma.getWidth() && y + yDiff >= 0
 									&& y + yDiff < fma.getHeight()
-									&& fma.getTerrainAt(new Position(x + xDiff, y + yDiff)) == ETerrain.GRASS)
+									&& fma.getTerrainAt(new Position(x + xDiff, y + yDiff)) == ETerrain.GRASS
+									&& ret.contains(new Position(x + xDiff, y + yDiff)))
 								surroundingGrass.add(new Position(x + xDiff, y + yDiff));
 						}
 					}
