@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gameData.GameData;
+import gameData.helpers.EGameState;
 import map.fullMap.FullMapData;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.ETerrain;
@@ -26,10 +28,13 @@ public class CLI implements PropertyChangeListener {
 	private final List<List<Character>> terrain;
 	private boolean treasureCollected;
 
-	private int roundCounter = 0;
+	private int turnCounter = 0;
+	private boolean myTurn = true;
+	private EGameState gameState = EGameState.UNDETERMINED;
 
-	public CLI(FullMapData fm) {
+	public CLI(FullMapData fm, GameData gd) {
 		fm.addListener(this);
+		gd.addListener(this);
 
 		// this may need to get changed I am not sure this method is the best idea
 		terrain = hashMapToListList(fm.getTerrain(), fm.getWidth(), fm.getHeight());
@@ -91,7 +96,7 @@ public class CLI implements PropertyChangeListener {
 		return ret;
 	}
 
-	public void printData() {
+	private void printData() {
 
 		List<List<Character>> printing = assignedGameEntities();
 
@@ -102,9 +107,16 @@ public class CLI implements PropertyChangeListener {
 			System.out.print('\n');
 		}
 		System.out.println("Your trerasure state: " + (treasureCollected ? "collected" : "not collected"));
-		System.out.println("Round number: " + roundCounter);
+		System.out.println("Round number: " + turnCounter);
 		System.out.println('\n');
 
+		if (gameState != EGameState.UNDETERMINED)
+			printGameOver();
+	}
+
+	private void printGameOver() {
+		System.out.println("\n\nGAME OVER");
+		System.out.println("You: " + gameState + "\n");
 	}
 
 	@Override
@@ -127,8 +139,6 @@ public class CLI implements PropertyChangeListener {
 
 			// if new gameEntities are received (the player position among them, reprint the
 			// map
-			++roundCounter;
-			printData();
 			break;
 
 		case "treasureCollected":
@@ -140,6 +150,43 @@ public class CLI implements PropertyChangeListener {
 			}
 
 			treasureCollected = (Boolean) received;
+			break;
+
+		case "gameState":
+			if (!(received instanceof EGameState)) {
+				logger.error(
+						"The event with name 'gameState' was triggered but the received object was not of type EGameState");
+				throw new RuntimeException(
+						"The event with name 'gameState' was triggered but the received object was not of type EGameState");
+			}
+
+			gameState = (EGameState) received;
+
+			printData();
+			break;
+
+		case "myTurn":
+			if (!(received instanceof Boolean)) {
+				logger.error(
+						"The event with name 'myTurn' was triggered but the received object was not of type Boolean");
+				throw new RuntimeException(
+						"The event with name 'myTurn' was triggered but the received object was not of type Boolean");
+			}
+
+			myTurn = (Boolean) received;
+			break;
+
+		case "turnCount":
+			if (!(received instanceof Integer)) {
+				logger.error(
+						"The event with name 'turnCount' was triggered but the received object was not of type Integer");
+				throw new RuntimeException(
+						"The event with name 'turnCount' was triggered but the received object was not of type Integer");
+			}
+
+			turnCounter = (Integer) received;
+
+			printData();
 			break;
 
 		default:

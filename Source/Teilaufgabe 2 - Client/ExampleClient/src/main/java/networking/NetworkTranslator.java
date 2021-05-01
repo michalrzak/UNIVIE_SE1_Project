@@ -21,6 +21,7 @@ import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.EPlayerGameState;
 import MessagesGameState.GameState;
 import MessagesGameState.PlayerState;
+import gameData.helpers.EGameState;
 import map.fullMap.FullMapData;
 import map.halfMap.HalfMapData;
 import map.mapHelpers.EGameEntity;
@@ -143,6 +144,17 @@ public class NetworkTranslator {
 		}
 	}
 
+	private EGameState networkStateToInternal(MessagesGameState.EPlayerGameState state) {
+		switch (state) {
+		case Lost:
+			return EGameState.LOST;
+		case Won:
+			return EGameState.WON;
+		default:
+			return EGameState.UNDETERMINED;
+		}
+	}
+
 	// PUBLIC METHODS
 	public void registerPlayer(String firstName, String lastName, String id) {
 		playerID = ne.registerPlayer(new PlayerRegistration(firstName, lastName, id));
@@ -219,5 +231,13 @@ public class NetworkTranslator {
 				.filter(ele -> ele.equals(playerID)).findFirst().get();
 
 		return ps.hasCollectedTreasure();
+	}
+
+	public EGameState getGameState() {
+		// find my player state
+		MessagesGameState.PlayerState ps = ne.getGameState(playerID, false).getPlayers().stream()
+				.filter(ele -> ele.equals(playerID)).findFirst().get();
+
+		return networkStateToInternal(ps.getState());
 	}
 }

@@ -3,6 +3,8 @@ package execution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import gameData.GameData;
+import gameData.helpers.EGameState;
 import map.fullMap.FullMapData;
 import map.halfMap.HalfMapGenerator;
 import moveGeneration.FullMapAccesser;
@@ -18,33 +20,6 @@ public class Controller {
 	// this won't ever be an issue. Theoreticaly there is imporovement potential
 	// though
 	public static void main(String[] args) throws InterruptedException {
-
-		/*
-		 * IMPORTANT: Parsing/Handling of starting parameters. args[0] = Game Mode, you
-		 * can use this to know that you code is running on the evaluation server (if
-		 * this is the case args[0] = TR). If this is the case only a command line
-		 * interface must be displayed. Also, no JavaFX and Swing UI component and
-		 * classes must be used/executed by your Client in any way IF args[0]=TR.
-		 * args[1] = Server url, will hold the server url which your client should use.
-		 * Note, only use the server url supplied here as the url used by you during the
-		 * development and by the evaluation server (for grading) is NOT the same!
-		 * args[1] enables your client to always get the correct one. args[2] = Holds
-		 * the game ID which your client should use. For testing purposes you can create
-		 * a new one by accessing http://swe.wst.univie.ac.at:18235/games with your web
-		 * browser. IMPORANT: If there is a value stored in args[2] you MUST use it! DO
-		 * NOT create new games in your code in such a case!
-		 * 
-		 * DON'T FORGET TO EVALUATE YOUR FINAL IMPLEMENTATION WITH OUR TEST SERVER. THIS
-		 * IS ALSO THE BASE FOR GRADING. THE TEST SERVER CAN BE FOUND AT:
-		 * http://swe.wst.univie.ac.at/
-		 * 
-		 * HINT: The assignment section in Moodle also explains all the important
-		 * aspects about the start parameters/arguments. Use the Run Configurations (as
-		 * shown during the first lecture) in Eclipse to simulate the starting of an
-		 * application with start parameters or implement your own argument parsing code
-		 * to become more flexible (e.g., to mix hard coded and supplied parameters
-		 * whenever the one or the other is available).
-		 */
 
 		// parse the parameters, otherwise the automatic evaluation will not work on
 		// http://swe.wst.univie.ac.at
@@ -77,23 +52,28 @@ public class Controller {
 
 		// retrieve FullMap
 		FullMapData map = net.getFullMap();
+		GameData gameData = new GameData(true);
 
-		CLI ui = new CLI(map);
+		CLI ui = new CLI(map, gameData);
 
 		MoveGenerator mg = new MoveGenerator(new FullMapAccesser(map));
 
-		int count = 0;
-		while (true) { // TODO: change this true to something meaningful
-			while (!net.myTurn())
+		while (gameData.getGameState() == EGameState.UNDETERMINED) {
+			while (!net.myTurn() && net.getGameState() == EGameState.UNDETERMINED)
 				/* do nothing */;
+
+			gameData.updateGameState(net.getGameState());
+
+			if (gameData.getGameState() != EGameState.UNDETERMINED)
+				break;
 
 			net.sendMove(mg.getNextMove());
 			map.updateEntities(net.getEntities());
 			if (net.collectedTreasure())
 				map.collectTreasure();
 
-			++count;
-			logger.debug("Round number: " + count);
+			gameData.nextTurn();
+
 		}
 
 		/*
