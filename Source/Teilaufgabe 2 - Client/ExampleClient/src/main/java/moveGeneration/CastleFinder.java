@@ -3,7 +3,7 @@ package moveGeneration;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
 
-public class CastleFinder extends NodeFinder {
+public class CastleFinder extends ANodeFinder {
 
 	public CastleFinder(FullMapAccesser fma) {
 		super(fma, getMapHalf(fma), EGameEntity.ENEMYCASTLE);

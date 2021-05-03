@@ -3,7 +3,7 @@ package moveGeneration;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
 
-public class TreasureFinder extends NodeFinder {
+public class TreasureFinder extends ANodeFinder {
 
 	public TreasureFinder(FullMapAccesser fma) {
 		super(fma, getMapHalf(fma), EGameEntity.MYTREASURE);

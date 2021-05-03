@@ -14,7 +14,7 @@ import moveHelpers.EMove;
 public class MoveGenerator {
 
 	private FullMapAccesser fma;
-	private NodeFinder nodeFinder;
+	private ANodeFinder nodeFinder;
 
 	// group together into one class?
 	private Queue<EMove> toMove;
