@@ -7,18 +7,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 
 import helpers.Helper;
 import map.fullMap.FullMapAccesser;
 import map.mapHelpers.EGameEntity;
+import map.mapHelpers.EMapHalf;
 import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
+import moveGeneration.NodeFinder;
 
-public class CastleFinder_Tests {
+public class NodeFinder_Tests {
 	private Map<Position, ETerrain> testMap;
 
-	public CastleFinder_Tests() {
+	public NodeFinder_Tests() {
 		char[][] nodes = { { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' },
 				{ 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'w', 'g' },
 				{ 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' },
@@ -36,7 +39,7 @@ public class CastleFinder_Tests {
 	}
 
 	@Test
-	public void CastleFinder_CastleNextToMe_shouldGoThere() {
+	public void NodeFinder_CastleNextToMe_shouldGoThere() {
 		FullMapAccesser mocked = Mockito.mock(FullMapAccesser.class);
 
 		Mockito.when(mocked.getHeight()).thenReturn(4);
@@ -45,9 +48,9 @@ public class CastleFinder_Tests {
 		Mockito.when(mocked.getEntityPosition(EGameEntity.MYPLAYER)).thenReturn(new Position(0, 0));
 		Mockito.when(mocked.getTerrainAt(any())).thenReturn(ETerrain.GRASS);
 
-		// CastleFinder cf = new CastleFinder(mocked);
+		NodeFinder cf = new NodeFinder(mocked, EMapHalf.LONGMAPOPPOSITE, EGameEntity.ENEMYCASTLE);
 
-		// Assertions.assertEquals(cf.getNextPosition(), new Position(0, 1));
+		Assertions.assertEquals(cf.getNextPosition(), new Position(0, 1));
 	}
 
 }
