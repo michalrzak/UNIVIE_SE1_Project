@@ -1,10 +1,9 @@
-package moveGeneration;
+package map.fullMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.PositionOutOfBoundsException;
-import map.fullMap.FullMapData;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
@@ -38,7 +37,7 @@ public class FullMapAccesser {
 			throw new PositionOutOfBoundsException("Received position out of bounds of map.", pos);
 		}
 
-		return fmd.getTerrain().get(pos);
+		return fmd.getTerrainCopy().get(pos);
 	}
 
 	public Position getEntityPosition(EGameEntity entityType) {
@@ -47,7 +46,7 @@ public class FullMapAccesser {
 			throw new IllegalArgumentException("entityType was null");
 		}
 
-		return fmd.getGameEntities().get(entityType);
+		return fmd.getGameEntitiesCopy().get(entityType);
 	}
 
 	public int getWidth() {

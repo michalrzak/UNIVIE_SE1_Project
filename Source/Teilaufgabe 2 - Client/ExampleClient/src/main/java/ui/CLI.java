@@ -19,8 +19,6 @@ import map.mapHelpers.Position;
 
 public class CLI implements PropertyChangeListener {
 
-	// TODO: re think how this class works!
-
 	private static Logger logger = LoggerFactory.getLogger(CLI.class);
 
 	// Maybe just save a FullMap instance? Not sure what to do here.
@@ -37,8 +35,8 @@ public class CLI implements PropertyChangeListener {
 		gd.addListener(this);
 
 		// this may need to get changed I am not sure this method is the best idea
-		terrain = hashMapToListList(fm.getTerrain(), fm.getWidth(), fm.getHeight());
-		gameEntities = fm.getGameEntities();
+		terrain = hashMapToListList(fm.getTerrainCopy(), fm.getWidth(), fm.getHeight());
+		gameEntities = fm.getGameEntitiesCopy();
 		treasureCollected = fm.getTreasureCollected();
 
 		// maybe remove this and only print after the first move?

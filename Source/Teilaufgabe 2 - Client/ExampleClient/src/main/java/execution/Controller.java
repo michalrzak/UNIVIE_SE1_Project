@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import gameData.GameData;
 import gameData.helpers.EGameState;
+import map.fullMap.FullMapAccesser;
 import map.fullMap.FullMapData;
 import map.halfMap.HalfMapGenerator;
-import moveGeneration.FullMapAccesser;
 import moveGeneration.MoveGenerator;
 import networking.NetworkTranslator;
 import ui.CLI;

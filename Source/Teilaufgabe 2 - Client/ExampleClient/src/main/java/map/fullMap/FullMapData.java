@@ -2,6 +2,7 @@ package map.fullMap;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -31,7 +32,6 @@ public class FullMapData {
 			throw new IllegalArgumentException("Parameters cannot be null!");
 		}
 
-		// maybe clone all attributes?
 		this.terrain = terrain;
 		this.gameEntityPosition = gameEntityPosition;
 
@@ -106,12 +106,12 @@ public class FullMapData {
 
 	// this is dangerous as the returned terrain can be modified which modifies the
 	// saved MapData as well
-	public Map<Position, ETerrain> getTerrain() {
+	public Map<Position, ETerrain> getTerrainCopy() {
 		// maybe return a copy? or just a stream?
-		return terrain;
+		return new HashMap<>(terrain);
 	}
 
-	public Map<EGameEntity, Position> getGameEntities() {
+	public Map<EGameEntity, Position> getGameEntitiesCopy() {
 		return gameEntityPosition;
 	}
 

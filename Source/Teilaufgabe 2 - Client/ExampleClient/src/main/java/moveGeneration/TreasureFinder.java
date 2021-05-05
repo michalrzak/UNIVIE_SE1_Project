@@ -1,5 +1,6 @@
 package moveGeneration;
 
+import map.fullMap.FullMapAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
 

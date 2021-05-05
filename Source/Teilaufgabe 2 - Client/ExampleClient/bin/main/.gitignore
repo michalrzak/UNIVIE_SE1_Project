@@ -1,9 +1,4 @@
-/ui/
-/fullMap/
-/exceptions/
-/halfMap/
 /map/
 /execution/
-/networking/
 /moveGeneration/
-/gameData/
+/ui/

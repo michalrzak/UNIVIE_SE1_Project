@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.PositionOutOfBoundsException;
+import map.fullMap.FullMapAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.Position;
 import moveHelpers.EMove;

@@ -8,10 +8,10 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
 import helpers.Helper;
+import map.fullMap.FullMapAccesser;
 import map.fullMap.FullMapData;
 import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
-import moveGeneration.FullMapAccesser;
 import moveGeneration.PathFinder;
 
 public class PathFinding_Tests {

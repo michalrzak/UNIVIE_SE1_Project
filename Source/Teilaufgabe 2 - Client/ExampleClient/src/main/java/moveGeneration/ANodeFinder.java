@@ -6,6 +6,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import map.fullMap.FullMapAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
 import map.mapHelpers.Position;

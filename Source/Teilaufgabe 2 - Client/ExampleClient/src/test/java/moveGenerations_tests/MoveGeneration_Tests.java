@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import helpers.Helper;
+import map.fullMap.FullMapAccesser;
 import map.fullMap.FullMapData;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
-import moveGeneration.FullMapAccesser;
 import moveGeneration.MoveGenerator;
 
 public class MoveGeneration_Tests {

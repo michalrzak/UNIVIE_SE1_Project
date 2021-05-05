@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 
 import helpers.Helper;
+import map.fullMap.FullMapAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
 import moveGeneration.CastleFinder;
-import moveGeneration.FullMapAccesser;
 
 public class CastleFinder_Tests {
 	private Map<Position, ETerrain> testMap;
