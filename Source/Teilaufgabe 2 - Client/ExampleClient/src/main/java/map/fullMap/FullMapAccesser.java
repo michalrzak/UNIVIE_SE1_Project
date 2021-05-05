@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.PositionOutOfBoundsException;
 import map.mapHelpers.EGameEntity;
+import map.mapHelpers.EMapHalf;
 import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
 
@@ -60,4 +61,25 @@ public class FullMapAccesser {
 	public boolean treasureCollected() {
 		return fmd.getTreasureCollected();
 	}
+
+	public EMapHalf getMyMapHalf() {
+		EMapHalf ret;
+		if (getHeight() == 4) {
+			int xsep = getWidth() / 2;
+
+			if (getEntityPosition(EGameEntity.MYCASTLE).getx() < xsep)
+				ret = EMapHalf.LONGMAPORIGIN;
+			else
+				ret = EMapHalf.LONGMAPOPPOSITE;
+		} else {
+			int ysep = getHeight() / 2;
+
+			if (getEntityPosition(EGameEntity.MYCASTLE).gety() < ysep)
+				ret = EMapHalf.SQUAREMAPORIGIN;
+			else
+				ret = EMapHalf.SQUAREMAPOPPOSITE;
+		}
+		return ret;
+	}
+
 }

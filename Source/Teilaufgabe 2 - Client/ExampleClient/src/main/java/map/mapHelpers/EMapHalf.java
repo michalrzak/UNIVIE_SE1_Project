@@ -31,4 +31,18 @@ public enum EMapHalf {
 	public int getyUpperBound() {
 		return yupper;
 	}
+
+	public EMapHalf getOppositeHalf() {
+		switch (this) {
+		case LONGMAPORIGIN:
+			return LONGMAPOPPOSITE;
+		case LONGMAPOPPOSITE:
+			return LONGMAPORIGIN;
+		case SQUAREMAPORIGIN:
+			return SQUAREMAPOPPOSITE;
+		case SQUAREMAPOPPOSITE:
+			return SQUAREMAPORIGIN;
+		}
+		throw new RuntimeException("The ENUM value was not defined!");
+	}
 }

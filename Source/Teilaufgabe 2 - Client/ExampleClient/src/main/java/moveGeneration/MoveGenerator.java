@@ -14,16 +14,20 @@ import moveHelpers.EMove;
 
 public class MoveGenerator {
 
-	private FullMapAccesser fma;
-	private ANodeFinder nodeFinder;
+	private final FullMapAccesser fma;
+	private NodeFinder nodeFinder;
 
-	// group together into one class?
+	// Moves to return to get to the next destination
 	private Queue<EMove> toMove;
+
+	private boolean changedToCastleFinding = false;
 
 	private static Logger logger = LoggerFactory.getLogger(MoveGenerator.class);
 
 	public MoveGenerator(FullMapAccesser fma) {
-		nodeFinder = new TreasureFinder(fma);
+		nodeFinder = new NodeFinder(fma, fma.getMyMapHalf(), EGameEntity.MYTREASURE);
+		logger.debug("initializing node finder with map half = " + fma.getMyMapHalf() + " and seraching for = "
+				+ EGameEntity.MYTREASURE);
 		this.fma = fma;
 	}
 
@@ -73,9 +77,12 @@ public class MoveGenerator {
 
 	public EMove getNextMove() {
 		if (toMove == null || toMove.size() == 0) {
-			// maybe change the instance of to a boolean variable?
-			if (fma.treasureCollected() && nodeFinder instanceof TreasureFinder)
-				nodeFinder = new CastleFinder(fma);
+			if (fma.treasureCollected() && !changedToCastleFinding) {
+				changedToCastleFinding = true;
+				nodeFinder = new NodeFinder(fma, fma.getMyMapHalf().getOppositeHalf(), EGameEntity.ENEMYCASTLE);
+				logger.debug("changed to castle finding");
+			}
+
 			toMove = movesToAdjascentNode(nodeFinder.getNextPosition(), fma);
 		}
 

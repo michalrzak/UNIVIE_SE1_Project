@@ -11,7 +11,7 @@ import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
 import map.mapHelpers.Position;
 
-public abstract class ANodeFinder {
+public class NodeFinder {
 	private final FullMapAccesser fma;
 	private final Queue<Position> visitOrder;
 	private final EGameEntity lookingFor;
@@ -19,11 +19,11 @@ public abstract class ANodeFinder {
 	private Queue<Position> pathToNextNode = null;
 	private boolean goingToTreasure = false;
 
-	private static Logger logger = LoggerFactory.getLogger(TreasureFinder.class);
+	private static Logger logger = LoggerFactory.getLogger(NodeFinder.class);
 
-	public ANodeFinder(FullMapAccesser fma, EMapHalf myHalf, EGameEntity lookingFor) {
+	public NodeFinder(FullMapAccesser fma, EMapHalf searchingOnHalf, EGameEntity lookingFor) {
 
-		if (fma == null || myHalf == null || lookingFor == null) {
+		if (fma == null || searchingOnHalf == null || lookingFor == null) {
 			logger.error("Arguments passed is null!");
 			throw new IllegalArgumentException("one of the passed arguments is null");
 		}
@@ -31,7 +31,7 @@ public abstract class ANodeFinder {
 		this.fma = fma;
 		this.lookingFor = lookingFor;
 
-		ImportantNodesExtractor ine = new ImportantNodesExtractor(fma, myHalf);
+		ImportantNodesExtractor ine = new ImportantNodesExtractor(fma, searchingOnHalf);
 		Set<Position> toVisit = ine.getInterestingNodes();
 
 		ShortestPathExtractor spe = new ShortestPathExtractor();
