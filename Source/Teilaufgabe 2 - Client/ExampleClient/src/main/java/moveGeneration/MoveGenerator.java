@@ -31,17 +31,26 @@ public class MoveGenerator {
 		this.fma = fma;
 	}
 
+	private static EMove directionToAdjascentNode(Position from, Position to) {
+		if (to.getx() - from.getx() == 1)
+			return EMove.RIGHT;
+		else if (to.getx() - from.getx() == -1)
+			return EMove.LEFT;
+		else if (to.gety() - from.gety() == 1)
+			return EMove.DOWN;
+		else if (to.gety() - from.gety() == -1)
+			return EMove.UP;
+		else {
+			logger.error("Tried to get moves to a non adjascent node! Position from: " + from.toString()
+					+ ", Position to: " + to.toString());
+			throw new IllegalArgumentException("Positions must be adjascent!");
+		}
+	}
+
 	private static Queue<EMove> movesToAdjascentNode(Position to, FullMapAccesser fma) {
 		if (fma == null) {
 			logger.error("Map accesser was passed as null!");
 			throw new IllegalArgumentException("Map Accesser cannot be null!");
-		}
-
-		Position from = fma.getEntityPosition(EGameEntity.MYPLAYER);
-
-		if (from.getx() >= fma.getWidth() || from.gety() >= fma.getHeight()) {
-			logger.error("Position from out of bounds!");
-			throw new PositionOutOfBoundsException("Position from out of bounds", from);
 		}
 
 		if (to.getx() >= fma.getWidth() || to.gety() >= fma.getHeight()) {
@@ -49,21 +58,9 @@ public class MoveGenerator {
 			throw new PositionOutOfBoundsException("Position to out of bounds", to);
 		}
 
-		// ofload to another method?
-		EMove dir;
-		if (to.getx() - from.getx() == 1)
-			dir = EMove.RIGHT;
-		else if (to.getx() - from.getx() == -1)
-			dir = EMove.LEFT;
-		else if (to.gety() - from.gety() == 1)
-			dir = EMove.DOWN;
-		else if (to.gety() - from.gety() == -1)
-			dir = EMove.UP;
-		else {
-			logger.error("Tried to get moves to a non adjascent node! Position from: " + from.toString()
-					+ ", Position to: " + to.toString());
-			throw new IllegalArgumentException("Positions must be adjascent!");
-		}
+		Position from = fma.getEntityPosition(EGameEntity.MYPLAYER);
+
+		EMove dir = directionToAdjascentNode(from, to);
 
 		int repeat = fma.getTerrainAt(from).cost() + fma.getTerrainAt(to).cost();
 		Queue<EMove> ret = new LinkedList<>();
