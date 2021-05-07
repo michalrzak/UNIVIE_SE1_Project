@@ -6,13 +6,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import map.fullMap.FullMapAccesser;
+import map.fullMap.IFullMapAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
 import map.mapHelpers.Position;
 
 public class NodeFinder {
-	private final FullMapAccesser fma;
+	private final IFullMapAccesser fma;
 	private final Queue<Position> visitOrder;
 	private final EGameEntity lookingFor;
 
@@ -21,7 +21,7 @@ public class NodeFinder {
 
 	private static Logger logger = LoggerFactory.getLogger(NodeFinder.class);
 
-	public NodeFinder(FullMapAccesser fma, EMapHalf searchingOnHalf, EGameEntity lookingFor) {
+	public NodeFinder(IFullMapAccesser fma, EMapHalf searchingOnHalf, EGameEntity lookingFor) {
 
 		if (fma == null || searchingOnHalf == null || lookingFor == null) {
 			logger.error("Arguments passed is null!");

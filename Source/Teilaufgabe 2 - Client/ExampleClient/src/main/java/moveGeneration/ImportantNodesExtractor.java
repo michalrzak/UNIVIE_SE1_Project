@@ -6,7 +6,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import map.fullMap.FullMapAccesser;
+import map.fullMap.ITerrainAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
 import map.mapHelpers.ETerrain;
@@ -14,12 +14,12 @@ import map.mapHelpers.Position;
 
 public class ImportantNodesExtractor {
 
-	private final FullMapAccesser fma;
+	private final ITerrainAccesser fma;
 	private final EMapHalf myHalf;
 
 	private static Logger logger = LoggerFactory.getLogger(ImportantNodesExtractor.class);
 
-	public ImportantNodesExtractor(FullMapAccesser fma, EMapHalf myHalf) {
+	public ImportantNodesExtractor(ITerrainAccesser fma, EMapHalf myHalf) {
 		if (fma == null || myHalf == null) {
 			logger.error("One of the passed arguments was null!");
 			throw new IllegalArgumentException("arguments cannot be null!");

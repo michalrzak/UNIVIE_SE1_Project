@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.PositionOutOfBoundsException;
 import map.fullMap.FullMapAccesser;
+import map.fullMap.IFullMapAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.Position;
 import moveHelpers.EMove;
@@ -22,7 +23,7 @@ public class MoveGenerator {
 
 	private static Logger logger = LoggerFactory.getLogger(MoveGenerator.class);
 
-	public MoveGenerator(FullMapAccesser fma) {
+	public MoveGenerator(IFullMapAccesser fma) {
 		nodeFinder = new NodeFinder(fma, fma.getMyMapHalf(), EGameEntity.MYTREASURE);
 		logger.debug("initializing node finder with map half = " + fma.getMyMapHalf() + " and seraching for = "
 				+ EGameEntity.MYTREASURE);
