@@ -23,11 +23,11 @@ public class Controller {
 
 		// parse the parameters, otherwise the automatic evaluation will not work on
 		// http://swe.wst.univie.ac.at
-		String serverBaseUrl = args[1];
-		String gameId = args[2];
+		final String serverBaseUrl = args[1];
+		final String gameId = args[2];
 
 		// start network communication
-		NetworkTranslator net = new NetworkTranslator(serverBaseUrl, gameId);
+		final NetworkTranslator net = new NetworkTranslator(serverBaseUrl, gameId);
 
 		// register player
 		net.registerPlayer("Michal Robert", "Zak", "11922222");
@@ -51,12 +51,12 @@ public class Controller {
 		logger.debug("Both players sent HalfMaps, retrieving FullMap from server");
 
 		// retrieve FullMap
-		FullMapData map = net.getFullMap();
-		GameData gameData = new GameData(true);
+		final FullMapData map = net.getFullMap();
+		final GameData gameData = new GameData(true);
 
-		CLI ui = new CLI(map, gameData);
+		final CLI ui = new CLI(map, gameData);
 
-		MoveGenerator mg = new MoveGenerator(new FullMapAccesser(map));
+		final MoveGenerator mg = new MoveGenerator(new FullMapAccesser(map));
 
 		while (gameData.getGameState() == EGameState.UNDETERMINED) {
 			while (!net.myTurn() && net.getGameState() == EGameState.UNDETERMINED)

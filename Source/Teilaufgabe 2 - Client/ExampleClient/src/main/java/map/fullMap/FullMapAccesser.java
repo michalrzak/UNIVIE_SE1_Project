@@ -14,7 +14,7 @@ import map.mapHelpers.Position;
 // I AM STILL NOT SURE THIS IS A GOOD SOLUTION MAYBE IT SHOULD BE MOVED TO fullMap PACKAGE???
 public class FullMapAccesser {
 
-	private FullMapData fmd;
+	private final FullMapData fmd;
 
 	private static Logger logger = LoggerFactory.getLogger(FullMapAccesser.class);
 

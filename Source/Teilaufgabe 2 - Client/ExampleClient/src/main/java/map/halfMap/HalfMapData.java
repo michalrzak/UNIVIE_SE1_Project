@@ -16,8 +16,8 @@ import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
 
 public class HalfMapData {
-	private Map<Position, ETerrain> terrain;
-	private Position myCastlePosition;
+	private final Map<Position, ETerrain> terrain;
+	private final Position myCastlePosition;
 
 	private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 

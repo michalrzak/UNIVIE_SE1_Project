@@ -13,10 +13,11 @@ import map.mapHelpers.ETerrain;
 import map.mapHelpers.Position;
 
 public class FullMapData {
-	private Map<Position, ETerrain> terrain;
+	private final Map<Position, ETerrain> terrain;
+	private final int width;
+	private final int height;
+
 	private Map<EGameEntity, Position> gameEntityPosition;
-	private int width;
-	private int height;
 	private boolean treasureCollected = false;
 
 	private static Logger logger = LoggerFactory.getLogger(FullMapData.class);

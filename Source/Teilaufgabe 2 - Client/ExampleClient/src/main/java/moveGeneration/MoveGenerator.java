@@ -15,11 +15,9 @@ import moveHelpers.EMove;
 public class MoveGenerator {
 
 	private final FullMapAccesser fma;
+
 	private NodeFinder nodeFinder;
-
-	// Moves to return to get to the next destination
-	private Queue<EMove> toMove;
-
+	private Queue<EMove> toMove; // Moves to return to get to the next destination
 	private boolean changedToCastleFinding = false;
 
 	private static Logger logger = LoggerFactory.getLogger(MoveGenerator.class);

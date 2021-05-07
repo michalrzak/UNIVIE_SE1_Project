@@ -30,7 +30,7 @@ import map.mapHelpers.Position;
 import moveHelpers.EMove;
 
 public class NetworkTranslator {
-	private NetworkEndpoint ne;
+	private final NetworkEndpoint ne;
 
 	private UniquePlayerIdentifier playerID;
 

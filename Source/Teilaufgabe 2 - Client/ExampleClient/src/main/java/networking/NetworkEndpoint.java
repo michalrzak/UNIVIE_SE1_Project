@@ -24,9 +24,9 @@ public class NetworkEndpoint {
 
 	private static Logger logger = LoggerFactory.getLogger(NetworkEndpoint.class);
 
-	private UniqueGameIdentifier gameID;
-	private String gameURL;
-	private WebClient baseWebClient;
+	private final UniqueGameIdentifier gameID;
+	private final String gameURL;
+	private final WebClient baseWebClient;
 
 	private GameState previous;
 	private boolean gameStateValid = false;
