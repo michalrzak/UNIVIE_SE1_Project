@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import helpers.Helper;
 import map.fullMap.FullMapAccesser;
@@ -16,9 +17,22 @@ import moveGeneration.PathFinder;
 
 public class PathFinding_Tests {
 
-	private final FullMapData validMap;
+	private FullMapAccesser fma;
 
-	public PathFinding_Tests() {
+	/*
+	 * public PathFinding_Tests() { char[][] nodes = { { 'g', 'w', 'w', 'g' }, {
+	 * 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' }, { 'g', 'g', 'm', 'm' }, { 'g',
+	 * 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'w', 'g' }, { 'g', 'g',
+	 * 'm', 'm' }, { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g',
+	 * 'g' }, { 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g'
+	 * }, { 'g', 'm', 'w', 'g' }, { 'g', 'g', 'm', 'm' } }; HashMap<Position,
+	 * ETerrain> testMap = Helper.arrayToMap(nodes);
+	 * 
+	 * validMap = new FullMapData(testMap, new HashMap<>()); }
+	 */
+
+	@BeforeEach
+	public void generateFullMapAccesser() {
 		char[][] nodes = { { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' },
 				{ 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'w', 'g' },
 				{ 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' },
@@ -26,21 +40,24 @@ public class PathFinding_Tests {
 				{ 'g', 'g', 'm', 'm' } };
 		HashMap<Position, ETerrain> testMap = Helper.arrayToMap(nodes);
 
-		validMap = new FullMapData(testMap, new HashMap<>());
+		fma = new FullMapAccesser(new FullMapData(testMap, new HashMap<>()));
 	}
 
 	@Test
 	public void PathFinder_StartNodeEqualsEndNode_shouldReturnEmptyQ() {
 
-		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 0), new FullMapAccesser(validMap));
+		// Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0,
+		// 0), new FullMapAccesser(validMap));
+		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 0), fma);
 
 		Assertions.assertEquals(res.size(), 0);
 	}
 
 	@Test
 	public void PathFinder_StartIs00EndIs01_shouldReturn01() {
-
-		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 1), new FullMapAccesser(validMap));
+		// Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0,
+		// 1), new FullMapAccesser(validMap));
+		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 1), fma);
 
 		Assertions.assertEquals(res.size(), 1);
 
@@ -53,7 +70,9 @@ public class PathFinding_Tests {
 	@Test
 	public void PathFinder_StartIs00EndIs015_shouldReturnStraightLine() {
 
-		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 15), new FullMapAccesser(validMap));
+		// Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0,
+		// 15), new FullMapAccesser(validMap));
+		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 15), fma);
 
 		Assertions.assertEquals(res.size(), 15);
 
@@ -67,7 +86,9 @@ public class PathFinding_Tests {
 	@Test
 	public void PathFinder_StartIs11EndIs02_shouldNotGoOverMountain() {
 
-		Queue<Position> res = PathFinder.pathTo(new Position(1, 1), new Position(0, 2), new FullMapAccesser(validMap));
+		// Queue<Position> res = PathFinder.pathTo(new Position(1, 1), new Position(0,
+		// 2), new FullMapAccesser(validMap));
+		Queue<Position> res = PathFinder.pathTo(new Position(1, 1), new Position(0, 2), fma);
 
 		Assertions.assertEquals(res.size(), 2);
 

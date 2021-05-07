@@ -5,8 +5,8 @@ import static org.mockito.ArgumentMatchers.eq;
 
 import java.util.Map;
 
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import map.fullMap.FullMapAccesser;
