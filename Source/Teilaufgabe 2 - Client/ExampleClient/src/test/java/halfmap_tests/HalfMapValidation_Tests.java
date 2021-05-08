@@ -9,8 +9,8 @@ import org.junit.jupiter.api.function.Executable;
 import exceptions.InvalidHalfMapGeneratedException;
 import helpers.Helper;
 import map.halfMap.HalfMapData;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class HalfMapValidation_Tests {
 

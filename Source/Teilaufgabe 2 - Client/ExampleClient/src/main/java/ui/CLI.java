@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import gameData.GameData;
 import gameData.helpers.EGameState;
 import map.fullMap.FullMapData;
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.EGameEntity;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class CLI implements PropertyChangeListener {
 

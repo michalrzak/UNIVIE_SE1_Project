@@ -6,7 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import exceptions.PositionOutOfBoundsException;
-import map.mapHelpers.Position;
+import map.helpers.Position;
 
 class Position_Tests {
 

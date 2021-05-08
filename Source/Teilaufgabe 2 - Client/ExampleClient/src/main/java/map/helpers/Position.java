@@ -1,4 +1,4 @@
-package map.mapHelpers;
+package map.helpers;
 
 import exceptions.PositionOutOfBoundsException;
 

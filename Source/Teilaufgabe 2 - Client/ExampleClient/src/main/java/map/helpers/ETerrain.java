@@ -1,4 +1,4 @@
-package map.mapHelpers;
+package map.helpers;
 
 public enum ETerrain {
 	GRASS(1, 15), WATER(1000, 4), MOUNTAIN(2, 3);

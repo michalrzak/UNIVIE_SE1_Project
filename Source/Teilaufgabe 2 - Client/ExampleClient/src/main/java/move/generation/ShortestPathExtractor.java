@@ -1,4 +1,4 @@
-package moveGeneration;
+package move.generation;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import map.mapHelpers.Position;
+import map.helpers.Position;
 
 public class ShortestPathExtractor {
 
@@ -23,10 +23,10 @@ public class ShortestPathExtractor {
 
 		Set<Position> toVisitCopy = new HashSet<>(toVisit);
 
-		// if toVisit also contaisn the start node, remove it
+		// if toVisit also contains the start node, remove it
 		toVisit.remove(start);
 
-		while (toVisitCopy.size() != 0) {
+		while (!toVisitCopy.isEmpty()) {
 			// needed to be able to pass it into the lambda
 			Position cur = start;
 			Position closest = toVisitCopy.stream().min((Position x1, Position x2) -> {

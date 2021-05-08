@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.InvalidHalfMapGeneratedException;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class HalfMapGenerator {
 

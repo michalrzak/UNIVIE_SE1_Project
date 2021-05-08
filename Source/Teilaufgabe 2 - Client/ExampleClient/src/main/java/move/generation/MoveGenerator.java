@@ -1,4 +1,4 @@
-package moveGeneration;
+package move.generation;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.PositionOutOfBoundsException;
 import map.fullMap.FullMapAccesser;
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.Position;
-import moveHelpers.EMove;
+import map.helpers.EGameEntity;
+import map.helpers.Position;
+import move.helpers.EMove;
 
 public class MoveGenerator {
 
@@ -71,7 +71,7 @@ public class MoveGenerator {
 	}
 
 	public EMove getNextMove() {
-		if (toMove == null || toMove.size() == 0) {
+		if (toMove == null || toMove.isEmpty()) {
 			if (fma.treasureCollected() && !changedToCastleFinding) {
 				changedToCastleFinding = true;
 				nodeFinder = new NodeFinder(fma, fma.getMyMapHalf().getOppositeHalf(), EGameEntity.ENEMYCASTLE);

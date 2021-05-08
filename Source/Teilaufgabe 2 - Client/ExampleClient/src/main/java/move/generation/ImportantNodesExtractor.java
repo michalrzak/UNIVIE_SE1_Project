@@ -1,4 +1,4 @@
-package moveGeneration;
+package move.generation;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import map.fullMap.FullMapAccesser;
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.EMapHalf;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.EGameEntity;
+import map.helpers.EMapHalf;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class ImportantNodesExtractor {
 

@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.InvalidHalfMapGeneratedException;
 import exceptions.PositionOutOfBoundsException;
-import map.mapHelpers.EMapDimensions;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.EMapDimensions;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class HalfMapData {
 

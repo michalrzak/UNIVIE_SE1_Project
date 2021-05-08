@@ -8,9 +8,9 @@ import org.junit.jupiter.api.function.Executable;
 
 import helpers.Helper;
 import map.fullMap.FullMapData;
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.EGameEntity;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class FullMap_Tests {
 

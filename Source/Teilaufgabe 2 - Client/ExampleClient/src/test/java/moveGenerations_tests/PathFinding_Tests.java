@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import helpers.Helper;
 import map.fullMap.FullMapAccesser;
 import map.fullMap.FullMapData;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
-import moveGeneration.PathFinder;
+import map.helpers.ETerrain;
+import map.helpers.Position;
+import move.generation.PathFinder;
 
 public class PathFinding_Tests {
 

@@ -8,7 +8,7 @@ import gameData.helpers.EGameState;
 import map.fullMap.FullMapAccesser;
 import map.fullMap.FullMapData;
 import map.halfMap.HalfMapGenerator;
-import moveGeneration.MoveGenerator;
+import move.generation.MoveGenerator;
 import networking.NetworkTranslator;
 import ui.CLI;
 

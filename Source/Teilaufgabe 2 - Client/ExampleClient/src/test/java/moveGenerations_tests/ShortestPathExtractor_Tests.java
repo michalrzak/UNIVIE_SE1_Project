@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import map.mapHelpers.Position;
-import moveGeneration.ShortestPathExtractor;
+import map.helpers.Position;
+import move.generation.ShortestPathExtractor;
 
 public class ShortestPathExtractor_Tests {
 

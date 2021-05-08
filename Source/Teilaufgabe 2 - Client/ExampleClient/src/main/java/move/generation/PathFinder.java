@@ -1,4 +1,4 @@
-package moveGeneration;
+package move.generation;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import map.fullMap.FullMapAccesser;
-import map.mapHelpers.Position;
+import map.helpers.Position;
 
 public class PathFinder {
 

@@ -1,4 +1,4 @@
-package moveGeneration;
+package move.generation;
 
 import java.util.Queue;
 import java.util.Set;
@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import map.fullMap.FullMapAccesser;
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.EMapHalf;
-import map.mapHelpers.Position;
+import map.helpers.EGameEntity;
+import map.helpers.EMapHalf;
+import map.helpers.Position;
 
 public class NodeFinder {
 	private final FullMapAccesser fma;
@@ -56,7 +56,7 @@ public class NodeFinder {
 		}
 
 		// check if I am not going anywhere
-		if (pathToNextNode == null || pathToNextNode.size() == 0) {
+		if (pathToNextNode == null || pathToNextNode.isEmpty()) {
 			// if this evaluates to true then i have just arrived on the treasure!
 			if (goingToTreasure)
 				logger.warn("Trying to find the treasure even though it has already been collected!");

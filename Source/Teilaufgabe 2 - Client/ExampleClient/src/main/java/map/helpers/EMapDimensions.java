@@ -1,4 +1,4 @@
-package map.mapHelpers;
+package map.helpers;
 
 public enum EMapDimensions {
 	HALFMAP(8, 4), LONGMAP(16, 4), SQUAREMAP(8, 8);

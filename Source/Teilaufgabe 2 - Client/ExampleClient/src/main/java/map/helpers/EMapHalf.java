@@ -1,4 +1,4 @@
-package map.mapHelpers;
+package map.helpers;
 
 public enum EMapHalf {
 	LONGMAPORIGIN(0, 7, 0, 3), LONGMAPOPPOSITE(8, 15, 0, 3), SQUAREMAPORIGIN(0, 7, 0, 3), SQUAREMAPOPPOSITE(0, 7, 4, 7);

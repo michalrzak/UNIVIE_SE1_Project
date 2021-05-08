@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import map.fullMap.FullMapAccesser;
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.EMapHalf;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
-import moveGeneration.NodeFinder;
+import map.helpers.EGameEntity;
+import map.helpers.EMapHalf;
+import map.helpers.ETerrain;
+import map.helpers.Position;
+import move.generation.NodeFinder;
 
 public class NodeFinder_Tests {
 

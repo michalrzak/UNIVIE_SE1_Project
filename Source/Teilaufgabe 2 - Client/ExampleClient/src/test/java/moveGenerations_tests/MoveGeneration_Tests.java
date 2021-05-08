@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import helpers.Helper;
 import map.fullMap.FullMapAccesser;
 import map.fullMap.FullMapData;
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
-import moveGeneration.MoveGenerator;
+import map.helpers.EGameEntity;
+import map.helpers.ETerrain;
+import map.helpers.Position;
+import move.generation.MoveGenerator;
 
 public class MoveGeneration_Tests {
 

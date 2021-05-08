@@ -8,9 +8,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import map.mapHelpers.EMapDimensions;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.EMapDimensions;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class HalfMapValidator {
 

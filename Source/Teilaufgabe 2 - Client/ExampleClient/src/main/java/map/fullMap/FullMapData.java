@@ -8,9 +8,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import map.mapHelpers.EGameEntity;
-import map.mapHelpers.ETerrain;
-import map.mapHelpers.Position;
+import map.helpers.EGameEntity;
+import map.helpers.ETerrain;
+import map.helpers.Position;
 
 public class FullMapData {
 	private final Map<Position, ETerrain> terrain;
