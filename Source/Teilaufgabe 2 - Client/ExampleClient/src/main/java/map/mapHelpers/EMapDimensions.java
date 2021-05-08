@@ -3,19 +3,19 @@ package map.mapHelpers;
 public enum EMapDimensions {
 	HALFMAP(8, 4), LONGMAP(16, 4), SQUAREMAP(8, 8);
 
-	private final int maxWidth;
-	private final int maxHeight;
+	private final int width;
+	private final int height;
 
-	private EMapDimensions(int maxWidth, int maxHeight) {
-		this.maxWidth = maxWidth;
-		this.maxHeight = maxHeight;
+	private EMapDimensions(int width, int height) {
+		this.width = width;
+		this.height = height;
 	}
 
-	public int maxWidth() {
-		return maxWidth;
+	public int width() {
+		return width;
 	}
 
-	public int maxHeight() {
-		return maxHeight;
+	public int height() {
+		return height;
 	}
 }

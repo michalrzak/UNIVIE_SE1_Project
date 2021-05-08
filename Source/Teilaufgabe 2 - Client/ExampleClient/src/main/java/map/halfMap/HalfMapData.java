@@ -27,8 +27,8 @@ public class HalfMapData {
 			throw new IllegalArgumentException("Arguments cannot be null!");
 		}
 
-		if (myCastlePosition.getx() >= EMapDimensions.HALFMAP.maxWidth()
-				|| myCastlePosition.gety() >= EMapDimensions.HALFMAP.maxHeight()) {
+		if (myCastlePosition.getx() >= EMapDimensions.HALFMAP.width()
+				|| myCastlePosition.gety() >= EMapDimensions.HALFMAP.height()) {
 			logger.error(
 					"HalfMapData constructor received a myFortPosition object with position outside of halfmap; Received: "
 							+ myCastlePosition);

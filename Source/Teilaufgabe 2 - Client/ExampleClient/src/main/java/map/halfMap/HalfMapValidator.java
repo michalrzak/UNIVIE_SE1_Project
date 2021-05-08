@@ -29,13 +29,13 @@ public class HalfMapValidator {
 	private boolean validateTerrainDimensions() {
 		Set<Position> positions = testing.keySet();
 
-		if (positions.size() != EMapDimensions.HALFMAP.maxWidth() * EMapDimensions.HALFMAP.maxHeight()) {
+		if (positions.size() != EMapDimensions.HALFMAP.width() * EMapDimensions.HALFMAP.height()) {
 			logger.error("HalfMap size is not 32, size is: " + positions.size());
 			return false;
 		}
 
-		if (!positions.stream().allMatch(pos -> pos.getx() < EMapDimensions.HALFMAP.maxWidth()
-				&& pos.gety() < EMapDimensions.HALFMAP.maxHeight())) {
+		if (!positions.stream().allMatch(
+				pos -> pos.getx() < EMapDimensions.HALFMAP.width() && pos.gety() < EMapDimensions.HALFMAP.height())) {
 			logger.error("HalfMap terrain hashmap position invalid");
 			return false;
 		}
@@ -67,15 +67,16 @@ public class HalfMapValidator {
 		long leftEdgeCount = mapset.stream().filter(ele -> ele.getKey().getx() == 0 && ele.getValue() == ETerrain.WATER)
 				.count();
 		long rightEdgeCount = mapset.stream().filter(
-				ele -> ele.getKey().getx() == EMapDimensions.HALFMAP.maxWidth() - 1 && ele.getValue() == ETerrain.WATER)
+				ele -> ele.getKey().getx() == EMapDimensions.HALFMAP.width() - 1 && ele.getValue() == ETerrain.WATER)
 				.count();
 		long topEdgeCount = mapset.stream().filter(ele -> ele.getKey().gety() == 0 && ele.getValue() == ETerrain.WATER)
 				.count();
-		long botEdgeCount = mapset.stream().filter(ele -> ele.getKey().gety() == EMapDimensions.HALFMAP.maxHeight() - 1
-				&& ele.getValue() == ETerrain.WATER).count();
+		long botEdgeCount = mapset.stream().filter(
+				ele -> ele.getKey().gety() == EMapDimensions.HALFMAP.height() - 1 && ele.getValue() == ETerrain.WATER)
+				.count();
 
-		final int SHORTEDGE_MAX = EMapDimensions.HALFMAP.maxHeight() / 2;
-		final int LONGEDGE_MAX = EMapDimensions.HALFMAP.maxWidth() / 2;
+		final int SHORTEDGE_MAX = EMapDimensions.HALFMAP.height() / 2;
+		final int LONGEDGE_MAX = EMapDimensions.HALFMAP.width() / 2;
 
 		if (leftEdgeCount >= SHORTEDGE_MAX || rightEdgeCount >= SHORTEDGE_MAX || topEdgeCount >= LONGEDGE_MAX
 				|| botEdgeCount >= LONGEDGE_MAX) {
