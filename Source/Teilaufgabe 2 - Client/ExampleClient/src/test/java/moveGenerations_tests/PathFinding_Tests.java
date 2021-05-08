@@ -19,18 +19,6 @@ public class PathFinding_Tests {
 
 	private FullMapAccesser fma;
 
-	/*
-	 * public PathFinding_Tests() { char[][] nodes = { { 'g', 'w', 'w', 'g' }, {
-	 * 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' }, { 'g', 'g', 'm', 'm' }, { 'g',
-	 * 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'w', 'g' }, { 'g', 'g',
-	 * 'm', 'm' }, { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g',
-	 * 'g' }, { 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g'
-	 * }, { 'g', 'm', 'w', 'g' }, { 'g', 'g', 'm', 'm' } }; HashMap<Position,
-	 * ETerrain> testMap = Helper.arrayToMap(nodes);
-	 * 
-	 * validMap = new FullMapData(testMap, new HashMap<>()); }
-	 */
-
 	@BeforeEach
 	public void generateFullMapAccesser() {
 		char[][] nodes = { { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' },

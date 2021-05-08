@@ -3,14 +3,10 @@ package moveGenerations_tests;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import helpers.Helper;
 import map.fullMap.FullMapAccesser;
 import map.mapHelpers.EGameEntity;
 import map.mapHelpers.EMapHalf;
@@ -19,24 +15,6 @@ import map.mapHelpers.Position;
 import moveGeneration.NodeFinder;
 
 public class NodeFinder_Tests {
-	private Map<Position, ETerrain> testMap;
-
-	public NodeFinder_Tests() {
-		char[][] nodes = { { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' },
-				{ 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'w', 'g' },
-				{ 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'g' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'g', 'g' },
-				{ 'g', 'g', 'm', 'm' }, { 'g', 'w', 'w', 'm' }, { 'g', 'g', 'g', 'g' }, { 'g', 'm', 'w', 'g' },
-				{ 'g', 'g', 'm', 'm' } };
-		HashMap<Position, ETerrain> testMap = Helper.arrayToMap(nodes);
-		/*
-		 * Map<EGameEntity, Position> entities = new HashMap<>();
-		 * entities.put(EGameEntity.MYPLAYER, new Position(0, 0));
-		 * entities.put(EGameEntity.MYCASTLE, new Position(0, 5));
-		 * entities.put(EGameEntity.MYTREASURE, new Position(0, 10));
-		 * entities.put(EGameEntity.ENEMYCASTLE, new Position(0, 15)); validMap = new
-		 * FullMapData(testMap, entities);
-		 */
-	}
 
 	@Test
 	public void NodeFinder_CastleNextToMe_shouldGoThere() {
