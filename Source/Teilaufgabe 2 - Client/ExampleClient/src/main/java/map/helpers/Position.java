@@ -1,14 +1,12 @@
 package map.helpers;
 
-import exceptions.PositionOutOfBoundsException;
-
 public class Position {
 	private final int x;
 	private final int y;
 
 	public Position(int x, int y) {
 		if (x < 0 || y < 0)
-			throw new PositionOutOfBoundsException("Position cannot be negative", this);
+			throw new IllegalArgumentException("Position cannot be negative");
 
 		this.x = x;
 		this.y = y;
