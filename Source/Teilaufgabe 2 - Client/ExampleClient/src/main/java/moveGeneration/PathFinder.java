@@ -17,7 +17,7 @@ public class PathFinder {
 
 	private static Logger logger = LoggerFactory.getLogger(PathFinder.class);
 
-	public static Queue<Position> pathTo(Position start, Position dest, FullMapAccesser fma) {
+	public Queue<Position> pathTo(Position start, Position dest, FullMapAccesser fma) {
 
 		logger.debug("trying to find path from:" + start.toString() + " to: " + dest.toString());
 

@@ -46,10 +46,12 @@ public class NodeFinder {
 
 	public Position getNextPosition() {
 
+		PathFinder pf = new PathFinder();
+
 		// if Position of MyTreasure is known, go there
 		if (fma.getEntityPosition(lookingFor) != null && !goingToTreasure) {
-			pathToNextNode = PathFinder.pathTo(fma.getEntityPosition(EGameEntity.MYPLAYER),
-					fma.getEntityPosition(lookingFor), fma);
+			pathToNextNode = pf.pathTo(fma.getEntityPosition(EGameEntity.MYPLAYER), fma.getEntityPosition(lookingFor),
+					fma);
 			goingToTreasure = true;
 		}
 
@@ -62,7 +64,7 @@ public class NodeFinder {
 			logger.debug("Next stop is: " + visitOrder.peek().toString());
 
 			// throws if visitOrder is empty!
-			pathToNextNode = PathFinder.pathTo(fma.getEntityPosition(EGameEntity.MYPLAYER), visitOrder.remove(), fma);
+			pathToNextNode = pf.pathTo(fma.getEntityPosition(EGameEntity.MYPLAYER), visitOrder.remove(), fma);
 		}
 
 		return pathToNextNode.remove();

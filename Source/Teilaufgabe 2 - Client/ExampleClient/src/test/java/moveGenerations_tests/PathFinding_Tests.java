@@ -18,6 +18,7 @@ import moveGeneration.PathFinder;
 public class PathFinding_Tests {
 
 	private FullMapAccesser fma;
+	private PathFinder pf;
 
 	@BeforeEach
 	public void generateFullMapAccesser() {
@@ -31,21 +32,23 @@ public class PathFinding_Tests {
 		fma = new FullMapAccesser(new FullMapData(testMap, new HashMap<>()));
 	}
 
+	@BeforeEach
+	public void generatePathFinder() {
+		pf = new PathFinder();
+	}
+
 	@Test
 	public void PathFinder_StartNodeEqualsEndNode_shouldReturnEmptyQ() {
 
-		// Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0,
-		// 0), new FullMapAccesser(validMap));
-		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 0), fma);
+		Queue<Position> res = pf.pathTo(new Position(0, 0), new Position(0, 0), fma);
 
 		Assertions.assertEquals(res.size(), 0);
 	}
 
 	@Test
 	public void PathFinder_StartIs00EndIs01_shouldReturn01() {
-		// Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0,
-		// 1), new FullMapAccesser(validMap));
-		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 1), fma);
+
+		Queue<Position> res = pf.pathTo(new Position(0, 0), new Position(0, 1), fma);
 
 		Assertions.assertEquals(res.size(), 1);
 
@@ -58,9 +61,7 @@ public class PathFinding_Tests {
 	@Test
 	public void PathFinder_StartIs00EndIs015_shouldReturnStraightLine() {
 
-		// Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0,
-		// 15), new FullMapAccesser(validMap));
-		Queue<Position> res = PathFinder.pathTo(new Position(0, 0), new Position(0, 15), fma);
+		Queue<Position> res = pf.pathTo(new Position(0, 0), new Position(0, 15), fma);
 
 		Assertions.assertEquals(res.size(), 15);
 
@@ -74,9 +75,7 @@ public class PathFinding_Tests {
 	@Test
 	public void PathFinder_StartIs11EndIs02_shouldNotGoOverMountain() {
 
-		// Queue<Position> res = PathFinder.pathTo(new Position(1, 1), new Position(0,
-		// 2), new FullMapAccesser(validMap));
-		Queue<Position> res = PathFinder.pathTo(new Position(1, 1), new Position(0, 2), fma);
+		Queue<Position> res = pf.pathTo(new Position(1, 1), new Position(0, 2), fma);
 
 		Assertions.assertEquals(res.size(), 2);
 
