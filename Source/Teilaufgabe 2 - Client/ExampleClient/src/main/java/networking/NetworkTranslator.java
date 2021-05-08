@@ -21,6 +21,7 @@ import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.EPlayerGameState;
 import MessagesGameState.GameState;
 import MessagesGameState.PlayerState;
+import exceptions.NetworkCommunicationException;
 import gameData.helpers.EGameState;
 import map.fullMap.FullMapData;
 import map.halfMap.HalfMapData;
@@ -156,17 +157,17 @@ public class NetworkTranslator {
 	}
 
 	// PUBLIC METHODS
-	public void registerPlayer(String firstName, String lastName, String id) {
+	public void registerPlayer(String firstName, String lastName, String id) throws NetworkCommunicationException {
 		playerID = ne.registerPlayer(new PlayerRegistration(firstName, lastName, id));
 	}
 
-	public void sendHalfMap(HalfMapData hmdata) {
+	public void sendHalfMap(HalfMapData hmdata) throws NetworkCommunicationException {
 		HalfMap hm = internalHalfMapToNetworkHalfMap(hmdata);
 		ne.sendHalfMap(hm);
 	}
 
-	public boolean myTurn() {
-		GameState gs = ne.getGameState(playerID, true);
+	public boolean myTurn() throws NetworkCommunicationException {
+		GameState gs = ne.getGameState(playerID);
 
 		Set<PlayerState> players = gs.getPlayers();
 
@@ -178,12 +179,12 @@ public class NetworkTranslator {
 		return me.getState() == EPlayerGameState.ShouldActNext;
 	}
 
-	public FullMapData getFullMap() {
+	public FullMapData getFullMap() throws NetworkCommunicationException {
 
 		MessagesGameState.FullMap fm;
 		try {
 			// this can fail and throw a NoSuchElementException
-			fm = ne.getGameState(playerID, true).getMap().get();
+			fm = ne.getGameState(playerID).getMap().get();
 		} catch (NoSuchElementException e) {
 			logger.error("The returned gamestate did not contain any fullmap");
 			throw e; // TODO: This really needs to be a new type
@@ -192,7 +193,7 @@ public class NetworkTranslator {
 		return networkMapToInternalMap(fm.getMapNodes());
 	}
 
-	public void sendMove(EMove dir) {
+	public void sendMove(EMove dir) throws NetworkCommunicationException {
 		if (dir == null) {
 			logger.error("sendMove received null argument");
 			throw new IllegalArgumentException("dir cannot be null");
@@ -203,11 +204,11 @@ public class NetworkTranslator {
 		ne.sendMove(PlayerMove.of(playerID, d));
 	}
 
-	public Map<EGameEntity, Position> getEntities() {
+	public Map<EGameEntity, Position> getEntities() throws NetworkCommunicationException {
 		MessagesGameState.FullMap fm;
 		try {
 			// this can fail and throw a NoSuchElementException
-			fm = ne.getGameState(playerID, false).getMap().get();
+			fm = ne.getGameStateCached(playerID).getMap().get();
 		} catch (NoSuchElementException e) {
 			logger.error("The returned gamestate did not contain any fullmap");
 			throw e; // TODO: This really needs to be a new type
@@ -225,17 +226,17 @@ public class NetworkTranslator {
 		// return networkMapToInternalMap(fm.getMapNodes());
 	}
 
-	public boolean collectedTreasure() {
+	public boolean collectedTreasure() throws NetworkCommunicationException {
 		// find my player state
-		MessagesGameState.PlayerState ps = ne.getGameState(playerID, false).getPlayers().stream()
+		MessagesGameState.PlayerState ps = ne.getGameStateCached(playerID).getPlayers().stream()
 				.filter(ele -> ele.equals(playerID)).findFirst().get();
 
 		return ps.hasCollectedTreasure();
 	}
 
-	public EGameState getGameState() {
+	public EGameState getGameState() throws NetworkCommunicationException {
 		// find my player state
-		MessagesGameState.PlayerState ps = ne.getGameState(playerID, false).getPlayers().stream()
+		MessagesGameState.PlayerState ps = ne.getGameStateCached(playerID).getPlayers().stream()
 				.filter(ele -> ele.equals(playerID)).findFirst().get();
 
 		return networkStateToInternal(ps.getState());

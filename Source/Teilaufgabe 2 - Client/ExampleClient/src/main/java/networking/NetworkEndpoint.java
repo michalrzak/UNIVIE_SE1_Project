@@ -18,6 +18,7 @@ import MessagesBase.ResponseEnvelope;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.GameState;
+import exceptions.NetworkCommunicationException;
 import reactor.core.publisher.Mono;
 
 public class NetworkEndpoint {
@@ -28,23 +29,30 @@ public class NetworkEndpoint {
 	private final String gameURL;
 	private final WebClient baseWebClient;
 
-	private GameState previous;
+	private GameState cached;
 	private boolean gameStateValid = false;
 
 	private Date d = new Date();
 	private long lastCommandTs = 0;
 
 	public NetworkEndpoint(String gameURL, UniqueGameIdentifier gameID) {
+		if (gameURL == null || gameID == null) {
+			logger.error("Passed parameters into constructor were null!");
+			throw new IllegalArgumentException("Cannot pass null arguments!");
+		}
+
+		// save passed arguments
 		this.gameURL = gameURL;
 		this.gameID = gameID;
 
+		// prepare web communication
 		baseWebClient = WebClient.builder().baseUrl(this.gameURL + "/games")
-				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE) // the network protocol uses
-																							// XML
+				// the network protocol uses XML
+				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE)
 				.defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE).build();
-
 	}
 
+	// used to enforce the 400ms between requests!
 	private void waitForCommand() {
 		if (d.getTime() - lastCommandTs < 400)
 			try {
@@ -58,7 +66,28 @@ public class NetworkEndpoint {
 		lastCommandTs = d.getTime();
 	}
 
-	public UniquePlayerIdentifier registerPlayer(PlayerRegistration playerReg) {
+	private <T> ResponseEnvelope<T> getResults(Mono<ResponseEnvelope> webAccess) throws NetworkCommunicationException {
+
+		// try to get the data from network. if no network connection is present this
+		// can fail
+		ResponseEnvelope<T> result;
+		try {
+			result = webAccess.block();
+		} catch (RuntimeException e) {
+			logger.error("The network communication failed!");
+			throw new NetworkCommunicationException(e);
+		}
+
+		// check if the server did not answer with an error. else throw
+		if (result.getState() == ERequestState.Error) {
+			logger.error("PlayerRegistration failed, exception: " + result.getExceptionMessage());
+			throw new NetworkCommunicationException(result.getExceptionMessage());
+		}
+
+		return result;
+	}
+
+	public UniquePlayerIdentifier registerPlayer(PlayerRegistration playerReg) throws NetworkCommunicationException {
 		if (playerReg == null) {
 			logger.error("PlayerRegistration passed to registerPlayer is null");
 			throw new IllegalArgumentException("the playerReg passed is null");
@@ -71,54 +100,54 @@ public class NetworkEndpoint {
 				.uri("/" + gameID.getUniqueGameID() + "/players").body(BodyInserters.fromValue(playerReg)).retrieve()
 				.bodyToMono(ResponseEnvelope.class); // specify the object returned by the server
 
-		ResponseEnvelope<UniquePlayerIdentifier> result = webAccess.block();
+		// this can throw NetworkCommunicationException
+		ResponseEnvelope<UniquePlayerIdentifier> result = getResults(webAccess);
 
-		// always check for errors, and if some are reported at least print them to the
-		// console (logging should be preferred)
-		// so that you become aware of them during debugging! The provided server gives
-		// you very helpful error messages.
-		if (result.getState() == ERequestState.Error) {
-			// here i will prob. need a new class
-			logger.error("PlayerRegistration failed, exception: " + result.getExceptionMessage());
-			throw new RuntimeException(result.getExceptionMessage());
-		}
-
+		// return results
 		return result.getData().get();
-
 	}
 
-	public GameState getGameState(UniquePlayerIdentifier playerID, boolean forceRefresh) {
-		if (playerID == null)
-			throw new RuntimeException("The PlayerID passed is null");
-
-		// if the saved game state is valid return it, however if it is older then 400
-		// then get a new one
-		if (!forceRefresh && gameStateValid && d.getTime() - lastCommandTs < 400) {
-			logger.debug("returning previous");
-			return previous;
+	public GameState getGameState(UniquePlayerIdentifier playerID) throws NetworkCommunicationException {
+		if (playerID == null) {
+			logger.error("playerID was null");
+			throw new IllegalArgumentException("The PlayerID passed is null");
 		}
 
 		waitForCommand();
 
-		// maybe make the next section a private method? it is repeated mostly the same
-		// in both methods
 		Mono<ResponseEnvelope> webAccess = baseWebClient.method(HttpMethod.GET)
 				.uri("/" + gameID.getUniqueGameID() + "/states/" + playerID.getUniquePlayerID()).retrieve()
 				.bodyToMono(ResponseEnvelope.class);
 
-		ResponseEnvelope<GameState> result = webAccess.block();
+		// this can throw NetworkCommunicationException
+		ResponseEnvelope<GameState> result = getResults(webAccess);
 
-		if (result.getState() == ERequestState.Error)
-			// here i will prob. need a new class
-			throw new RuntimeException(result.getExceptionMessage());
-
-		previous = result.getData().get();
+		// cache the results and make the cached results valid
+		cached = result.getData().get();
 		gameStateValid = true;
 
-		return previous;
+		// return results
+		return cached;
 	}
 
-	public void sendHalfMap(HalfMap hm) {
+	public GameState getGameStateCached(UniquePlayerIdentifier playerID) throws NetworkCommunicationException {
+		if (playerID == null) {
+			logger.error("playerID was null");
+			throw new IllegalArgumentException("The PlayerID passed is null");
+		}
+
+		// if the saved game state is valid return it, however if it is older then 400
+		// then get a new one
+		if (gameStateValid && d.getTime() - lastCommandTs < 400) {
+			logger.debug("returning cached");
+			return cached;
+		}
+
+		// if cached object is invalid get a new one
+		return getGameState(playerID);
+	}
+
+	public void sendHalfMap(HalfMap hm) throws NetworkCommunicationException {
 		if (hm == null) {
 			logger.error("sendHalfMap received null as halfmap");
 			throw new RuntimeException("Given HalfMap is null");
@@ -131,19 +160,11 @@ public class NetworkEndpoint {
 				.uri("/" + gameID.getUniqueGameID() + "/halfmaps").body(BodyInserters.fromValue(hm)).retrieve()
 				.bodyToMono(ResponseEnvelope.class); // specify the object returned by the server
 
-		ResponseEnvelope<UniquePlayerIdentifier> result = webAccess.block();
-
-		// always check for errors, and if some are reported at least print them to the
-		// console (logging should be preferred)
-		// so that you become aware of them during debugging! The provided server gives
-		// you very helpful error messages.
-		if (result.getState() == ERequestState.Error)
-			// here i will prob. need a new class
-			throw new RuntimeException(result.getExceptionMessage());
-
+		// this can throw NetworkCommunicationException
+		ResponseEnvelope<UniquePlayerIdentifier> result = getResults(webAccess);
 	}
 
-	public void sendMove(PlayerMove pm) {
+	public void sendMove(PlayerMove pm) throws NetworkCommunicationException {
 		if (pm == null) {
 			logger.error("sendMove received null as PlayerMove");
 			throw new RuntimeException("Given PlayerMove is null");
@@ -158,15 +179,8 @@ public class NetworkEndpoint {
 				// specify the object returned by the server
 				.bodyToMono(ResponseEnvelope.class);
 
-		ResponseEnvelope<UniquePlayerIdentifier> result = webAccess.block();
-
-		// always check for errors, and if some are reported at least print them to the
-		// console (logging should be preferred)
-		// so that you become aware of them during debugging! The provided server gives
-		// you very helpful error messages.
-		if (result.getState() == ERequestState.Error)
-			// here i will prob. need a new class
-			throw new RuntimeException(result.getExceptionMessage());
+		// this can throw NetworkCommunicationException
+		ResponseEnvelope<UniquePlayerIdentifier> result = getResults(webAccess);
 
 		// if I send a move the saved gameState becomes invalid
 		gameStateValid = false;
