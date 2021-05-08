@@ -151,10 +151,12 @@ public class NetworkEndpoint {
 
 		waitForCommand();
 
-		Mono<ResponseEnvelope> webAccess = baseWebClient.method(HttpMethod.POST)
+		Mono<ResponseEnvelope> webAccess = (baseWebClient.method(HttpMethod.POST))
 				// specify the data which is set to the server
-				.uri("/" + gameID.getUniqueGameID() + "/moves").body(BodyInserters.fromValue(pm)).retrieve()
-				.bodyToMono(ResponseEnvelope.class); // specify the object returned by the server
+				.uri("/" + gameID.getUniqueGameID() + "/moves").header("accept", "application/xml")
+				.body(BodyInserters.fromValue(pm)).retrieve()
+				// specify the object returned by the server
+				.bodyToMono(ResponseEnvelope.class);
 
 		ResponseEnvelope<UniquePlayerIdentifier> result = webAccess.block();
 
