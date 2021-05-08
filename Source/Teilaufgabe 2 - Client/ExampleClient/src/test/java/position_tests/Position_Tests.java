@@ -5,7 +5,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import exceptions.PositionOutOfBoundsException;
 import map.helpers.Position;
 
 class Position_Tests {
@@ -18,7 +17,7 @@ class Position_Tests {
 			Position pos = new Position(x, y);
 		};
 
-		Assertions.assertThrows(PositionOutOfBoundsException.class, instantiate);
+		Assertions.assertThrows(IllegalArgumentException.class, instantiate);
 
 	}
 
