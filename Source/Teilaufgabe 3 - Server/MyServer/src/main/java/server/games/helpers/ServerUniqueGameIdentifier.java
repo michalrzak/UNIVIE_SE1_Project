@@ -2,7 +2,7 @@ package server.games.helpers;
 
 public class ServerUniqueGameIdentifier {
 
-	final private int GAMEID_LENGTH = 5;
+	static final private int GAMEID_LENGTH = 5;
 
 	final private String gameID;
 

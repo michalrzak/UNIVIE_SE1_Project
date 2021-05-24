@@ -4,10 +4,10 @@ import java.util.Random;
 
 public class RandomString {
 
-	final private int NUM_OF_LETTERS = (int) 'Z' - (int) 'A' + 1;
-	final private int INDEX_OF_UPPER_A = (int) 'A';
-	final private int INDEX_OF_LOWER_A = (int) 'a';
-	final private int LOWER_UPPER_OFFSET = (int) 'a' - (int) 'Z';
+	static final private int NUM_OF_LETTERS = (int) 'Z' - (int) 'A' + 1;
+	static final private int INDEX_OF_UPPER_A = (int) 'A';
+	static final private int INDEX_OF_LOWER_A = (int) 'a';
+	static final private int LOWER_UPPER_OFFSET = (int) 'a' - (int) 'Z';
 
 	final private Random rand = new Random();
 
