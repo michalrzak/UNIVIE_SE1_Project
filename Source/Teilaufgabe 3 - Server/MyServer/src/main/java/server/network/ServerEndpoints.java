@@ -1,12 +1,9 @@
-package server.main;
+package server.network;
 
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +23,8 @@ import server.exceptions.GenericExampleException;
 @Controller
 @RequestMapping(value = "/games")
 public class ServerEndpoints {
+
+	final private GameManager games = new GameManager();
 
 	// ADDITONAL TIPS ON THIS MATTER ARE GIVEN THROUGHOUT THE TUTORIAL SESSION!
 	// Note, the same network messages which you have used for the client (along
@@ -47,35 +46,38 @@ public class ServerEndpoints {
 	// example for a GET endpoint based on /games
 	// similar to the client, the HTTP method and the expected data types are
 	// specified at the server side too
+	/*
+	 * @RequestMapping(value = "", method = RequestMethod.GET, produces =
+	 * MediaType.APPLICATION_XML_VALUE) public @ResponseBody UniqueGameIdentifier
+	 * newGame() {
+	 * 
+	 * // set showExceptionHandling to true to test/play around with the automatic
+	 * // exception handling (see the handleException method at the bottom) // this
+	 * is just some testing code that you can see how exceptions can be used to //
+	 * signal errors to the client, you can REMOVE // these lines in your real
+	 * server implementation boolean showExceptionHandling = false; if
+	 * (showExceptionHandling) { // if any error occurs, simply throw an exception
+	 * with inherits from // GenericExampleException // the given code than takes
+	 * care of responding with an error message to the // client based on
+	 * the @ExceptionHandler below // make yourself familiar with this concept by
+	 * setting showExceptionHandling=true // and creating a new game through the
+	 * browser // your implementation should use more useful error messages and
+	 * specialized exception classes throw new
+	 * GenericExampleException("Name: Something", "Message: went totally wrong"); }
+	 * 
+	 * // TIP: you will need to adapt this part to generate a game id with the valid
+	 * // length. A simple solution for this // would be creating an alphabet and
+	 * choosing random characters from it till the // new game id becomes long
+	 * enough UniqueGameIdentifier gameIdentifier = new
+	 * UniqueGameIdentifier("game1"); return gameIdentifier;
+	 * 
+	 * // note you will need to include additional logic, e.g., additional classes
+	 * // which create, store, validate, etc. game ids }
+	 */
+
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody UniqueGameIdentifier newGame() {
-
-		// set showExceptionHandling to true to test/play around with the automatic
-		// exception handling (see the handleException method at the bottom)
-		// this is just some testing code that you can see how exceptions can be used to
-		// signal errors to the client, you can REMOVE
-		// these lines in your real server implementation
-		boolean showExceptionHandling = false;
-		if (showExceptionHandling) {
-			// if any error occurs, simply throw an exception with inherits from
-			// GenericExampleException
-			// the given code than takes care of responding with an error message to the
-			// client based on the @ExceptionHandler below
-			// make yourself familiar with this concept by setting showExceptionHandling=true
-			// and creating a new game through the browser
-			// your implementation should use more useful error messages and specialized exception classes
-			throw new GenericExampleException("Name: Something", "Message: went totally wrong");
-		}
-
-		// TIP: you will need to adapt this part to generate a game id with the valid
-		// length. A simple solution for this
-		// would be creating an alphabet and choosing random characters from it till the
-		// new game id becomes long enough
-		UniqueGameIdentifier gameIdentifier = new UniqueGameIdentifier("game1");
-		return gameIdentifier;
-
-		// note you will need to include additional logic, e.g., additional classes
-		// which create, store, validate, etc. game ids
+		return games.newGame();
 	}
 
 	// example for a POST endpoint based on games/{gameID}/players
