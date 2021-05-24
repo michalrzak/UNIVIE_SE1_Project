@@ -1,0 +1,10 @@
+How to import this project into Eclipse:
+1) Start Eclipse
+2) File -> Import
+3) select Gradle -> Existing Gradle Project 
+4) select the root folder of this project (unpack the compressed file first). The correct root folder is the folder the ReadMe is placed in.
+5) Press "next", then "finish" 
+6) wait till the configuration and the library download is finished (an Internet connection is required).
+
+Description:
+This project provides a foundation for your own implementation of the Server. Simply import in Eclipse to get a nice starting point. You will solely need to add your own classes, code and so on as all the build management is already configured nicely along with the integration of the provided network message implementation. It is recommended that you also read the comments provided inside of the classes, they give tips and help you to understand the provided example code. The latter code, e.g., provides a foundation to defined the required endpoints in a similar manner than the given ones. Further, it contains a complete example and foundation to handle/signal business rule violations almost completely automatically.
