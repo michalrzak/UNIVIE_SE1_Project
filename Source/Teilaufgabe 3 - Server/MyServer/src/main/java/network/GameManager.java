@@ -1,5 +1,6 @@
 package network;
 
+import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
@@ -25,6 +26,12 @@ public class GameManager {
 		ServerUniquePlayerIdentifier playerID = games.registerPlayer(serverGameID, playerInf);
 
 		return translate.internalPlayerIDToNetwork(playerID);
+	}
+
+	public void receiveHalfMap(HalfMap receivedHalfMap) {
+		// TODO: validate
+		// TODO: translate
+		// TODO: pass
 	}
 
 }

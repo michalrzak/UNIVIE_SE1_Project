@@ -7,100 +7,33 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.3.3.RELEASE)
 
-2021-05-26 18:18:37.043  INFO 29794 --- [           main] main.MainServer                          : Starting MainServer with PID 29794 (/home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer/bin/main started by mzak in /home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer)
-2021-05-26 18:18:37.046  INFO 29794 --- [           main] main.MainServer                          : No active profile set, falling back to default profiles: default
-2021-05-26 18:18:37.785  INFO 29794 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-05-26 18:18:37.805  INFO 29794 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 JPA repository interfaces.
-2021-05-26 18:18:38.435  INFO 29794 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 18235 (http)
-2021-05-26 18:18:38.446  INFO 29794 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2021-05-26 18:18:38.446  INFO 29794 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
-2021-05-26 18:18:38.447  INFO 29794 --- [           main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.23] using APR version [1.7.0].
-2021-05-26 18:18:38.448  INFO 29794 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
-2021-05-26 18:18:38.448  INFO 29794 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
-2021-05-26 18:18:38.450  INFO 29794 --- [           main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1k  25 Mar 2021]
-2021-05-26 18:18:38.532  INFO 29794 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2021-05-26 18:18:38.533  INFO 29794 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1420 ms
-2021-05-26 18:18:38.675  INFO 29794 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2021-05-26 18:18:38.712  INFO 29794 --- [         task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-05-26 18:18:38.755  INFO 29794 --- [         task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.20.Final
-2021-05-26 18:18:38.851  WARN 29794 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-05-26 18:18:38.913  INFO 29794 --- [         task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-05-26 18:18:39.006  INFO 29794 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2021-05-26 18:18:39.131  INFO 29794 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2021-05-26 18:18:39.146  INFO 29794 --- [         task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: hibernate.SQLiteDialect
-2021-05-26 18:18:39.314  INFO 29794 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 18235 (http) with context path ''
-2021-05-26 18:18:39.318  INFO 29794 --- [           main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-05-26 18:18:39.320  INFO 29794 --- [           main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-05-26 18:18:39.331  INFO 29794 --- [           main] main.MainServer                          : Started MainServer in 2.743 seconds (JVM running for 3.201)
-2021-05-26 18:18:39.362  INFO 29794 --- [         task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-05-26 18:18:39.371  INFO 29794 --- [         task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-05-26 18:18:46.599  INFO 29794 --- [io-18235-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-05-26 18:18:46.599  INFO 29794 --- [io-18235-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2021-05-26 18:18:46.610  INFO 29794 --- [io-18235-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
-12fda4bc-880b-460f-bb83-9a5b4db307b2
-375e89ad-ae5c-44b4-9ee0-38dd650ad0d3
-19ddaa52-f15b-4bb4-a1a9-cb920f782f7d
-f599176d-7acd-4513-a6e4-e39cfcbccc08
-c74dfcea-88ae-4f53-9806-e6c0b4a94a70
-b74498a3-6bba-4ccb-afa9-50d3dc512431
-df2c9377-719f-4429-a842-1a10cfafab01
-5d0539d1-46b9-4d21-838a-bf62611d1f2e
-13ee33d9-a4d1-4a24-bb75-bdbf4f96e41a
-d2e4e3c8-fb7f-47dc-a89e-c4ab91d56122
-e91d481d-9c8f-4fd9-a7fb-71ed019f3463
-e357134a-2dea-405f-a25b-2cc1df37bcfd
-0b8ffc38-2dc3-4d39-8691-384544f0630a
-b4527fd1-f867-4fea-92b2-aac7219e6986
-7e7b4b07-8bbb-4841-ab68-7f1eeebf7d0f
-6666a586-3305-4cd3-9caf-dfacd213f8e5
-6f8b58e2-4314-437f-9af6-b583c66771cb
-59bea83c-f7eb-4cbe-a388-35ea0f8cd80d
-7c1a41c6-d165-480f-ad1a-6f2fb5cd3fa0
-858cfd24-044d-4b1b-ba70-af98029fa851
-90806a17-924e-478d-bd39-854f6a7486e5
-de8d4703-59a9-496f-8b1c-890ce6a7a184
-59f8e9f6-b94f-48a8-8409-0a863c3ff83e
-fa74c22f-80fc-4a24-bbab-f23c9ceca29f
-d2bd06e3-10aa-4971-83ed-9f7fd574bcf1
-3abea21f-bd9e-46b2-8dde-c4d16db8c19b
-f5d94282-daa8-44bb-bff2-1b5f7c1d2a57
-7aa36efe-79a9-4641-a25d-02bc08695d11
-d1cfeb15-98ea-40ab-b753-7405e82053f4
-8daf2bbd-145b-444f-aaaa-302ab3ca3322
-41eb5896-07b4-459d-8ec1-285510509636
-93455064-8c0d-4276-a493-ad9534530d9e
-ddf9beb4-0130-4b8b-aeaa-bc68f6fe2f1c
-8b754bdd-3cf9-4929-ab2f-e0809e3fa914
-a40c9f2c-636d-4470-96d8-952905a4d84f
-52b4446b-374d-4e05-ab57-cdcd6f6c4ce9
-4a5310b3-4c59-4da3-abcb-88aa52794094
-8f2cd5a5-0731-4753-a6f2-2d03b00ca461
-05595a88-1278-4e08-aeba-9677f6d60984
-4ca839e0-ac52-42ec-8b25-988e5d2ddadb
-f7a93366-eaf6-4a84-b78c-e2c6559126a5
-e087865b-c797-4572-8108-72b2a49813eb
-2984c0cf-1788-40da-8a1f-2f05e01755b9
-2052ac16-adea-42f3-b785-b6b7def44448
-8274b931-481c-46b0-a62e-a50649a671a9
-5b199761-d969-4a1a-a1ec-27916dd807b2
-7dc0a7f0-dfa3-418e-b6aa-c503a1cd102d
-eba85f16-42e6-438c-a17e-9c33d4cf06ab
-14ca09c0-12fa-48d7-a15c-e1ae8a96b3fd
-b262758c-c62b-4341-956b-3a49d8acb3b0
-61ec0fb9-6863-4a24-8156-86e8fff516ef
-18f941ad-d512-44c6-bb2f-1ebdbbf00d33
-c1c3ce15-cad7-4cd7-a3ac-2b55e0e6d3f4
-56b6a5fd-a35c-41ec-9fa1-f862698ece30
-72510b18-1db9-4955-a02c-5901ed24ddbe
-85f86cea-c99d-479e-8b2b-5d827ae1dcd4
-ae5a3d19-1498-45e5-ad33-b537a4ccf1cb
-dc448618-0588-4923-ab41-79f3fd793a8a
-030a3280-422e-42fd-bb2c-cf52533cbf22
-c4676559-55ec-4d3b-80ab-d23e2d42c0d8
-54af38a8-f2e9-4b77-9281-2de2743e98c8
-ab96b8ce-b0ce-4611-9142-0ac05a0a8f5f
-f09f4fe1-21a3-498d-a877-fd8b0e0b0fe9
-4c297ea8-7c84-4ea8-83be-082dae527e53
-3963fa22-8b9e-46df-ba96-a4e3774caeb7
-f5dd4aef-fadb-4660-b6c5-1b41a410c962
-7551604a-37d0-4e53-8e7e-bee46ff4dbac
+2021-05-26 19:46:15.415  INFO 18180 --- [           main] main.MainServer                          : Starting MainServer with PID 18180 (/home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer/bin/main started by mzak in /home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer)
+2021-05-26 19:46:15.418  INFO 18180 --- [           main] main.MainServer                          : No active profile set, falling back to default profiles: default
+2021-05-26 19:46:16.322  INFO 18180 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-05-26 19:46:16.347  INFO 18180 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16ms. Found 0 JPA repository interfaces.
+2021-05-26 19:46:17.035  INFO 18180 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 18235 (http)
+2021-05-26 19:46:17.047  INFO 18180 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-05-26 19:46:17.047  INFO 18180 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
+2021-05-26 19:46:17.048  INFO 18180 --- [           main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.23] using APR version [1.7.0].
+2021-05-26 19:46:17.049  INFO 18180 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2021-05-26 19:46:17.049  INFO 18180 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2021-05-26 19:46:17.051  INFO 18180 --- [           main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1k  25 Mar 2021]
+2021-05-26 19:46:17.140  INFO 18180 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-05-26 19:46:17.140  INFO 18180 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1652 ms
+2021-05-26 19:46:17.299  INFO 18180 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-05-26 19:46:17.351  INFO 18180 --- [         task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-05-26 19:46:17.436  INFO 18180 --- [         task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.20.Final
+2021-05-26 19:46:17.500  WARN 18180 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-05-26 19:46:17.675  INFO 18180 --- [         task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2021-05-26 19:46:17.789  INFO 18180 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-05-26 19:46:17.913  INFO 18180 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-05-26 19:46:17.934  INFO 18180 --- [         task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: hibernate.SQLiteDialect
+2021-05-26 19:46:17.987  INFO 18180 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 18235 (http) with context path ''
+2021-05-26 19:46:17.989  INFO 18180 --- [           main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2021-05-26 19:46:17.999  INFO 18180 --- [           main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2021-05-26 19:46:18.032  INFO 18180 --- [           main] main.MainServer                          : Started MainServer in 3.316 seconds (JVM running for 5.759)
+2021-05-26 19:46:18.152  INFO 18180 --- [         task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-05-26 19:46:18.159  INFO 18180 --- [         task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-05-26 19:46:24.189  INFO 18180 --- [io-18235-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-05-26 19:46:24.191  INFO 18180 --- [io-18235-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-05-26 19:46:24.200  INFO 18180 --- [io-18235-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms

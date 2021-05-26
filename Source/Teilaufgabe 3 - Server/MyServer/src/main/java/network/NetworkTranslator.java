@@ -1,9 +1,11 @@
 package network;
 
+import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import games.helpers.ServerUniqueGameIdentifier;
+import map.HalfMapData;
 import player.helpers.PlayerInformation;
 import player.helpers.ServerUniquePlayerIdentifier;
 
@@ -24,6 +26,13 @@ public class NetworkTranslator {
 	public PlayerInformation networkPlayerRegistrationtoInternal(PlayerRegistration playerReg) {
 		return new PlayerInformation(playerReg.getStudentFirstName(), playerReg.getStudentLastName(),
 				playerReg.getStudentID());
+	}
+
+	public HalfMapData networkHalfMapToInernal(HalfMap halfm) {
+		// TODO: something
+		// TODO: implement internal HalfMap
+
+		return null;
 	}
 
 }

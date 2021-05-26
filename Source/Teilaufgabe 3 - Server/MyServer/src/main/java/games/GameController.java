@@ -36,6 +36,10 @@ public class GameController {
 		return games.get(gameID).registerPlayer(playerInf);
 	}
 
+	public void addHalfMap() {
+
+	}
+
 	private boolean checkGameIDUsed(ServerUniqueGameIdentifier gameID) {
 		return games.containsKey(gameID);
 	}

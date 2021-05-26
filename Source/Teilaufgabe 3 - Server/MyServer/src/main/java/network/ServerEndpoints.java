@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.ResponseEnvelope;
 import MessagesBase.UniqueGameIdentifier;
@@ -87,9 +88,13 @@ public class ServerEndpoints {
 
 		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(newPlayerID);
 		return playerIDMessage;
+	}
 
-		// note you will need to include additional logic, e.g., additional classes
-		// which create, store, validate, etc. player ids and incoming game ids
+	@RequestMapping(value = "/{gameID}/halfmaps", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+	public @ResponseBody ResponseEnvelope receiveHalfMap(@PathVariable String gameID,
+			@Validated @RequestBody HalfMap halfMap) {
+
+		return new ResponseEnvelope();
 	}
 
 	/*
