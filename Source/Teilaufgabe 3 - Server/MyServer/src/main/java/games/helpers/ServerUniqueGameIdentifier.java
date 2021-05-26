@@ -24,4 +24,16 @@ public class ServerUniqueGameIdentifier {
 		return gameID.hashCode();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof ServerUniqueGameIdentifier))
+			return false;
+
+		ServerUniqueGameIdentifier arg = (ServerUniqueGameIdentifier) obj;
+
+		return gameID.equals(arg.gameID);
+	}
+
 }

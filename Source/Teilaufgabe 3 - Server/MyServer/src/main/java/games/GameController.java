@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import exceptions.GameNotFoundException;
 import games.helpers.ServerUniqueGameIdentifier;
 import player.helpers.PlayerInformation;
 import player.helpers.ServerUniquePlayerIdentifier;
@@ -28,6 +29,10 @@ public class GameController {
 	}
 
 	public ServerUniquePlayerIdentifier registerPlayer(ServerUniqueGameIdentifier gameID, PlayerInformation playerInf) {
+		if (!(games.containsKey(gameID))) {
+			throw new GameNotFoundException("The passed gameID was not found");
+		}
+
 		return games.get(gameID).registerPlayer(playerInf);
 	}
 

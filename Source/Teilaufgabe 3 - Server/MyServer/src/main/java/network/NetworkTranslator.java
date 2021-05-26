@@ -10,7 +10,7 @@ import player.helpers.ServerUniquePlayerIdentifier;
 public class NetworkTranslator {
 
 	public ServerUniqueGameIdentifier networkGameIDToInternal(UniqueGameIdentifier gameID) {
-		return new ServerUniqueGameIdentifier();
+		return new ServerUniqueGameIdentifier(gameID.getUniqueGameID());
 	}
 
 	public UniqueGameIdentifier internalGameIDToNetwork(ServerUniqueGameIdentifier gameID) {
