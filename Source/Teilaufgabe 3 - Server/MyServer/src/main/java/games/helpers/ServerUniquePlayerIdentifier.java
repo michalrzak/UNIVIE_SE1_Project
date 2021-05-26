@@ -1,4 +1,4 @@
-package server.games.helpers;
+package games.helpers;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package server.exceptions;
+package exceptions;
 
 public class TooManyPlayersRegistered extends GenericExampleException {
 

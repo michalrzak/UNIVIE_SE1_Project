@@ -1,4 +1,4 @@
-package server.exceptions;
+package exceptions;
 
 /* Note, this is just a quick minimal example to show the generic exception handling
  * functionality in spring. Typically I would recommend that you create individual exception types

@@ -1,10 +1,10 @@
-package server.games;
+package games;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import server.exceptions.TooManyPlayersRegistered;
-import server.games.helpers.ServerUniquePlayerIdentifier;
+import exceptions.TooManyPlayersRegistered;
+import games.helpers.ServerUniquePlayerIdentifier;
 
 public class PlayerController {
 

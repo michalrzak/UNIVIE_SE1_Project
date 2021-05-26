@@ -1,11 +1,11 @@
-package server.games;
+package games;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import server.games.helpers.ServerUniqueGameIdentifier;
+import games.helpers.ServerUniqueGameIdentifier;
 
 public class GameController {
 

@@ -1,8 +1,8 @@
-package server.network;
+package network;
 
 import MessagesBase.UniqueGameIdentifier;
-import server.games.GameController;
-import server.games.helpers.ServerUniqueGameIdentifier;
+import games.GameController;
+import games.helpers.ServerUniqueGameIdentifier;
 
 public class GameManager {
 

@@ -1,6 +1,6 @@
-package server.games;
+package games;
 
-import server.games.helpers.ServerUniquePlayerIdentifier;
+import games.helpers.ServerUniquePlayerIdentifier;
 
 public class Game {
 

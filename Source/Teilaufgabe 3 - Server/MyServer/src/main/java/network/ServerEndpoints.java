@@ -1,4 +1,4 @@
-package server.network;
+package network;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ import MessagesBase.PlayerRegistration;
 import MessagesBase.ResponseEnvelope;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
-import server.exceptions.GenericExampleException;
+import exceptions.GenericExampleException;
 
 @Controller
 @RequestMapping(value = "/games")

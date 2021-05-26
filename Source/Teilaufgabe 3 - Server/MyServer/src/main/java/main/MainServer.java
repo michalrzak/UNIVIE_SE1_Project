@@ -1,4 +1,4 @@
-package server.main;
+package main;
 
 import java.util.Collections;
 

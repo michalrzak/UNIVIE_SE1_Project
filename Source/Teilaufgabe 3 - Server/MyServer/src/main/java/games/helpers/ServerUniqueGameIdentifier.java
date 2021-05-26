@@ -1,4 +1,4 @@
-package server.games.helpers;
+package games.helpers;
 
 public class ServerUniqueGameIdentifier {
 
