@@ -1,19 +1,22 @@
 package network;
 
+import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
+import MessagesBase.UniquePlayerIdentifier;
 import games.GameController;
 import games.helpers.ServerUniqueGameIdentifier;
 
 public class GameManager {
 
 	final private GameController games = new GameController();
+	final private NetworkTranslator translate = new NetworkTranslator();
 
 	public UniqueGameIdentifier newGame() {
-		return convertGameIDToNetwork(games.createNewGame());
+		return translate.internalGameIDToNetwork(games.createNewGame());
 	}
 
-	private UniqueGameIdentifier convertGameIDToNetwork(ServerUniqueGameIdentifier gameID) {
-		return new UniqueGameIdentifier(gameID.getIDAsString());
+	public UniquePlayerIdentifier registerPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerReg) {
+		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
 	}
 
 }

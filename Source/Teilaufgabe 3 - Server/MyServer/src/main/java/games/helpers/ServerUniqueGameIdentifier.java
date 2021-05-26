@@ -11,6 +11,10 @@ public class ServerUniqueGameIdentifier {
 		gameID = rand.nextString(GAMEID_LENGTH);
 	}
 
+	public ServerUniqueGameIdentifier(String id) {
+		gameID = id;
+	}
+
 	public String getIDAsString() {
 		return gameID;
 	}
