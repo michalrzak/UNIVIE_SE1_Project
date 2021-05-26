@@ -6,7 +6,8 @@ import java.util.Map;
 import java.util.Queue;
 
 import games.helpers.ServerUniqueGameIdentifier;
-import games.helpers.ServerUniquePlayerIdentifier;
+import player.helpers.PlayerInformation;
+import player.helpers.ServerUniquePlayerIdentifier;
 
 public class GameController {
 
@@ -26,9 +27,8 @@ public class GameController {
 		return newID;
 	}
 
-	public ServerUniquePlayerIdentifier registerPlayer(ServerUniqueGameIdentifier gameID, String firstName,
-			String lastName, String studentID) {
-		return null;
+	public ServerUniquePlayerIdentifier registerPlayer(ServerUniqueGameIdentifier gameID, PlayerInformation playerInf) {
+		return games.get(gameID).registerPlayer(playerInf);
 	}
 
 	private boolean checkGameIDUsed(ServerUniqueGameIdentifier gameID) {

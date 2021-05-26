@@ -1,6 +1,8 @@
 package games;
 
-import games.helpers.ServerUniquePlayerIdentifier;
+import player.PlayerController;
+import player.helpers.PlayerInformation;
+import player.helpers.ServerUniquePlayerIdentifier;
 
 public class Game {
 
@@ -8,8 +10,8 @@ public class Game {
 
 	final private PlayerController players = new PlayerController();
 
-	public void registerPlayer(ServerUniquePlayerIdentifier playerID) {
-		players.registerPlayer(playerID);
+	public ServerUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
+		return players.registerPlayer(playerInf);
 	}
 
 	public void receiveHalfMap() {

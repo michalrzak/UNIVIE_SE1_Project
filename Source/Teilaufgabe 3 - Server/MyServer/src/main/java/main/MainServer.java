@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * and also, relevant for us, controllers holding endpoints 
  */
 @SpringBootApplication
-@ComponentScan(basePackages = "server.network")
+@ComponentScan(basePackages = "network")
 @Configuration
 public class MainServer {
 

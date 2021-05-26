@@ -5,6 +5,8 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import games.GameController;
 import games.helpers.ServerUniqueGameIdentifier;
+import player.helpers.PlayerInformation;
+import player.helpers.ServerUniquePlayerIdentifier;
 
 public class GameManager {
 
@@ -16,7 +18,13 @@ public class GameManager {
 	}
 
 	public UniquePlayerIdentifier registerPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerReg) {
+		// should be validated by spring
 		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		PlayerInformation playerInf = translate.networkPlayerRegistrationtoInternal(playerReg);
+
+		ServerUniquePlayerIdentifier playerID = games.registerPlayer(serverGameID, playerInf);
+
+		return translate.internalPlayerIDToNetwork(playerID);
 	}
 
 }

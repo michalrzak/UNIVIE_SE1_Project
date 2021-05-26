@@ -1,7 +1,5 @@
 package network;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.MediaType;
@@ -84,7 +82,8 @@ public class ServerEndpoints {
 	@RequestMapping(value = "/{gameID}/players", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody ResponseEnvelope<UniquePlayerIdentifier> registerPlayer(@PathVariable String gameID,
 			@Validated @RequestBody PlayerRegistration playerRegistration) {
-		UniquePlayerIdentifier newPlayerID = new UniquePlayerIdentifier(UUID.randomUUID().toString());
+
+		UniquePlayerIdentifier newPlayerID = games.registerPlayer(new UniqueGameIdentifier(gameID), playerRegistration);
 
 		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(newPlayerID);
 		return playerIDMessage;
