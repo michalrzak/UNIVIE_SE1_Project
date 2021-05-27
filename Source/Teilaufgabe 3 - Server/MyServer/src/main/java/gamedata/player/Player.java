@@ -1,4 +1,4 @@
-package player;
+package gamedata.player;
 
 public class Player {
 

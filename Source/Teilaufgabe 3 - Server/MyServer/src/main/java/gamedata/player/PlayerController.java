@@ -1,4 +1,4 @@
-package player;
+package gamedata.player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import exceptions.PlayerInvalidTurn;
 import exceptions.TooManyPlayersRegistered;
-import player.helpers.PlayerInformation;
-import player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.PlayerInformation;
+import gamedata.player.helpers.ServerUniquePlayerIdentifier;
 
 public class PlayerController {
 

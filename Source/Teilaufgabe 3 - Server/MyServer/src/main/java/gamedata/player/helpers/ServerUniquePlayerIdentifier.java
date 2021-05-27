@@ -1,4 +1,4 @@
-package player.helpers;
+package gamedata.player.helpers;
 
 import java.util.UUID;
 

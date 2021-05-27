@@ -1,4 +1,4 @@
-package games.helpers;
+package gamedata.game.helpers;
 
 import java.util.Random;
 

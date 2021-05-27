@@ -1,4 +1,4 @@
-package player.helpers;
+package gamedata.player.helpers;
 
 public class PlayerInformation {
 	final private String firstName;

@@ -1,4 +1,4 @@
-package map;
+package gamedata.map;
 
 public class HalfMapData {
 

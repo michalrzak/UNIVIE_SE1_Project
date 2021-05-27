@@ -1,4 +1,4 @@
-package games;
+package gamedata.game;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Queue;
 
 import exceptions.GameNotFoundException;
-import games.helpers.ServerUniqueGameIdentifier;
-import player.helpers.PlayerInformation;
-import player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.game.helpers.ServerUniqueGameIdentifier;
+import gamedata.player.helpers.PlayerInformation;
+import gamedata.player.helpers.ServerUniquePlayerIdentifier;
 
 public class GameController {
 

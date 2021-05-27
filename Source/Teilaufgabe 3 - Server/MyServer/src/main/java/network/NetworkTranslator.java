@@ -4,10 +4,10 @@ import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
-import games.helpers.ServerUniqueGameIdentifier;
-import map.HalfMapData;
-import player.helpers.PlayerInformation;
-import player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.game.helpers.ServerUniqueGameIdentifier;
+import gamedata.map.HalfMapData;
+import gamedata.player.helpers.PlayerInformation;
+import gamedata.player.helpers.ServerUniquePlayerIdentifier;
 
 public class NetworkTranslator {
 

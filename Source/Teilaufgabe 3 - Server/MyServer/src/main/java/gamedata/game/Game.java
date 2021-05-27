@@ -1,10 +1,10 @@
-package games;
+package gamedata.game;
 
-import map.HalfMapData;
-import map.MapController;
-import player.PlayerController;
-import player.helpers.PlayerInformation;
-import player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.map.HalfMapData;
+import gamedata.map.MapController;
+import gamedata.player.PlayerController;
+import gamedata.player.helpers.PlayerInformation;
+import gamedata.player.helpers.ServerUniquePlayerIdentifier;
 
 public class Game {
 
