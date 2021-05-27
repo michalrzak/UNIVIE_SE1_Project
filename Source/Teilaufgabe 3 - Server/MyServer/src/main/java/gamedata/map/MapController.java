@@ -1,35 +1,44 @@
 package gamedata.map;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
+import exceptions.GameNotReadyException;
 import exceptions.TooManyHalfMapsReceived;
 
 public class MapController {
 
-	final static private int MAX_HALF_MAPS = 2;
+	final private static int MAX_HALF_MAPS = 2;
 
-	final private Set<HalfMapData> halfMaps = new HashSet<>();
+	private Optional<HalfMapData> hmdata1 = Optional.empty();
+	private Optional<HalfMapData> hmdata2 = Optional.empty();
 
 	private Optional<FullMapData> fullMap = Optional.empty();
 
 	public void receiveHalfMap(HalfMapData hmData) {
-		if (halfMaps.size() >= MAX_HALF_MAPS) {
-			throw new TooManyHalfMapsReceived("The given game has already received all halfmaps");
+		if (hmdata1.isPresent() && hmdata2.isPresent()) {
+			throw new TooManyHalfMapsReceived("The given game has already received 2 halfmaps");
 		}
 
-		halfMaps.add(hmData);
+		if (hmdata1.isEmpty()) {
+			hmdata1 = Optional.of(hmData);
+		} else {
+			hmdata2 = Optional.of(hmData);
+		}
 
-		if (halfMaps.size() == MAX_HALF_MAPS) {
+		if (hmdata2.isPresent()) {
 			generateFullMap();
 		}
 	}
 
 	private void generateFullMap() {
-		// TODO: add real logic
-		fullMap = Optional.of(new FullMapData());
-		return;
+		fullMap = Optional.of(new FullMapData(hmdata1.get(), hmdata2.get()));
+	}
+
+	public FullMapData getFullMap() {
+		if (fullMap.isPresent()) {
+			throw new GameNotReadyException("The game has not received both half maps yet");
+		}
+		return fullMap.get();
 	}
 
 }
