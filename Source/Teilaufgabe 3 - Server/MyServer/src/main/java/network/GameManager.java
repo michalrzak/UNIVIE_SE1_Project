@@ -1,18 +1,28 @@
 package network;
 
+import java.util.List;
+
 import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import gamedata.game.GameController;
 import gamedata.game.helpers.ServerUniqueGameIdentifier;
+import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
 import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import rules.IRules;
+import rules.RuleHalfMapCastle;
+import rules.RuleHalfMapDimensions;
+import rules.RuleHalfMapNoIslands;
 
 public class GameManager {
 
-	final private GameController games = new GameController();
-	final private NetworkTranslator translate = new NetworkTranslator();
+	private final static List<IRules> rules = List.of(new RuleHalfMapDimensions(), new RuleHalfMapNoIslands(),
+			new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
+
+	private final GameController games = new GameController();
+	private final NetworkTranslator translate = new NetworkTranslator();
 
 	public UniqueGameIdentifier newGame() {
 		return translate.internalGameIDToNetwork(games.createNewGame());
@@ -28,10 +38,16 @@ public class GameManager {
 		return translate.internalPlayerIDToNetwork(playerID);
 	}
 
-	public void receiveHalfMap(HalfMap receivedHalfMap) {
-		// TODO: validate
-		// TODO: translate
-		// TODO: pass
+	public void receiveHalfMap(UniqueGameIdentifier gameID, HalfMap receivedHalfMap) {
+		for (IRules rule : rules) {
+			rule.validateHalfMap(receivedHalfMap);
+		}
+
+		HalfMapData hmdata = translate.networkHalfMapToInernal(receivedHalfMap);
+		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+
+		ServerUniquePlayerIdentifier playerID = translate.networkPlayerIDToInternal(receivedHalfMap);
+		games.addHalfMap(serverGameID, playerID, hmdata);
 	}
 
 }

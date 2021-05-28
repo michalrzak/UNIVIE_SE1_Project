@@ -3,7 +3,15 @@ package gamedata.player.helpers;
 import java.util.UUID;
 
 public class ServerUniquePlayerIdentifier {
-	final private String playerID = UUID.randomUUID().toString();
+	private final String playerID;
+
+	public ServerUniquePlayerIdentifier() {
+		this.playerID = UUID.randomUUID().toString();
+	}
+
+	public ServerUniquePlayerIdentifier(String playerID) {
+		this.playerID = playerID;
+	}
 
 	public String getPlayerIDAsString() {
 		return playerID;

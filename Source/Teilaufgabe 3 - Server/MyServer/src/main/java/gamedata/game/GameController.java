@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import exceptions.GameNotFoundException;
 import gamedata.game.helpers.ServerUniqueGameIdentifier;
+import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
 import gamedata.player.helpers.ServerUniquePlayerIdentifier;
 
@@ -36,8 +37,9 @@ public class GameController {
 		return games.get(gameID).registerPlayer(playerInf);
 	}
 
-	public void addHalfMap() {
-
+	public void addHalfMap(ServerUniqueGameIdentifier gameID, ServerUniquePlayerIdentifier playerID,
+			HalfMapData hmdata) {
+		games.get(gameID).receiveHalfMap(playerID, hmdata);
 	}
 
 	private boolean checkGameIDUsed(ServerUniqueGameIdentifier gameID) {
