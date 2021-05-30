@@ -20,6 +20,7 @@ public class Game {
 	public void receiveHalfMap(ServerUniquePlayerIdentifier playerID, HalfMapData hmData) {
 		players.checkPlayerTurn(playerID);
 		map.receiveHalfMap(hmData);
+		players.nextTurn();
 	}
 
 	public boolean hasStarted() {

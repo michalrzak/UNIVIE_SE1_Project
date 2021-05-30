@@ -39,6 +39,9 @@ public class GameController {
 
 	public void addHalfMap(ServerUniqueGameIdentifier gameID, ServerUniquePlayerIdentifier playerID,
 			HalfMapData hmdata) {
+		if (!games.containsKey(gameID)) {
+			throw new GameNotFoundException("The passed gameID was not found");
+		}
 		games.get(gameID).receiveHalfMap(playerID, hmdata);
 	}
 

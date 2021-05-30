@@ -40,7 +40,12 @@ public class GameManager {
 
 	public void receiveHalfMap(UniqueGameIdentifier gameID, HalfMap receivedHalfMap) {
 		for (IRules rule : rules) {
-			rule.validateHalfMap(receivedHalfMap);
+			try {
+				rule.validateHalfMap(receivedHalfMap);
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+				throw e;
+			}
 		}
 
 		HalfMapData hmdata = translate.networkHalfMapToInernal(receivedHalfMap);

@@ -1,8 +1,9 @@
 package gamedata.player;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Queue;
 
 import exceptions.PlayerInvalidTurn;
 import exceptions.TooManyPlayersRegistered;
@@ -15,7 +16,7 @@ public class PlayerController {
 
 	final private Map<ServerUniquePlayerIdentifier, PlayerInformation> registeredPlayers = new HashMap<>();
 
-	private Optional<ServerUniquePlayerIdentifier> currentTurn = Optional.empty();
+	private final Queue<ServerUniquePlayerIdentifier> playerTurn = new LinkedList<>();
 
 	public ServerUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
 		if (registeredPlayers.size() >= 2) {
@@ -26,30 +27,35 @@ public class PlayerController {
 		registeredPlayers.put(id, playerInf);
 
 		if (registeredPlayers.size() == MAX_PLAYERS_PER_GAME) {
-			pickFirstPlayer();
+			pickPlayerOrder();
 		}
 
 		return id;
 	}
 
 	public void checkPlayerTurn(ServerUniquePlayerIdentifier playerID) {
-		if (currentTurn.isEmpty()) {
+		if (playerTurn.isEmpty()) {
 			throw new PlayerInvalidTurn("Not all players are registered in the game!");
 		}
 
-		ServerUniquePlayerIdentifier current = currentTurn.get();
+		ServerUniquePlayerIdentifier current = playerTurn.element();
 
 		if (!current.equals(playerID)) {
+			// playerTurn.stream().forEach(ele ->
+			// System.out.println(ele.getPlayerIDAsString()));
 			throw new PlayerInvalidTurn("Not your turn!");
 		}
 	}
 
-	private void pickFirstPlayer() {
+	public void nextTurn() {
+		playerTurn.add(playerTurn.remove());
+	}
+
+	private void pickPlayerOrder() {
 		// as the player IDs are random and the hash map is sorted by them, I just pick
 		// the first element from this HashSet and have a random player
 
-		// already returns optional
-		currentTurn = registeredPlayers.keySet().stream().findFirst();
+		registeredPlayers.keySet().stream().forEach(ele -> playerTurn.add(ele));
 	}
 
 }

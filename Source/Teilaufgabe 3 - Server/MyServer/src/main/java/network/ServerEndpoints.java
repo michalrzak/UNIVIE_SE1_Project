@@ -94,6 +94,8 @@ public class ServerEndpoints {
 	public @ResponseBody ResponseEnvelope receiveHalfMap(@PathVariable String gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
+		games.receiveHalfMap(new UniqueGameIdentifier(gameID), halfMap);
+
 		return new ResponseEnvelope();
 	}
 
