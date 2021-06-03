@@ -2,10 +2,14 @@ package network;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
+import exceptions.GenericExampleException;
 import gamedata.game.GameController;
 import gamedata.game.helpers.ServerUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
@@ -23,6 +27,8 @@ public class GameManager {
 
 	private final GameController games = new GameController();
 	private final NetworkTranslator translate = new NetworkTranslator();
+
+	private static Logger logger = LoggerFactory.getLogger(GameManager.class);
 
 	public UniqueGameIdentifier newGame() {
 		return translate.internalGameIDToNetwork(games.createNewGame());
@@ -42,8 +48,8 @@ public class GameManager {
 		for (IRules rule : rules) {
 			try {
 				rule.validateHalfMap(receivedHalfMap);
-			} catch (Exception e) {
-				System.err.println(e.getMessage());
+			} catch (GenericExampleException e) {
+				logger.error("A buisness rule threw an error " + e.getMessage());
 				throw e;
 			}
 		}
@@ -52,7 +58,12 @@ public class GameManager {
 		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
 
 		ServerUniquePlayerIdentifier playerID = translate.networkPlayerIDToInternal(receivedHalfMap);
-		games.addHalfMap(serverGameID, playerID, hmdata);
+
+		try {
+			games.addHalfMap(serverGameID, playerID, hmdata);
+		} catch (GenericExampleException e) {
+			logger.error("Failed to add a halfmap" + e.getMessage());
+		}
 	}
 
 }

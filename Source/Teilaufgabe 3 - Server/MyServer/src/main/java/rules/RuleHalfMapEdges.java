@@ -38,6 +38,7 @@ public class RuleHalfMapEdges implements IRules {
 				|| botEdgeCount >= LONGEDGE_MAX) {
 			throw new InvalidMapException("The edges contained too much water!");
 		}
+
 	}
 
 }
