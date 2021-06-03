@@ -32,4 +32,8 @@ public class Game {
 		return System.currentTimeMillis() - created;
 	}
 
+	public GameAccesser getGameInformation(ServerUniquePlayerIdentifier playerID) {
+		return null;
+	}
+
 }

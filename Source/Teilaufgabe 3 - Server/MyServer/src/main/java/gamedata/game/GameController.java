@@ -45,6 +45,10 @@ public class GameController {
 		games.get(gameID).receiveHalfMap(playerID, hmdata);
 	}
 
+	public GameAccesser getGameInformation(ServerUniqueGameIdentifier gameID, ServerUniquePlayerIdentifier playerID) {
+		return null;
+	}
+
 	private boolean checkGameIDUsed(ServerUniqueGameIdentifier gameID) {
 		return games.containsKey(gameID);
 	}
@@ -57,5 +61,4 @@ public class GameController {
 		games.put(gameID, new Game());
 		gameIDCreation.add(gameID);
 	}
-
 }
