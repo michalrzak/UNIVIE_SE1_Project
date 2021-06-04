@@ -1,9 +1,15 @@
 package gamedata.game;
 
-public class GameAccesser {
-	private final Game game;
+import java.util.Map;
 
-	public GameAccesser(Game game) {
-		this.game = game;
+import gamedata.player.helpers.PlayerInformation;
+import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+
+public class GameAccesser {
+	public Map<ServerUniquePlayerIdentifier, PlayerInformation> getPlayers() {
+		return null;
 	}
+
+	public
+
 }

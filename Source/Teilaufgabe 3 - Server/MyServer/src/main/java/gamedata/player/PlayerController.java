@@ -14,7 +14,7 @@ public class PlayerController {
 
 	final static int MAX_PLAYERS_PER_GAME = 2;
 
-	final private Map<ServerUniquePlayerIdentifier, PlayerInformation> registeredPlayers = new HashMap<>();
+	final private Map<ServerUniquePlayerIdentifier, Player> registeredPlayers = new HashMap<>();
 
 	private final Queue<ServerUniquePlayerIdentifier> playerTurn = new LinkedList<>();
 
@@ -24,7 +24,7 @@ public class PlayerController {
 		}
 
 		ServerUniquePlayerIdentifier id = new ServerUniquePlayerIdentifier();
-		registeredPlayers.put(id, playerInf);
+		registeredPlayers.put(id, new Player(playerInf, id));
 
 		if (registeredPlayers.size() == MAX_PLAYERS_PER_GAME) {
 			pickPlayerOrder();
