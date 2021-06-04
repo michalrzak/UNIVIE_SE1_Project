@@ -49,7 +49,7 @@ public class GameManager {
 			try {
 				rule.validateHalfMap(receivedHalfMap);
 			} catch (GenericExampleException e) {
-				logger.error("A buisness rule threw an error " + e.getMessage());
+				logger.warn("A buisness rule threw an error " + e.getMessage());
 				throw e;
 			}
 		}
@@ -63,6 +63,7 @@ public class GameManager {
 			games.addHalfMap(serverGameID, playerID, hmdata);
 		} catch (GenericExampleException e) {
 			logger.error("Failed to add a halfmap" + e.getMessage());
+			throw e;
 		}
 	}
 

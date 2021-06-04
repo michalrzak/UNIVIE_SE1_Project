@@ -40,7 +40,7 @@ public class MapController {
 	}
 
 	public FullMapData getFullMap() {
-		if (fullMap.isPresent()) {
+		if (fullMap.isEmpty()) {
 			logger.warn("Tried accessing fullmap but full map is not constructed yet");
 			throw new GameNotReadyException("The game has not received both half maps yet");
 		}
