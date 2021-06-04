@@ -1,12 +1,4 @@
-/server/
-/exceptions/
-/games/
-/main/
-/network/
-/validation/
-/player/
-/hibernate/
-/map/
 /gamedata/
-/game/
-/rules/
+/network/
+/hibernate/
+/main/

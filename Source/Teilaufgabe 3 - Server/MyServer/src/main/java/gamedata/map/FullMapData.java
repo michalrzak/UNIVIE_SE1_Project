@@ -11,8 +11,8 @@ import gamedata.map.helpers.Position;
 
 public class FullMapData {
 
-	final private Map<Position, ETerrain> terrain = new HashMap<>();
-	final private Map<OwnedGameEntity, Position> entities = new HashMap<>();
+	private final Map<Position, ETerrain> terrain = new HashMap<>();
+	private final Map<OwnedGameEntity, Position> entities = new HashMap<>();
 
 	public FullMapData(HalfMapData hmdataPlayer1, HalfMapData hmdataPlayer2) {
 		// TODO: choose to combine halfMaps

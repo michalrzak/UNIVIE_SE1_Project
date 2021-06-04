@@ -10,9 +10,9 @@ import gamedata.player.helpers.ServerUniquePlayerIdentifier;
 
 public class HalfMapData {
 
-	final private Map<Position, ETerrain> terrain;
-	final private Position castlePosition;
-	final private OwnedGameEntity castle;
+	private final Map<Position, ETerrain> terrain;
+	private final Position castlePosition;
+	private final OwnedGameEntity castle;
 
 	// private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 

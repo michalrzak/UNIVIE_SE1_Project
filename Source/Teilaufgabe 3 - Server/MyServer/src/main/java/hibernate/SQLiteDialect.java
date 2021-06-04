@@ -11,6 +11,16 @@ import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.type.StandardBasicTypes;
 
+/*import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.function.AbstractAnsiTrimEmulationFunction;
+import org.hibernate.dialect.function.NoArgSQLFunction;
+import org.hibernate.dialect.function.SQLFunction;
+import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.dialect.function.StandardSQLFunction;
+import org.hibernate.dialect.function.VarArgsSQLFunction;
+import org.hibernate.type.StandardBasicTypes;
+*/
+
 //Hibernate and Databases are ONLY relevant for group projects!
 //Hibernate does not support SQLite out of the box.
 //Hence, we need to provide a minimal dialect configuration

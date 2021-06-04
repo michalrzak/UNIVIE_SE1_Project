@@ -1,9 +1,9 @@
 package gamedata.player.helpers;
 
 public class PlayerInformation {
-	final private String firstName;
-	final private String lastName;
-	final private String studentID;
+	private final String firstName;
+	private final String lastName;
+	private final String studentID;
 
 	public PlayerInformation(String firstName, String lastName, String studentID) {
 		this.firstName = firstName;
