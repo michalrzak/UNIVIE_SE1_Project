@@ -38,17 +38,15 @@ class GetState_Tests {
 		assertThrows(GenericExampleException.class, getStateInfo);
 	}
 
-	@Test
-	void GetState_InvalidPlayerID_shouldThrowError() {
-		GameController gc = new GameController();
-		ServerUniqueGameIdentifier gameID = gc.createNewGame();
-		ServerUniquePlayerIdentifier playerID = new ServerUniquePlayerIdentifier("totaly-legit-playerID");
-
-		Executable getStateInfo = () -> {
-			gc.getGameInformation(gameID, playerID);
-		};
-
-		assertThrows(GenericExampleException.class, getStateInfo);
-	}
+	/*
+	 * @Test void GetState_InvalidPlayerID_shouldThrowError() { GameController gc =
+	 * new GameController(); ServerUniqueGameIdentifier gameID = gc.createNewGame();
+	 * ServerUniquePlayerIdentifier playerID = new
+	 * ServerUniquePlayerIdentifier("totaly-legit-playerID");
+	 * 
+	 * Executable getStateInfo = () -> { gc.getGameInformation(gameID, playerID); };
+	 * 
+	 * assertThrows(GenericExampleException.class, getStateInfo); }
+	 */
 
 }

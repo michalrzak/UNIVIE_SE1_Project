@@ -10,6 +10,6 @@ public class GameAccesser {
 		return null;
 	}
 
-	public
+	// public
 
 }
