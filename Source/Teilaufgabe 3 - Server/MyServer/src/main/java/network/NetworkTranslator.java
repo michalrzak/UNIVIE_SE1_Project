@@ -7,6 +7,7 @@ import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
+import exceptions.InvalidDataException;
 import gamedata.game.helpers.ServerUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.map.helpers.ETerrain;
@@ -47,6 +48,21 @@ public class NetworkTranslator {
 		return new HalfMapData(terrainMap, castlePosition, networkPlayerIDToInternal(halfmap));
 	}
 
+	public MessagesBase.ETerrain internalTerrainToNetwork(ETerrain terrain) {
+
+		switch (terrain) {
+		case GRASS:
+			return MessagesBase.ETerrain.Grass;
+		case MOUNTAIN:
+			return MessagesBase.ETerrain.Mountain;
+		case WATER:
+			return MessagesBase.ETerrain.Water;
+		}
+
+		throw new InvalidDataException("the passed terrain contained an unexpected realization");
+
+	}
+
 	private Map<Position, ETerrain> extractTerrainMap(HalfMap halfmap) {
 		Map<Position, MessagesBase.ETerrain> networkTerrain = EHalfMapHelpers.extractMap(halfmap);
 
@@ -56,10 +72,13 @@ public class NetworkTranslator {
 			switch (networkTerrain.get(pos)) {
 			case Grass:
 				ret.put(pos, ETerrain.GRASS);
+				break;
 			case Mountain:
 				ret.put(pos, ETerrain.MOUNTAIN);
+				break;
 			case Water:
 				ret.put(pos, ETerrain.WATER);
+				break;
 			}
 		}
 

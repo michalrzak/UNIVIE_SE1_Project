@@ -65,6 +65,10 @@ public class PlayerController {
 		return true;
 	}
 
+	public boolean checkPlayer(ServerUniquePlayerIdentifier playerID) {
+		return players.contains(playerID);
+	}
+
 	public void nextTurn() {
 		playerTurn.add(playerTurn.remove());
 	}

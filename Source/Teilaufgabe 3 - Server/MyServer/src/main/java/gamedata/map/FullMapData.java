@@ -45,4 +45,12 @@ public class FullMapData {
 				.addPosition(Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight())));
 	}
 
+	public Map<Position, ETerrain> getTerrain() {
+		return terrain;
+	}
+
+	public Map<OwnedGameEntity, Position> getEntities() {
+		return entities;
+	}
+
 }

@@ -41,6 +41,10 @@ public class PlayerStorage {
 		return new Player(registeredPlayers.get(playerID), playerID);
 	}
 
+	public boolean contains(ServerUniquePlayerIdentifier playerID) {
+		return registeredPlayers.containsKey(playerID);
+	}
+
 	public int size() {
 		return registeredPlayers.size();
 	}

@@ -9,8 +9,10 @@ import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
+import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
-import gamedata.game.GameController;
+import gamedata.GameDataController;
+import gamedata.game.Game;
 import gamedata.game.helpers.ServerUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
@@ -25,7 +27,7 @@ public class GameManager {
 	private final static List<IRules> rules = List.of(new RuleHalfMapDimensions(), new RuleHalfMapNoIslands(),
 			new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
 
-	private final GameController games = new GameController();
+	private final GameDataController games = new GameDataController();
 	private final NetworkTranslator translate = new NetworkTranslator();
 
 	private static Logger logger = LoggerFactory.getLogger(GameManager.class);
@@ -65,6 +67,18 @@ public class GameManager {
 			logger.error("Failed to add a halfmap" + e.getMessage());
 			throw e;
 		}
+	}
+
+	public GameState getGameState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
+		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		ServerUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(playerID);
+
+		Game g = games.getGame(serverGameID, serverPlayerID);
+
+		GameStateExtractor gse = new GameStateExtractor(serverPlayerID);
+
+		return gse.extractGameState(g);
+
 	}
 
 }

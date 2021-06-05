@@ -1,4 +1,4 @@
-package gamedata.game;
+package gamedata;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,18 +10,18 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.GameNotFoundException;
 import exceptions.PlayerInvalidTurn;
-import gamedata.EGameConstants;
+import gamedata.game.Game;
 import gamedata.game.helpers.ServerUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
 import gamedata.player.helpers.ServerUniquePlayerIdentifier;
 
-public class GameController {
+public class GameDataController {
 
 	private final Map<ServerUniqueGameIdentifier, Game> games = new HashMap<>();
 	private final Queue<ServerUniqueGameIdentifier> gameIDCreation = new LinkedList<>();
 
-	private static Logger logger = LoggerFactory.getLogger(GameController.class);
+	private static Logger logger = LoggerFactory.getLogger(GameDataController.class);
 
 	public ServerUniqueGameIdentifier createNewGame() {
 		ServerUniqueGameIdentifier newID = new ServerUniqueGameIdentifier();
@@ -61,8 +61,23 @@ public class GameController {
 		}
 	}
 
-	public GameAccesser getGameInformation(ServerUniqueGameIdentifier gameID, ServerUniquePlayerIdentifier playerID) {
-		return null;
+	public Game getGame(ServerUniqueGameIdentifier gameID, ServerUniquePlayerIdentifier playerID) {
+
+		if (!games.containsKey(gameID)) {
+			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
+					+ " tried requesting the gamestate of a game that does not exist (was: " + gameID.getIDAsString()
+					+ ")");
+			throw new GameNotFoundException("The passed gameID was not found");
+		}
+
+		if (!games.get(gameID).checkPlayer(playerID)) {
+			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
+					+ " tried accessing the gamestate of a game where he is not registered (was: "
+					+ gameID.getIDAsString() + ")");
+			throw new GameNotFoundException("The passed playerID was not found");
+		}
+
+		return games.get(gameID);
 	}
 
 	private boolean checkGameIDUsed(ServerUniqueGameIdentifier gameID) {

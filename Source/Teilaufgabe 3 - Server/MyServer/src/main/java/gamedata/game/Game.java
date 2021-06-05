@@ -33,6 +33,10 @@ public class Game {
 		players.nextTurn();
 	}
 
+	public boolean checkPlayer(ServerUniquePlayerIdentifier playerID) {
+		return players.checkPlayer(playerID);
+	}
+
 	public boolean hasStarted() {
 		// TODO: make this meaningfull
 		return false;
@@ -40,10 +44,6 @@ public class Game {
 
 	public long getTimeAlive() {
 		return System.currentTimeMillis() - created;
-	}
-
-	public GameAccesser getGameInformation(ServerUniquePlayerIdentifier playerID) {
-		return null;
 	}
 
 }
