@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import exceptions.GameNotReadyException;
 import exceptions.TooManyHalfMapsReceived;
 
 public class MapController {
@@ -39,12 +38,8 @@ public class MapController {
 		fullMap = Optional.of(new FullMapData(hmdata1.get(), hmdata2.get()));
 	}
 
-	public FullMapData getFullMap() {
-		if (fullMap.isEmpty()) {
-			logger.warn("Tried accessing fullmap but full map is not constructed yet");
-			throw new GameNotReadyException("The game has not received both half maps yet");
-		}
-		return fullMap.get();
+	public Optional<FullMapData> getFullMap() {
+		return fullMap;
 	}
 
 }

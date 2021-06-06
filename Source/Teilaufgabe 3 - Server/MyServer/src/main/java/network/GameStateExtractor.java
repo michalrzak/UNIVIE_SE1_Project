@@ -1,6 +1,9 @@
 package network;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import MessagesBase.UniquePlayerIdentifier;
@@ -25,7 +28,19 @@ public class GameStateExtractor {
 	}
 
 	public GameState extractGameState(Game game) {
-		return null;
+		Collection<Player> players = game.getPlayers();
+		Collection<PlayerState> ps = new ArrayList<>();
+		for (Player iplayer : players) {
+			ps.add(extractPlayerState(iplayer));
+		}
+
+		Optional<FullMapData> fmd = game.getFullMap();
+
+		if (fmd.isEmpty()) {
+			return new GameState(ps, generateGameStateID());
+		}
+
+		return new GameState(Optional.of(extractFullMap(fmd.get())), ps, generateGameStateID());
 	}
 
 	private PlayerState extractPlayerState(Player player) {

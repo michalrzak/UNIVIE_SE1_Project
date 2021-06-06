@@ -1,5 +1,6 @@
 package gamedata.player.helpers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,4 +54,9 @@ public class PlayerStorage {
 		return registeredPlayers.keySet().stream().collect(Collectors.toList());
 	}
 
+	public Collection<Player> getPlayers() {
+		return registeredPlayers.entrySet().stream().map(
+				playerIDPlayerInfpair -> new Player(playerIDPlayerInfpair.getValue(), playerIDPlayerInfpair.getKey()))
+				.collect(Collectors.toList());
+	}
 }

@@ -17,6 +17,7 @@ import MessagesBase.PlayerRegistration;
 import MessagesBase.ResponseEnvelope;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
+import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
 
 @Controller
@@ -97,6 +98,16 @@ public class ServerEndpoints {
 		games.receiveHalfMap(new UniqueGameIdentifier(gameID), halfMap);
 
 		return new ResponseEnvelope();
+	}
+
+	@RequestMapping(value = "/{gameID}/states/{playerID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
+	public @ResponseBody ResponseEnvelope<GameState> receiveHalfMap(@PathVariable String gameID,
+			@PathVariable String playerID) {
+
+		System.out.println("helo");
+		ResponseEnvelope<GameState> gameState = new ResponseEnvelope<>(
+				games.getGameState(new UniqueGameIdentifier(gameID), new UniquePlayerIdentifier(playerID)));
+		return gameState;
 	}
 
 	/*

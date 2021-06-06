@@ -64,7 +64,7 @@ public class GameManager {
 		try {
 			games.addHalfMap(serverGameID, playerID, hmdata);
 		} catch (GenericExampleException e) {
-			logger.error("Failed to add a halfmap" + e.getMessage());
+			logger.warn("Failed to add a halfmap" + e.getMessage());
 			throw e;
 		}
 	}

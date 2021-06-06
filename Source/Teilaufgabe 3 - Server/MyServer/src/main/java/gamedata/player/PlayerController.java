@@ -1,5 +1,6 @@
 package gamedata.player;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +59,9 @@ public class PlayerController {
 			return false;
 		}
 
+		// playerTurn.forEach(ele -> System.out.println(ele.getPlayerIDAsString()));
+		// System.out.println("=================");
+
 		ServerUniquePlayerIdentifier current = playerTurn.element();
 		if (!current.equals(playerID)) {
 			return false;
@@ -71,6 +75,10 @@ public class PlayerController {
 
 	public void nextTurn() {
 		playerTurn.add(playerTurn.remove());
+	}
+
+	public Collection<Player> getPlayers() {
+		return players.getPlayers();
 	}
 
 	private void pickPlayerOrder() {

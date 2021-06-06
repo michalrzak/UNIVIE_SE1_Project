@@ -49,6 +49,7 @@ public class FullMapData {
 		return terrain;
 	}
 
+	// TODO: abstract from this
 	public Map<OwnedGameEntity, Position> getEntities() {
 		return entities;
 	}
