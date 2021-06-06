@@ -104,7 +104,6 @@ public class ServerEndpoints {
 	public @ResponseBody ResponseEnvelope<GameState> receiveHalfMap(@PathVariable String gameID,
 			@PathVariable String playerID) {
 
-		System.out.println("helo");
 		ResponseEnvelope<GameState> gameState = new ResponseEnvelope<>(
 				games.getGameState(new UniqueGameIdentifier(gameID), new UniquePlayerIdentifier(playerID)));
 		return gameState;
