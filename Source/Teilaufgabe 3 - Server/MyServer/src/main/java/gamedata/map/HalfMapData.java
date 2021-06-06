@@ -17,6 +17,9 @@ public class HalfMapData {
 	// private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 
 	public HalfMapData(Map<Position, ETerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
+		// TODO: magic number
+		assert (terrain.size() == 32);
+
 		this.terrain = terrain;
 		castle = new OwnedGameEntity(owner, EGameEntity.CASTLE);
 		this.castlePosition = castlePosition;

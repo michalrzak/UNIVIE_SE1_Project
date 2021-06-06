@@ -28,10 +28,14 @@ public class SFullMap implements ISFullMapAccesser {
 		var player1HMTerrainMap = hmdataPlayer1.getTerrain();
 		var player2HMTerrainMap = hmdataPlayer2.getTerrain();
 
+		// TODO: magic number
+		assert (player1HMTerrainMap.size() == 32);
+		assert (player2HMTerrainMap.size() == 32);
+
 		EMapType mapType = EMapType.getRandomMapType();
 
-		for (int y = 0; y <= mapType.getHalfHeight(); ++y) {
-			for (int x = 0; x <= mapType.getHalfWidth(); ++x) {
+		for (int y = 0; y < mapType.getHalfHeight(); ++y) {
+			for (int x = 0; x < mapType.getHalfWidth(); ++x) {
 				Position current = new Position(x, y);
 				Position currentOffset = current.addPosition(mapType.getSecondHalfOffset());
 
@@ -45,7 +49,7 @@ public class SFullMap implements ISFullMapAccesser {
 		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.CASTLE), p1CastlePosition);
 		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.PLAYER), p1CastlePosition);
 
-		Position p2CastlePosition = hmdataPlayer2.getCastlePosition();
+		Position p2CastlePosition = hmdataPlayer2.getCastlePosition().addPosition(mapType.getSecondHalfOffset());
 		SUniquePlayerIdentifier p2Owner = hmdataPlayer2.getOwner();
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.CASTLE), p2CastlePosition);
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.PLAYER), p2CastlePosition);
@@ -54,6 +58,9 @@ public class SFullMap implements ISFullMapAccesser {
 				Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight()));
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.TREASURE), mapType.getSecondHalfOffset()
 				.addPosition(Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight())));
+
+		// TODO: MAGIC NUMBER
+		assert (terrain.size() == 64);
 	}
 
 	public void collectTreasure(SUniquePlayerIdentifier playerID) {

@@ -3,7 +3,7 @@ package gamedata.map.helpers;
 import java.util.Random;
 
 public enum EMapType {
-	LONGMAP(32, 8, 16, 8, new Position(16, 0)), SQUAREMAP(16, 16, 16, 8, new Position(0, 16));
+	LONGMAP(16, 4, 8, 4, new Position(8, 0)), SQUAREMAP(8, 8, 8, 4, new Position(0, 4));
 
 	private static int MAP_TYPES = 2;
 

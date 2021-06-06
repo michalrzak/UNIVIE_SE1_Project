@@ -75,6 +75,7 @@ public class GameManager {
 
 		IGameAccesser g = games.getGame(serverGameID, serverPlayerID);
 
+		assert (!serverPlayerID.equals(g.getOtherPlayer(serverPlayerID)));
 		GameStateExtractor gse = new GameStateExtractor(serverPlayerID, g.getOtherPlayer(serverPlayerID));
 
 		return gse.extractGameState(g);

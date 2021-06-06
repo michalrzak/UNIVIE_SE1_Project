@@ -96,7 +96,7 @@ public class PlayersController {
 			throw new InternalServerException("Sorry, but the server had an internal error!");
 		}
 
-		return registeredPlayers.stream().filter(player -> player.equals(myPlayer)).findFirst().get();
+		return registeredPlayers.stream().filter(player -> !player.equals(myPlayer)).findFirst().get();
 	}
 
 	private void pickPlayerOrder() {

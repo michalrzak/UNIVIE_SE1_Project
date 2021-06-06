@@ -45,6 +45,9 @@ public class NetworkTranslator {
 		Map<Position, ETerrain> terrainMap = extractTerrainMap(halfmap);
 		Position castlePosition = findCastle(halfmap);
 
+		// TODO: MAGIC NUMBER!
+		assert (terrainMap.size() == 32);
+
 		return new HalfMapData(terrainMap, castlePosition, networkPlayerIDToInternal(halfmap));
 	}
 
@@ -67,17 +70,16 @@ public class NetworkTranslator {
 		Map<Position, MessagesBase.ETerrain> networkTerrain = EHalfMapHelpers.extractMap(halfmap);
 
 		Map<Position, ETerrain> ret = new HashMap<>();
-
-		for (Position pos : ret.keySet()) {
-			switch (networkTerrain.get(pos)) {
+		for (var posTerrain : networkTerrain.entrySet()) {
+			switch (posTerrain.getValue()) {
 			case Grass:
-				ret.put(pos, ETerrain.GRASS);
+				ret.put(posTerrain.getKey(), ETerrain.GRASS);
 				break;
 			case Mountain:
-				ret.put(pos, ETerrain.MOUNTAIN);
+				ret.put(posTerrain.getKey(), ETerrain.MOUNTAIN);
 				break;
 			case Water:
-				ret.put(pos, ETerrain.WATER);
+				ret.put(posTerrain.getKey(), ETerrain.WATER);
 				break;
 			}
 		}
