@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import exceptions.InternalServerException;
 import exceptions.TooManyPlayersRegistered;
 import gamedata.EGameConstants;
 import gamedata.player.helpers.ESPlayerGameState;
@@ -87,6 +88,15 @@ public class PlayersController {
 		} else {
 			return ESPlayerGameState.SHOULD_WAIT;
 		}
+	}
+
+	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
+		if (playerTurn.isEmpty()) {
+			logger.error("Tried accessing other player even though the game has not started yet!");
+			throw new InternalServerException("Sorry, but the server had an internal error!");
+		}
+
+		return registeredPlayers.stream().filter(player -> player.equals(myPlayer)).findFirst().get();
 	}
 
 	private void pickPlayerOrder() {

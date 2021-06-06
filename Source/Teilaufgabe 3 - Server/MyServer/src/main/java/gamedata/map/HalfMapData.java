@@ -26,7 +26,7 @@ public class HalfMapData {
 		return terrain;
 	}
 
-	public Position castlePosition() {
+	public Position getCastlePosition() {
 		return castlePosition;
 	}
 

@@ -12,7 +12,7 @@ public class MapController {
 	private Optional<HalfMapData> hmdata1 = Optional.empty();
 	private Optional<HalfMapData> hmdata2 = Optional.empty();
 
-	private Optional<FullMapData> fullMap = Optional.empty();
+	private Optional<SFullMap> fullMap = Optional.empty();
 
 	private static Logger logger = LoggerFactory.getLogger(MapController.class);
 
@@ -35,11 +35,16 @@ public class MapController {
 
 	private void generateFullMap() {
 		logger.debug("generating full map");
-		fullMap = Optional.of(new FullMapData(hmdata1.get(), hmdata2.get()));
+		fullMap = Optional.of(new SFullMap(hmdata1.get(), hmdata2.get()));
 	}
 
-	public Optional<FullMapData> getFullMap() {
-		return fullMap;
+	public Optional<ISFullMapAccesser> getFullMap() {
+		// cannot simply return full map as I need to convert between SFullMap and
+		// ISFullMapAccesser
+		if (fullMap.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(fullMap.get());
 	}
 
 }

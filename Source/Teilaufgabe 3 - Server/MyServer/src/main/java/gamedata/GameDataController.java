@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import exceptions.GameNotFoundException;
 import exceptions.PlayerInvalidTurn;
 import gamedata.game.Game;
+import gamedata.game.IGameAccesser;
 import gamedata.game.helpers.SUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
@@ -44,8 +45,7 @@ public class GameDataController {
 		return games.get(gameID).registerPlayer(playerInf);
 	}
 
-	public void addHalfMap(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID,
-			HalfMapData hmdata) {
+	public void addHalfMap(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID, HalfMapData hmdata) {
 		if (!games.containsKey(gameID)) {
 			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
 					+ " tried adding a halfmap to a gameID which does not exist (was: " + gameID.getIDAsString() + ")");
@@ -61,7 +61,7 @@ public class GameDataController {
 		}
 	}
 
-	public Game getGame(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
+	public IGameAccesser getGame(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
 
 		if (!games.containsKey(gameID)) {
 			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()

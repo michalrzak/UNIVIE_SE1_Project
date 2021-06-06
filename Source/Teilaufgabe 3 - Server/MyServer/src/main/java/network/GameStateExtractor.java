@@ -7,34 +7,41 @@ import java.util.Optional;
 import java.util.Set;
 
 import MessagesBase.UniquePlayerIdentifier;
+import MessagesGameState.EFortState;
 import MessagesGameState.EPlayerGameState;
+import MessagesGameState.EPlayerPositionState;
+import MessagesGameState.ETreasureState;
 import MessagesGameState.FullMap;
 import MessagesGameState.FullMapNode;
 import MessagesGameState.GameState;
 import MessagesGameState.PlayerState;
-import gamedata.game.Game;
-import gamedata.map.FullMapData;
-import gamedata.map.helpers.EGameEntity;
-import gamedata.map.helpers.OwnedGameEntity;
+import exceptions.InternalServerException;
+import gamedata.game.IGameAccesser;
+import gamedata.map.ISFullMapAccesser;
+import gamedata.map.helpers.Position;
 import gamedata.player.IPlayerAccesser;
+import gamedata.player.helpers.ESPlayerGameState;
 import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 public class GameStateExtractor {
 
-	private final SUniquePlayerIdentifier playerID;
+	private final SUniquePlayerIdentifier me;
+	private final SUniquePlayerIdentifier other;
 
-	public GameStateExtractor(SUniquePlayerIdentifier playerID) {
-		this.playerID = playerID;
+	public GameStateExtractor(SUniquePlayerIdentifier me, SUniquePlayerIdentifier other) {
+		this.me = me;
+		this.other = other;
 	}
 
-	public GameState extractGameState(Game game) {
+	public GameState extractGameState(IGameAccesser game) {
 		Collection<IPlayerAccesser> players = game.getPlayers();
 		Collection<PlayerState> ps = new ArrayList<>();
 		for (IPlayerAccesser iplayer : players) {
-			ps.add(extractPlayerState(iplayer));
+			ESPlayerGameState playerState = game.getPlayerState(iplayer.getPlayerID());
+			ps.add(extractPlayerState(iplayer, playerState));
 		}
 
-		Optional<FullMapData> fmd = game.getFullMap();
+		Optional<ISFullMapAccesser> fmd = game.getFullMap();
 
 		if (fmd.isEmpty()) {
 			return new GameState(ps, generateGameStateID());
@@ -43,10 +50,9 @@ public class GameStateExtractor {
 		return new GameState(Optional.of(extractFullMap(fmd.get())), ps, generateGameStateID());
 	}
 
-	private PlayerState extractPlayerState(IPlayerAccesser player) {
+	private PlayerState extractPlayerState(IPlayerAccesser player, ESPlayerGameState playerState) {
 
-		// TODO: MAKE THIS MEANINGFULL
-		EPlayerGameState gameState = EPlayerGameState.ShouldWait;
+		EPlayerGameState gameState = translatePlayerState(playerState);
 
 		NetworkTranslator nt = new NetworkTranslator();
 
@@ -58,41 +64,46 @@ public class GameStateExtractor {
 		return ret;
 	}
 
-	private FullMap extractFullMap(FullMapData fullmap) {
+	private FullMap extractFullMap(ISFullMapAccesser fullmap) {
 		NetworkTranslator nt = new NetworkTranslator();
 
-		var gameEntitiesToPositionMap = fullmap.getEntities();
 		var positionToTerrainMap = fullmap.getTerrain();
-
-		// TODO: I dont like how this works
-		OwnedGameEntity myPlayer = new OwnedGameEntity(playerID, EGameEntity.PLAYER);
-		OwnedGameEntity myTreasure = new OwnedGameEntity(playerID, EGameEntity.TREASURE);
-		OwnedGameEntity myFort = new OwnedGameEntity(playerID, EGameEntity.CASTLE);
 
 		Set<FullMapNode> mapNodes = new HashSet<>();
 		for (var positionTerrainPair : positionToTerrainMap.entrySet()) {
 			MessagesBase.ETerrain terrain = nt.internalTerrainToNetwork(positionTerrainPair.getValue());
 
-			// TODO: how do i get the ID of the other player?
-			// TODO: or how do i rework this to not need it. Technically it is not necessery
-			// to bind this information to an ID
-			MessagesGameState.EPlayerPositionState playerPositionState = MessagesGameState.EPlayerPositionState.NoPlayerPresent;
-			if (gameEntitiesToPositionMap.get(myPlayer).equals(positionTerrainPair.getKey())) {
-				playerPositionState = MessagesGameState.EPlayerPositionState.MyPosition;
+			Position currentPos = positionTerrainPair.getKey();
+
+			EPlayerPositionState playerPositionState = EPlayerPositionState.NoPlayerPresent;
+			if (fullmap.getPlayerPosition(me).equals(currentPos)) {
+				playerPositionState = EPlayerPositionState.MyPosition;
+			}
+			if (fullmap.getPlayerPosition(other).equals(currentPos)) {
+				if (playerPositionState == EPlayerPositionState.MyPosition) {
+					playerPositionState = EPlayerPositionState.BothPlayerPosition;
+				} else {
+					playerPositionState = EPlayerPositionState.EnemyPlayerPosition;
+				}
 			}
 
-			MessagesGameState.ETreasureState treasureState = MessagesGameState.ETreasureState.NoOrUnknownTreasureState;
-			if (gameEntitiesToPositionMap.get(myTreasure).equals(positionTerrainPair.getKey())) {
-				treasureState = MessagesGameState.ETreasureState.MyTreasureIsPresent;
+			ETreasureState treasureState = ETreasureState.NoOrUnknownTreasureState;
+			// fullmap.getTreasurePosition() returns an optional
+			if (fullmap.getTreasurePosition(me).isPresent()
+					&& fullmap.getTreasurePosition(me).get().equals(currentPos)) {
+				treasureState = ETreasureState.MyTreasureIsPresent;
 			}
 
-			MessagesGameState.EFortState fortState = MessagesGameState.EFortState.NoOrUnknownFortState;
-			if (gameEntitiesToPositionMap.get(myFort).equals(positionTerrainPair.getKey())) {
-				fortState = MessagesGameState.EFortState.MyFortPresent;
+			EFortState fortState = EFortState.NoOrUnknownFortState;
+			if (fullmap.getCastlePosition(me).equals(currentPos)) {
+				fortState = EFortState.MyFortPresent;
+			}
+			if (fullmap.getCastlePosition(other).equals(currentPos)) {
+				fortState = EFortState.EnemyFortPresent;
 			}
 
-			mapNodes.add(new FullMapNode(terrain, playerPositionState, treasureState, fortState,
-					positionTerrainPair.getKey().getx(), positionTerrainPair.getKey().gety()));
+			mapNodes.add(new FullMapNode(terrain, playerPositionState, treasureState, fortState, currentPos.getx(),
+					currentPos.gety()));
 
 		}
 
@@ -101,5 +112,24 @@ public class GameStateExtractor {
 
 	private String generateGameStateID() {
 		return "Not implemented!";
+	}
+
+	private EPlayerGameState translatePlayerState(ESPlayerGameState playerState) {
+		switch (playerState) {
+		case WON:
+			return EPlayerGameState.Won;
+
+		case LOST:
+			return EPlayerGameState.Lost;
+
+		case SHOULD_ACT_NEXT:
+			return EPlayerGameState.ShouldActNext;
+
+		case SHOULD_WAIT:
+			return EPlayerGameState.ShouldWait;
+		}
+
+		throw new InternalServerException(
+				"Sorry, but something went wrong on the server. (Player game state conversion)");
 	}
 }

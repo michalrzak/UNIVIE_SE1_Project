@@ -12,7 +12,7 @@ import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
 import gamedata.GameDataController;
-import gamedata.game.Game;
+import gamedata.game.IGameAccesser;
 import gamedata.game.helpers.SUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
@@ -73,9 +73,9 @@ public class GameManager {
 		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
 		SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(playerID);
 
-		Game g = games.getGame(serverGameID, serverPlayerID);
+		IGameAccesser g = games.getGame(serverGameID, serverPlayerID);
 
-		GameStateExtractor gse = new GameStateExtractor(serverPlayerID);
+		GameStateExtractor gse = new GameStateExtractor(serverPlayerID, g.getOtherPlayer(serverPlayerID));
 
 		return gse.extractGameState(g);
 

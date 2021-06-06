@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.PlayerInvalidTurn;
-import gamedata.map.FullMapData;
 import gamedata.map.HalfMapData;
+import gamedata.map.ISFullMapAccesser;
 import gamedata.map.MapController;
 import gamedata.player.IPlayerAccesser;
 import gamedata.player.PlayersController;
@@ -58,13 +58,18 @@ public class Game implements IGameAccesser {
 	}
 
 	@Override
-	public Optional<FullMapData> getFullMap() {
+	public Optional<ISFullMapAccesser> getFullMap() {
 		return map.getFullMap();
 	}
 
 	@Override
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID) {
 		return players.getPlayerState(playerID);
+	}
+
+	@Override
+	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
+		return players.getOtherPlayer(myPlayer);
 	}
 
 }

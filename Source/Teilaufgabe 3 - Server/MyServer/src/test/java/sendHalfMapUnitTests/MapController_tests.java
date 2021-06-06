@@ -32,7 +32,7 @@ class MapController_tests {
 
 		// Mockito.when(hmd.getOwner()).thenReturn(new
 		// ServerUniquePlayerIdentifier("totally-legit-playerID"));
-		Mockito.when(hmd.castlePosition()).thenReturn(new Position(0, 0));
+		Mockito.when(hmd.getCastlePosition()).thenReturn(new Position(0, 0));
 		Mockito.when(hmd.getOwner()).thenReturn(new SUniquePlayerIdentifier());
 
 		return hmd;

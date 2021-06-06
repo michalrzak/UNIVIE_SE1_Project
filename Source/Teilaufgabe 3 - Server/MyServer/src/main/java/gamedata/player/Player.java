@@ -72,8 +72,13 @@ public class Player extends SUniquePlayerIdentifier implements IPlayerAccesser {
 		if (obj == null)
 			return false;
 
+		if (!(obj instanceof SUniquePlayerIdentifier)) {
+			return false;
+		}
+
 		SUniquePlayerIdentifier other = (SUniquePlayerIdentifier) obj;
-		if (!other.equals(this))
+
+		if (!other.getPlayerIDAsString().equals(getPlayerID().getPlayerIDAsString()))
 			return false;
 		return true;
 	}
