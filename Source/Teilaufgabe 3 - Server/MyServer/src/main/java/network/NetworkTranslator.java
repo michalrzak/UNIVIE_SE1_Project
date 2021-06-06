@@ -8,29 +8,29 @@ import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidDataException;
-import gamedata.game.helpers.ServerUniqueGameIdentifier;
+import gamedata.game.helpers.SUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.map.helpers.ETerrain;
 import gamedata.map.helpers.Position;
 import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 import rules.helpers.EHalfMapHelpers;
 
 public class NetworkTranslator {
 
-	public ServerUniqueGameIdentifier networkGameIDToInternal(UniqueGameIdentifier gameID) {
-		return new ServerUniqueGameIdentifier(gameID.getUniqueGameID());
+	public SUniqueGameIdentifier networkGameIDToInternal(UniqueGameIdentifier gameID) {
+		return new SUniqueGameIdentifier(gameID.getUniqueGameID());
 	}
 
-	public UniqueGameIdentifier internalGameIDToNetwork(ServerUniqueGameIdentifier gameID) {
+	public UniqueGameIdentifier internalGameIDToNetwork(SUniqueGameIdentifier gameID) {
 		return new UniqueGameIdentifier(gameID.getIDAsString());
 	}
 
-	public ServerUniquePlayerIdentifier networkPlayerIDToInternal(UniquePlayerIdentifier playerID) {
-		return new ServerUniquePlayerIdentifier(playerID.getUniquePlayerID());
+	public SUniquePlayerIdentifier networkPlayerIDToInternal(UniquePlayerIdentifier playerID) {
+		return new SUniquePlayerIdentifier(playerID.getUniquePlayerID());
 	}
 
-	public UniquePlayerIdentifier internalPlayerIDToNetwork(ServerUniquePlayerIdentifier playerID) {
+	public UniquePlayerIdentifier internalPlayerIDToNetwork(SUniquePlayerIdentifier playerID) {
 		return new UniquePlayerIdentifier(playerID.getPlayerIDAsString());
 	}
 

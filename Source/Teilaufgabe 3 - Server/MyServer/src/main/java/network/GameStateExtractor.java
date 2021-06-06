@@ -16,21 +16,21 @@ import gamedata.game.Game;
 import gamedata.map.FullMapData;
 import gamedata.map.helpers.EGameEntity;
 import gamedata.map.helpers.OwnedGameEntity;
-import gamedata.player.Player;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.IPlayerAccesser;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 public class GameStateExtractor {
 
-	private final ServerUniquePlayerIdentifier playerID;
+	private final SUniquePlayerIdentifier playerID;
 
-	public GameStateExtractor(ServerUniquePlayerIdentifier playerID) {
+	public GameStateExtractor(SUniquePlayerIdentifier playerID) {
 		this.playerID = playerID;
 	}
 
 	public GameState extractGameState(Game game) {
-		Collection<Player> players = game.getPlayers();
+		Collection<IPlayerAccesser> players = game.getPlayers();
 		Collection<PlayerState> ps = new ArrayList<>();
-		for (Player iplayer : players) {
+		for (IPlayerAccesser iplayer : players) {
 			ps.add(extractPlayerState(iplayer));
 		}
 
@@ -43,7 +43,7 @@ public class GameStateExtractor {
 		return new GameState(Optional.of(extractFullMap(fmd.get())), ps, generateGameStateID());
 	}
 
-	private PlayerState extractPlayerState(Player player) {
+	private PlayerState extractPlayerState(IPlayerAccesser player) {
 
 		// TODO: MAKE THIS MEANINGFULL
 		EPlayerGameState gameState = EPlayerGameState.ShouldWait;
@@ -52,7 +52,7 @@ public class GameStateExtractor {
 
 		UniquePlayerIdentifier playerID = nt.internalPlayerIDToNetwork(player.getPlayerID());
 
-		PlayerState ret = new PlayerState(player.getFirtName(), player.getLastName(), player.getStudentID(), gameState,
+		PlayerState ret = new PlayerState(player.getFirstName(), player.getLastName(), player.getStudentID(), gameState,
 				playerID, player.getCollectedTreasure());
 
 		return ret;

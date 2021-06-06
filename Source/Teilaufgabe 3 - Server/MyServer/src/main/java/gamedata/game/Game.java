@@ -10,24 +10,25 @@ import exceptions.PlayerInvalidTurn;
 import gamedata.map.FullMapData;
 import gamedata.map.HalfMapData;
 import gamedata.map.MapController;
-import gamedata.player.Player;
-import gamedata.player.PlayerController;
+import gamedata.player.IPlayerAccesser;
+import gamedata.player.PlayersController;
+import gamedata.player.helpers.ESPlayerGameState;
 import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 
-public class Game implements GameAccesser {
+public class Game implements IGameAccesser {
 
 	private final long created = System.currentTimeMillis();
-	private final PlayerController players = new PlayerController();
+	private final PlayersController players = new PlayersController();
 	private final MapController map = new MapController();
 
 	private static Logger logger = LoggerFactory.getLogger(Game.class);
 
-	public ServerUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
+	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
 		return players.registerPlayer(playerInf);
 	}
 
-	public void receiveHalfMap(ServerUniquePlayerIdentifier playerID, HalfMapData hmData) {
+	public void receiveHalfMap(SUniquePlayerIdentifier playerID, HalfMapData hmData) {
 		if (!players.checkPlayerTurn(playerID)) {
 			logger.warn("A player with playerID: " + playerID.getPlayerIDAsString()
 					+ "; tried sending a HalfMap, but it was not his turn! It was ");
@@ -38,7 +39,7 @@ public class Game implements GameAccesser {
 		players.nextTurn();
 	}
 
-	public boolean checkPlayer(ServerUniquePlayerIdentifier playerID) {
+	public boolean checkPlayer(SUniquePlayerIdentifier playerID) {
 		return players.checkPlayer(playerID);
 	}
 
@@ -52,13 +53,18 @@ public class Game implements GameAccesser {
 	}
 
 	@Override
-	public Collection<Player> getPlayers() {
+	public Collection<IPlayerAccesser> getPlayers() {
 		return players.getPlayers();
 	}
 
 	@Override
 	public Optional<FullMapData> getFullMap() {
 		return map.getFullMap();
+	}
+
+	@Override
+	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID) {
+		return players.getPlayerState(playerID);
 	}
 
 }

@@ -6,7 +6,7 @@ import gamedata.map.helpers.EGameEntity;
 import gamedata.map.helpers.ETerrain;
 import gamedata.map.helpers.OwnedGameEntity;
 import gamedata.map.helpers.Position;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 public class HalfMapData {
 
@@ -16,7 +16,7 @@ public class HalfMapData {
 
 	// private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 
-	public HalfMapData(Map<Position, ETerrain> terrain, Position castlePosition, ServerUniquePlayerIdentifier owner) {
+	public HalfMapData(Map<Position, ETerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
 		this.terrain = terrain;
 		castle = new OwnedGameEntity(owner, EGameEntity.CASTLE);
 		this.castlePosition = castlePosition;
@@ -30,7 +30,7 @@ public class HalfMapData {
 		return castlePosition;
 	}
 
-	public ServerUniquePlayerIdentifier getOwner() {
+	public SUniquePlayerIdentifier getOwner() {
 		return castle.getOwner();
 	}
 

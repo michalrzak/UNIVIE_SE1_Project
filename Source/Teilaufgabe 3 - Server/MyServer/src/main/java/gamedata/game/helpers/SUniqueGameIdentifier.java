@@ -1,17 +1,17 @@
 package gamedata.game.helpers;
 
-public class ServerUniqueGameIdentifier {
+public class SUniqueGameIdentifier {
 
 	static final private int GAMEID_LENGTH = 5;
 
 	final private String gameID;
 
-	public ServerUniqueGameIdentifier() {
+	public SUniqueGameIdentifier() {
 		RandomString rand = new RandomString();
 		gameID = rand.nextString(GAMEID_LENGTH);
 	}
 
-	public ServerUniqueGameIdentifier(String id) {
+	public SUniqueGameIdentifier(String id) {
 		gameID = id;
 	}
 
@@ -28,10 +28,10 @@ public class ServerUniqueGameIdentifier {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!(obj instanceof ServerUniqueGameIdentifier))
+		if (!(obj instanceof SUniqueGameIdentifier))
 			return false;
 
-		ServerUniqueGameIdentifier arg = (ServerUniqueGameIdentifier) obj;
+		SUniqueGameIdentifier arg = (SUniqueGameIdentifier) obj;
 
 		return gameID.equals(arg.gameID);
 	}

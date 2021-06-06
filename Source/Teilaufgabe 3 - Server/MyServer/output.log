@@ -7,113 +7,44 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::        (v2.3.3.RELEASE)
 
-2021-06-06 10:12:12.095  INFO 23139 --- [           main] main.MainServer                          : Starting MainServer with PID 23139 (/home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer/bin/main started by mzak in /home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer)
-2021-06-06 10:12:12.098  INFO 23139 --- [           main] main.MainServer                          : No active profile set, falling back to default profiles: default
-2021-06-06 10:12:12.926  INFO 23139 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-06-06 10:12:12.945  INFO 23139 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 JPA repository interfaces.
-2021-06-06 10:12:13.560  INFO 23139 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 18235 (http)
-2021-06-06 10:12:13.571  INFO 23139 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2021-06-06 10:12:13.572  INFO 23139 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
-2021-06-06 10:12:13.573  INFO 23139 --- [           main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.23] using APR version [1.7.0].
-2021-06-06 10:12:13.573  INFO 23139 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
-2021-06-06 10:12:13.573  INFO 23139 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
-2021-06-06 10:12:13.575  INFO 23139 --- [           main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1k  25 Mar 2021]
-2021-06-06 10:12:13.670  INFO 23139 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2021-06-06 10:12:13.670  INFO 23139 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1520 ms
-2021-06-06 10:12:13.806  INFO 23139 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2021-06-06 10:12:13.844  INFO 23139 --- [         task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-06-06 10:12:13.900  INFO 23139 --- [         task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.20.Final
-2021-06-06 10:12:13.999  WARN 23139 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-06-06 10:12:14.051  INFO 23139 --- [         task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-06-06 10:12:14.144  INFO 23139 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2021-06-06 10:12:14.275  INFO 23139 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2021-06-06 10:12:14.290  INFO 23139 --- [         task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: hibernate.SQLiteDialect
-2021-06-06 10:12:14.437  INFO 23139 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 18235 (http) with context path ''
-2021-06-06 10:12:14.439  INFO 23139 --- [           main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-06-06 10:12:14.439  INFO 23139 --- [           main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-06-06 10:12:14.449  INFO 23139 --- [           main] main.MainServer                          : Started MainServer in 2.792 seconds (JVM running for 3.223)
-2021-06-06 10:12:14.491  INFO 23139 --- [         task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-06-06 10:12:14.501  INFO 23139 --- [         task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-06-06 10:12:18.279  INFO 23139 --- [io-18235-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-06-06 10:12:18.279  INFO 23139 --- [io-18235-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2021-06-06 10:12:18.294  INFO 23139 --- [io-18235-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 15 ms
-2021-06-06 10:12:19.162  WARN 23139 --- [io-18235-exec-5] gamedata.GameDataController              : Tried registering a player to a gameID that does not exist. GameID was: zjJVF
-2021-06-06 10:12:19.736  WARN 23139 --- [io-18235-exec-5] gamedata.GameDataController              : Player with ID: 3a4f3772-cac0-43b2-a2da-fd1ada70a3e1 tried adding a halfmap to a gameID which does not exist (was: i85s7)
-2021-06-06 10:12:19.737  WARN 23139 --- [io-18235-exec-5] network.GameManager                      : Failed to add a halfmapThe passed gameID was not found
-2021-06-06 10:12:19.854  WARN 23139 --- [io-18235-exec-9] gamedata.game.Game                       : A player with playerID: 386710b3-f158-45fe-aa9f-2c87a21e22b1; tried sending a HalfMap, but it was not his turn! It was 
-2021-06-06 10:12:19.854  WARN 23139 --- [io-18235-exec-9] gamedata.GameDataController              : The player with ID: 386710b3-f158-45fe-aa9f-2c87a21e22b1 tried to send a HalfMap to the game with ID: Ucaex, but it was not his turn!
-2021-06-06 10:12:19.855  WARN 23139 --- [io-18235-exec-9] network.GameManager                      : Failed to add a halfmapIt is not the players with playerID: 386710b3-f158-45fe-aa9f-2c87a21e22b1; turn!
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-2021-06-06 10:12:20.952  WARN 23139 --- [io-18235-exec-7] gamedata.GameDataController              : Player with ID: 4c49839b-301b-4844-9418-b91dbfa4b3a0 tried requesting the gamestate of a game that does not exist (was: xb5AK)
-helo
-helo
-helo
-helo
-2021-06-06 10:12:21.061  WARN 23139 --- [io-18235-exec-7] gamedata.GameDataController              : Player with ID: 804d8ae9-3188-4791-a6dc-6d87fe4f25fb tried accessing the gamestate of a game where he is not registered (was: zUVbi)
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
-helo
+2021-06-06 11:07:50.280  INFO 11157 --- [           main] main.MainServer                          : Starting MainServer with PID 11157 (/home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer/bin/main started by mzak in /home/mzak/skola/4_semester/SE1/SE1_11922222/Source/Teilaufgabe 3 - Server/MyServer)
+2021-06-06 11:07:50.282  INFO 11157 --- [           main] main.MainServer                          : No active profile set, falling back to default profiles: default
+2021-06-06 11:07:51.046  INFO 11157 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-06-06 11:07:51.066  INFO 11157 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 JPA repository interfaces.
+2021-06-06 11:07:51.753  INFO 11157 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 18235 (http)
+2021-06-06 11:07:51.765  INFO 11157 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-06-06 11:07:51.765  INFO 11157 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
+2021-06-06 11:07:51.766  INFO 11157 --- [           main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.23] using APR version [1.7.0].
+2021-06-06 11:07:51.767  INFO 11157 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2021-06-06 11:07:51.767  INFO 11157 --- [           main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2021-06-06 11:07:51.768  INFO 11157 --- [           main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1k  25 Mar 2021]
+2021-06-06 11:07:51.849  INFO 11157 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-06-06 11:07:51.850  INFO 11157 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1519 ms
+2021-06-06 11:07:51.984  INFO 11157 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-06-06 11:07:52.023  INFO 11157 --- [         task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-06-06 11:07:52.068  INFO 11157 --- [         task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.20.Final
+2021-06-06 11:07:52.206  WARN 11157 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-06-06 11:07:52.259  INFO 11157 --- [         task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2021-06-06 11:07:52.354  INFO 11157 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-06-06 11:07:52.447  INFO 11157 --- [         task-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-06-06 11:07:52.464  INFO 11157 --- [         task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: hibernate.SQLiteDialect
+2021-06-06 11:07:52.669  INFO 11157 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 18235 (http) with context path ''
+2021-06-06 11:07:52.671  INFO 11157 --- [           main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2021-06-06 11:07:52.671  INFO 11157 --- [           main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2021-06-06 11:07:52.689  INFO 11157 --- [           main] main.MainServer                          : Started MainServer in 2.824 seconds (JVM running for 3.214)
+2021-06-06 11:07:52.718  INFO 11157 --- [         task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-06-06 11:07:52.724  INFO 11157 --- [         task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-06-06 11:07:57.282  INFO 11157 --- [io-18235-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-06-06 11:07:57.282  INFO 11157 --- [io-18235-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-06-06 11:07:57.293  INFO 11157 --- [io-18235-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
+2021-06-06 11:07:58.194  WARN 11157 --- [io-18235-exec-5] gamedata.GameDataController              : Tried registering a player to a gameID that does not exist. GameID was: fPP2P
+2021-06-06 11:07:58.724  WARN 11157 --- [io-18235-exec-1] gamedata.game.Game                       : A player with playerID: 95bd83f6-5e16-432e-a730-402949f7acb9; tried sending a HalfMap, but it was not his turn! It was 
+2021-06-06 11:07:58.724  WARN 11157 --- [io-18235-exec-1] gamedata.GameDataController              : The player with ID: 95bd83f6-5e16-432e-a730-402949f7acb9 tried to send a HalfMap to the game with ID: TeRui, but it was not his turn!
+2021-06-06 11:07:58.725  WARN 11157 --- [io-18235-exec-1] network.GameManager                      : Failed to add a halfmapIt is not the players with playerID: 95bd83f6-5e16-432e-a730-402949f7acb9; turn!
+2021-06-06 11:07:58.794  WARN 11157 --- [io-18235-exec-5] gamedata.GameDataController              : Player with ID: a5425e60-e6a0-4bb9-aa91-8886bc0a0835 tried adding a halfmap to a gameID which does not exist (was: mwf37)
+2021-06-06 11:07:58.794  WARN 11157 --- [io-18235-exec-5] network.GameManager                      : Failed to add a halfmapThe passed gameID was not found
+2021-06-06 11:07:58.942  WARN 11157 --- [io-18235-exec-9] gamedata.game.Game                       : A player with playerID: feac3d16-8498-4204-ab21-99104616c33e; tried sending a HalfMap, but it was not his turn! It was 
+2021-06-06 11:07:58.942  WARN 11157 --- [io-18235-exec-9] gamedata.GameDataController              : The player with ID: feac3d16-8498-4204-ab21-99104616c33e tried to send a HalfMap to the game with ID: pjFlY, but it was not his turn!
+2021-06-06 11:07:58.942  WARN 11157 --- [io-18235-exec-9] network.GameManager                      : Failed to add a halfmapIt is not the players with playerID: feac3d16-8498-4204-ab21-99104616c33e; turn!
+2021-06-06 11:07:59.983  WARN 11157 --- [io-18235-exec-7] gamedata.GameDataController              : Player with ID: 038d2bff-412d-4f2d-8120-2d6e40d3a5a9 tried requesting the gamestate of a game that does not exist (was: 9OFPM)
+2021-06-06 11:08:00.090  WARN 11157 --- [io-18235-exec-7] gamedata.GameDataController              : Player with ID: a39fa3f5-a595-4d90-96d7-558fa049e5b9 tried accessing the gamestate of a game where he is not registered (was: esNZB)

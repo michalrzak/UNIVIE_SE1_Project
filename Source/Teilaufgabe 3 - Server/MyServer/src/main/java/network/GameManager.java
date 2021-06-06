@@ -13,10 +13,10 @@ import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
 import gamedata.GameDataController;
 import gamedata.game.Game;
-import gamedata.game.helpers.ServerUniqueGameIdentifier;
+import gamedata.game.helpers.SUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 import rules.IRules;
 import rules.RuleHalfMapCastle;
 import rules.RuleHalfMapDimensions;
@@ -38,10 +38,10 @@ public class GameManager {
 
 	public UniquePlayerIdentifier registerPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerReg) {
 		// should be validated by spring
-		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
 		PlayerInformation playerInf = translate.networkPlayerRegistrationtoInternal(playerReg);
 
-		ServerUniquePlayerIdentifier playerID = games.registerPlayer(serverGameID, playerInf);
+		SUniquePlayerIdentifier playerID = games.registerPlayer(serverGameID, playerInf);
 
 		return translate.internalPlayerIDToNetwork(playerID);
 	}
@@ -57,9 +57,9 @@ public class GameManager {
 		}
 
 		HalfMapData hmdata = translate.networkHalfMapToInernal(receivedHalfMap);
-		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
 
-		ServerUniquePlayerIdentifier playerID = translate.networkPlayerIDToInternal(receivedHalfMap);
+		SUniquePlayerIdentifier playerID = translate.networkPlayerIDToInternal(receivedHalfMap);
 
 		try {
 			games.addHalfMap(serverGameID, playerID, hmdata);
@@ -70,8 +70,8 @@ public class GameManager {
 	}
 
 	public GameState getGameState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
-		ServerUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
-		ServerUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(playerID);
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(playerID);
 
 		Game g = games.getGame(serverGameID, serverPlayerID);
 

@@ -14,7 +14,7 @@ import gamedata.map.HalfMapData;
 import gamedata.map.MapController;
 import gamedata.map.helpers.ETerrain;
 import gamedata.map.helpers.Position;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 class MapController_tests {
 
@@ -33,7 +33,7 @@ class MapController_tests {
 		// Mockito.when(hmd.getOwner()).thenReturn(new
 		// ServerUniquePlayerIdentifier("totally-legit-playerID"));
 		Mockito.when(hmd.castlePosition()).thenReturn(new Position(0, 0));
-		Mockito.when(hmd.getOwner()).thenReturn(new ServerUniquePlayerIdentifier());
+		Mockito.when(hmd.getOwner()).thenReturn(new SUniquePlayerIdentifier());
 
 		return hmd;
 	}

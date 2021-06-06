@@ -2,14 +2,14 @@ package gamedata.player.helpers;
 
 import java.util.UUID;
 
-public class ServerUniquePlayerIdentifier {
+public class SUniquePlayerIdentifier {
 	private final String playerID;
 
-	public ServerUniquePlayerIdentifier() {
+	public SUniquePlayerIdentifier() {
 		this.playerID = UUID.randomUUID().toString();
 	}
 
-	public ServerUniquePlayerIdentifier(String playerID) {
+	public SUniquePlayerIdentifier(String playerID) {
 		this.playerID = playerID;
 	}
 
@@ -26,10 +26,10 @@ public class ServerUniquePlayerIdentifier {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!(obj instanceof ServerUniquePlayerIdentifier))
+		if (!(obj instanceof SUniquePlayerIdentifier))
 			return false;
 
-		ServerUniquePlayerIdentifier arg = (ServerUniquePlayerIdentifier) obj;
+		SUniquePlayerIdentifier arg = (SUniquePlayerIdentifier) obj;
 
 		return playerID.equals(arg.playerID);
 	}

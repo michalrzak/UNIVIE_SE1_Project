@@ -1,17 +1,17 @@
 package gamedata.map.helpers;
 
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 public class OwnedGameEntity {
-	final private ServerUniquePlayerIdentifier owner;
+	final private SUniquePlayerIdentifier owner;
 	final private EGameEntity entity;
 
-	public OwnedGameEntity(ServerUniquePlayerIdentifier owner, EGameEntity entity) {
+	public OwnedGameEntity(SUniquePlayerIdentifier owner, EGameEntity entity) {
 		this.owner = owner;
 		this.entity = entity;
 	}
 
-	public ServerUniquePlayerIdentifier getOwner() {
+	public SUniquePlayerIdentifier getOwner() {
 		return owner;
 	}
 

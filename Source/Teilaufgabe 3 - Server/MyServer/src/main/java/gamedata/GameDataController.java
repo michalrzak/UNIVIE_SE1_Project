@@ -11,22 +11,22 @@ import org.slf4j.LoggerFactory;
 import exceptions.GameNotFoundException;
 import exceptions.PlayerInvalidTurn;
 import gamedata.game.Game;
-import gamedata.game.helpers.ServerUniqueGameIdentifier;
+import gamedata.game.helpers.SUniqueGameIdentifier;
 import gamedata.map.HalfMapData;
 import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 public class GameDataController {
 
-	private final Map<ServerUniqueGameIdentifier, Game> games = new HashMap<>();
-	private final Queue<ServerUniqueGameIdentifier> gameIDCreation = new LinkedList<>();
+	private final Map<SUniqueGameIdentifier, Game> games = new HashMap<>();
+	private final Queue<SUniqueGameIdentifier> gameIDCreation = new LinkedList<>();
 
 	private static Logger logger = LoggerFactory.getLogger(GameDataController.class);
 
-	public ServerUniqueGameIdentifier createNewGame() {
-		ServerUniqueGameIdentifier newID = new ServerUniqueGameIdentifier();
+	public SUniqueGameIdentifier createNewGame() {
+		SUniqueGameIdentifier newID = new SUniqueGameIdentifier();
 		while (checkGameIDUsed(newID)) {
-			newID = new ServerUniqueGameIdentifier();
+			newID = new SUniqueGameIdentifier();
 		}
 
 		createNewGameWithGameID(newID);
@@ -34,7 +34,7 @@ public class GameDataController {
 		return newID;
 	}
 
-	public ServerUniquePlayerIdentifier registerPlayer(ServerUniqueGameIdentifier gameID, PlayerInformation playerInf) {
+	public SUniquePlayerIdentifier registerPlayer(SUniqueGameIdentifier gameID, PlayerInformation playerInf) {
 		if (!(games.containsKey(gameID))) {
 			logger.warn("Tried registering a player to a gameID that does not exist. GameID was: "
 					+ gameID.getIDAsString());
@@ -44,7 +44,7 @@ public class GameDataController {
 		return games.get(gameID).registerPlayer(playerInf);
 	}
 
-	public void addHalfMap(ServerUniqueGameIdentifier gameID, ServerUniquePlayerIdentifier playerID,
+	public void addHalfMap(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID,
 			HalfMapData hmdata) {
 		if (!games.containsKey(gameID)) {
 			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
@@ -61,7 +61,7 @@ public class GameDataController {
 		}
 	}
 
-	public Game getGame(ServerUniqueGameIdentifier gameID, ServerUniquePlayerIdentifier playerID) {
+	public Game getGame(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
 
 		if (!games.containsKey(gameID)) {
 			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
@@ -80,11 +80,11 @@ public class GameDataController {
 		return games.get(gameID);
 	}
 
-	private boolean checkGameIDUsed(ServerUniqueGameIdentifier gameID) {
+	private boolean checkGameIDUsed(SUniqueGameIdentifier gameID) {
 		return games.containsKey(gameID);
 	}
 
-	private void createNewGameWithGameID(ServerUniqueGameIdentifier gameID) {
+	private void createNewGameWithGameID(SUniqueGameIdentifier gameID) {
 		if (gameIDCreation.size() >= EGameConstants.MAX_NUM_OF_GAMES.getValue()) {
 			games.remove(gameIDCreation.remove());
 		}

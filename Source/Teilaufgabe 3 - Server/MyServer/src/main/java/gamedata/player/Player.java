@@ -4,28 +4,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.ServerUniquePlayerIdentifier;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
 
-public class Player extends PlayerInformation {
+public class Player extends SUniquePlayerIdentifier implements IPlayerAccesser {
 
-	private final ServerUniquePlayerIdentifier playerID;
+	private final PlayerInformation playerInf;
 
 	private boolean collectedTreasure = false;
 
 	private static Logger logger = LoggerFactory.getLogger(Player.class);
 
-	public Player(String firstName, String lastName, String studentID, ServerUniquePlayerIdentifier playerID) {
-		super(firstName, lastName, studentID);
-		this.playerID = playerID;
+	public Player(String playerID, PlayerInformation playerInf) {
+		super(playerID);
+		this.playerInf = playerInf;
 	}
 
-	public Player(PlayerInformation playerInf, ServerUniquePlayerIdentifier playerID) {
-		super(playerInf.getFirtName(), playerInf.getLastName(), playerInf.getStudentID());
-		this.playerID = playerID;
+	public Player(String playerID, String firstName, String lastName, String studentID) {
+		this(playerID, new PlayerInformation(firstName, lastName, studentID));
 	}
 
-	public ServerUniquePlayerIdentifier getPlayerID() {
-		return playerID;
+	public Player(SUniquePlayerIdentifier playerID, PlayerInformation playerInf) {
+		this(playerID.getPlayerIDAsString(), playerInf);
+	}
+
+	public Player(PlayerInformation playerInf) {
+		super();
+		this.playerInf = playerInf;
 	}
 
 	public void collectTreasure() {
@@ -36,13 +40,29 @@ public class Player extends PlayerInformation {
 		collectedTreasure = true;
 	}
 
-	public boolean getCollectedTreasure() {
-		return collectedTreasure;
+	@Override
+	public SUniquePlayerIdentifier getPlayerID() {
+		return this;
 	}
 
 	@Override
-	public int hashCode() {
-		return playerID.hashCode();
+	public String getFirstName() {
+		return playerInf.getFirtName();
+	}
+
+	@Override
+	public String getLastName() {
+		return playerInf.getLastName();
+	}
+
+	@Override
+	public String getStudentID() {
+		return playerInf.getStudentID();
+	}
+
+	@Override
+	public boolean getCollectedTreasure() {
+		return collectedTreasure;
 	}
 
 	@Override
@@ -51,13 +71,9 @@ public class Player extends PlayerInformation {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Player other = (Player) obj;
-		if (playerID == null) {
-			if (other.playerID != null)
-				return false;
-		} else if (!playerID.equals(other.playerID))
+
+		SUniquePlayerIdentifier other = (SUniquePlayerIdentifier) obj;
+		if (!other.equals(this))
 			return false;
 		return true;
 	}
