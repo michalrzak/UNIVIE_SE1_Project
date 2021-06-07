@@ -10,7 +10,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 import exceptions.GenericExampleException;
-import gamedata.map.HalfMapData;
+import gamedata.map.SHalfMap;
 import gamedata.map.MapController;
 import gamedata.map.helpers.ETerrain;
 import gamedata.map.helpers.Position;
@@ -24,8 +24,8 @@ class MapController_tests {
 		return map;
 	}
 
-	private HalfMapData getMockedHalfMap() {
-		HalfMapData hmd = Mockito.mock(HalfMapData.class);
+	private SHalfMap getMockedHalfMap() {
+		SHalfMap hmd = Mockito.mock(SHalfMap.class);
 
 		var map = createMockedMap();
 		Mockito.when(hmd.getTerrain()).thenReturn(map);
@@ -42,7 +42,7 @@ class MapController_tests {
 	void MapController_ReceiveHalfMapData_ShouldNotThrow() {
 		final MapController mc = new MapController();
 
-		final HalfMapData hmd1 = getMockedHalfMap();
+		final SHalfMap hmd1 = getMockedHalfMap();
 
 		Executable receiveHalfMap = () -> {
 			mc.receiveHalfMap(hmd1);
@@ -55,8 +55,8 @@ class MapController_tests {
 	void MapController_AccesFullMap_ShouldNotThrow() {
 		final MapController mc = new MapController();
 
-		final HalfMapData hmd1 = getMockedHalfMap();
-		final HalfMapData hmd2 = getMockedHalfMap();
+		final SHalfMap hmd1 = getMockedHalfMap();
+		final SHalfMap hmd2 = getMockedHalfMap();
 
 		Executable receiveHalfMap = () -> {
 			mc.receiveHalfMap(hmd1);
@@ -71,9 +71,9 @@ class MapController_tests {
 	void MapController_Receive3HalfMapData_ShouldThrow() {
 		final MapController mc = new MapController();
 
-		final HalfMapData hmd1 = getMockedHalfMap();
-		final HalfMapData hmd2 = getMockedHalfMap();
-		final HalfMapData hmd3 = getMockedHalfMap();
+		final SHalfMap hmd1 = getMockedHalfMap();
+		final SHalfMap hmd2 = getMockedHalfMap();
+		final SHalfMap hmd3 = getMockedHalfMap();
 
 		Executable receiveHalfMap = () -> {
 			mc.receiveHalfMap(hmd1);

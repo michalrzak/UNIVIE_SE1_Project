@@ -9,7 +9,7 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidDataException;
 import gamedata.game.helpers.SUniqueGameIdentifier;
-import gamedata.map.HalfMapData;
+import gamedata.map.SHalfMap;
 import gamedata.map.helpers.ETerrain;
 import gamedata.map.helpers.Position;
 import gamedata.player.helpers.PlayerInformation;
@@ -39,7 +39,7 @@ public class NetworkTranslator {
 				playerReg.getStudentID());
 	}
 
-	public HalfMapData networkHalfMapToInernal(HalfMap halfmap) {
+	public SHalfMap networkHalfMapToInernal(HalfMap halfmap) {
 		var halfmapNodes = halfmap.getNodes();
 
 		Map<Position, ETerrain> terrainMap = extractTerrainMap(halfmap);
@@ -48,7 +48,7 @@ public class NetworkTranslator {
 		// TODO: MAGIC NUMBER!
 		assert (terrainMap.size() == 32);
 
-		return new HalfMapData(terrainMap, castlePosition, networkPlayerIDToInternal(halfmap));
+		return new SHalfMap(terrainMap, castlePosition, networkPlayerIDToInternal(halfmap));
 	}
 
 	public MessagesBase.ETerrain internalTerrainToNetwork(ETerrain terrain) {

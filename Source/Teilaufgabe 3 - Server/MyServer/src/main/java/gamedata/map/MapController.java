@@ -9,14 +9,14 @@ import exceptions.TooManyHalfMapsReceived;
 
 public class MapController {
 
-	private Optional<HalfMapData> hmdata1 = Optional.empty();
-	private Optional<HalfMapData> hmdata2 = Optional.empty();
+	private Optional<SHalfMap> hmdata1 = Optional.empty();
+	private Optional<SHalfMap> hmdata2 = Optional.empty();
 
 	private Optional<SFullMap> fullMap = Optional.empty();
 
 	private static Logger logger = LoggerFactory.getLogger(MapController.class);
 
-	public void receiveHalfMap(HalfMapData hmData) {
+	public void receiveHalfMap(SHalfMap hmData) {
 		if (hmdata1.isPresent() && hmdata2.isPresent()) {
 			logger.warn("Tried adding a third halfmap");
 			throw new TooManyHalfMapsReceived("The given game has already received 2 halfmaps");
@@ -35,7 +35,7 @@ public class MapController {
 
 	private void generateFullMap() {
 		logger.debug("generating full map");
-		fullMap = Optional.of(new SFullMap(hmdata1.get(), hmdata2.get()));
+		fullMap = Optional.of(SFullMap.generateRandomMap(hmdata1.get(), hmdata2.get()));
 	}
 
 	public Optional<ISFullMapAccesser> getFullMap() {

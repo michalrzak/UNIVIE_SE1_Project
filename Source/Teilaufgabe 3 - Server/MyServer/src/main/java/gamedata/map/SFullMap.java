@@ -22,7 +22,7 @@ public class SFullMap implements ISFullMapAccesser {
 
 	private static Logger logger = LoggerFactory.getLogger(SFullMap.class);
 
-	public SFullMap(HalfMapData hmdataPlayer1, HalfMapData hmdataPlayer2) {
+	public static SFullMap generateRandomMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2) {
 		// Pick first map on random
 		Random rand = new Random();
 		if (rand.nextBoolean()) {
@@ -31,15 +31,27 @@ public class SFullMap implements ISFullMapAccesser {
 			hmdataPlayer2 = temp;
 		}
 
+		EMapType mapType = EMapType.getRandomMapType();
+
+		Position castlePositionPlayer1 = Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight());
+		Position castlePositionPlayer2 = mapType.getSecondHalfOffset()
+				.addPosition(Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight()));
+
+		return new SFullMap(hmdataPlayer1, hmdataPlayer2, mapType, castlePositionPlayer1, castlePositionPlayer2);
+	}
+
+	public SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType,
+			Position castlePositionPlayer1, Position castlePositionPlayer2) {
+
+		assert (hmdataPlayer1 != null && hmdataPlayer2 != null && mapType != null);
+
 		var player1HMTerrainMap = hmdataPlayer1.getTerrain();
 		var player2HMTerrainMap = hmdataPlayer2.getTerrain();
 
-		// TODO: magic number
-		assert (player1HMTerrainMap.size() == 32);
-		assert (player2HMTerrainMap.size() == 32);
+		assert (player1HMTerrainMap.size() == mapType.getHalfHeight() * mapType.getHalfWidth());
+		assert (player2HMTerrainMap.size() == mapType.getHalfHeight() * mapType.getHalfWidth());
 
-		EMapType mapType = EMapType.getRandomMapType();
-
+		// extract terrain from halfmaps
 		for (int y = 0; y < mapType.getHalfHeight(); ++y) {
 			for (int x = 0; x < mapType.getHalfWidth(); ++x) {
 				Position current = new Position(x, y);
@@ -50,6 +62,7 @@ public class SFullMap implements ISFullMapAccesser {
 			}
 		}
 
+		// extract entities from HalfMaps
 		Position p1CastlePosition = hmdataPlayer1.getCastlePosition();
 		SUniquePlayerIdentifier p1Owner = hmdataPlayer1.getOwner();
 		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.CASTLE), p1CastlePosition);
@@ -60,13 +73,10 @@ public class SFullMap implements ISFullMapAccesser {
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.CASTLE), p2CastlePosition);
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.PLAYER), p2CastlePosition);
 
-		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.TREASURE),
-				Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight()));
-		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.TREASURE), mapType.getSecondHalfOffset()
-				.addPosition(Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight())));
+		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.TREASURE), castlePositionPlayer1);
+		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.TREASURE), castlePositionPlayer2);
 
-		// TODO: MAGIC NUMBER
-		assert (terrain.size() == 64);
+		assert (terrain.size() == mapType.getHeight() * mapType.getWidth());
 	}
 
 	public void collectTreasure(SUniquePlayerIdentifier playerID) {

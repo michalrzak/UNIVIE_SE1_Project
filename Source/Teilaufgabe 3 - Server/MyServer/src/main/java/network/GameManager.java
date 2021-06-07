@@ -14,7 +14,7 @@ import exceptions.GenericExampleException;
 import gamedata.GameDataController;
 import gamedata.game.IGameAccesser;
 import gamedata.game.helpers.SUniqueGameIdentifier;
-import gamedata.map.HalfMapData;
+import gamedata.map.SHalfMap;
 import gamedata.player.helpers.PlayerInformation;
 import gamedata.player.helpers.SUniquePlayerIdentifier;
 import rules.IRules;
@@ -56,7 +56,7 @@ public class GameManager {
 			}
 		}
 
-		HalfMapData hmdata = translate.networkHalfMapToInernal(receivedHalfMap);
+		SHalfMap hmdata = translate.networkHalfMapToInernal(receivedHalfMap);
 		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
 
 		SUniquePlayerIdentifier playerID = translate.networkPlayerIDToInternal(receivedHalfMap);

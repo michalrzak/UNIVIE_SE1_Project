@@ -8,7 +8,7 @@ import gamedata.map.helpers.OwnedGameEntity;
 import gamedata.map.helpers.Position;
 import gamedata.player.helpers.SUniquePlayerIdentifier;
 
-public class HalfMapData {
+public class SHalfMap {
 
 	private final Map<Position, ETerrain> terrain;
 	private final Position castlePosition;
@@ -16,7 +16,7 @@ public class HalfMapData {
 
 	// private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 
-	public HalfMapData(Map<Position, ETerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
+	public SHalfMap(Map<Position, ETerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
 		// TODO: magic number
 		assert (terrain.size() == 32);
 

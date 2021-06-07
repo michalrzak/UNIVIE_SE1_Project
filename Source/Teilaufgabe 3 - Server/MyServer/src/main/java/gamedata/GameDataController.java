@@ -13,7 +13,7 @@ import exceptions.PlayerInvalidTurn;
 import gamedata.game.Game;
 import gamedata.game.IGameAccesser;
 import gamedata.game.helpers.SUniqueGameIdentifier;
-import gamedata.map.HalfMapData;
+import gamedata.map.SHalfMap;
 import gamedata.player.helpers.PlayerInformation;
 import gamedata.player.helpers.SUniquePlayerIdentifier;
 
@@ -45,7 +45,7 @@ public class GameDataController {
 		return games.get(gameID).registerPlayer(playerInf);
 	}
 
-	public void addHalfMap(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID, HalfMapData hmdata) {
+	public void addHalfMap(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID, SHalfMap hmdata) {
 		if (!games.containsKey(gameID)) {
 			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
 					+ " tried adding a halfmap to a gameID which does not exist (was: " + gameID.getIDAsString() + ")");

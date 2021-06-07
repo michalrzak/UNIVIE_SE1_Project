@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.PlayerInvalidTurn;
-import gamedata.map.HalfMapData;
+import gamedata.map.SHalfMap;
 import gamedata.map.ISFullMapAccesser;
 import gamedata.map.MapController;
 import gamedata.player.IPlayerAccesser;
@@ -28,7 +28,7 @@ public class Game implements IGameAccesser {
 		return players.registerPlayer(playerInf);
 	}
 
-	public void receiveHalfMap(SUniquePlayerIdentifier playerID, HalfMapData hmData) {
+	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
 		if (!players.checkPlayerTurn(playerID)) {
 			logger.warn("A player with playerID: " + playerID.getPlayerIDAsString()
 					+ "; tried sending a HalfMap, but it was not his turn! It was ");
