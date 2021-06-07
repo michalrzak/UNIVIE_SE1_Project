@@ -3,6 +3,7 @@ package gamedata.map;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,13 @@ public class SFullMap implements ISFullMapAccesser {
 	private static Logger logger = LoggerFactory.getLogger(SFullMap.class);
 
 	public SFullMap(HalfMapData hmdataPlayer1, HalfMapData hmdataPlayer2) {
-		// TODO: choose to combine halfMaps
-		// TODO: pick on random I guess?
+		// Pick first map on random
+		Random rand = new Random();
+		if (rand.nextBoolean()) {
+			var temp = hmdataPlayer1;
+			hmdataPlayer1 = hmdataPlayer2;
+			hmdataPlayer2 = temp;
+		}
 
 		var player1HMTerrainMap = hmdataPlayer1.getTerrain();
 		var player2HMTerrainMap = hmdataPlayer2.getTerrain();
