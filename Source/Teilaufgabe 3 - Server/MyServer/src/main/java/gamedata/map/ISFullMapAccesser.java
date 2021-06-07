@@ -11,9 +11,9 @@ public interface ISFullMapAccesser {
 
 	Map<Position, ETerrain> getTerrain();
 
-	Optional<Position> getTreasurePosition(SUniquePlayerIdentifier playerID);
+	Optional<Position> getTreasurePosition(SUniquePlayerIdentifier requesting, SUniquePlayerIdentifier of);
 
-	Position getCastlePosition(SUniquePlayerIdentifier playerID);
+	Optional<Position> getCastlePosition(SUniquePlayerIdentifier requesting, SUniquePlayerIdentifier playerID);
 
 	Position getPlayerPosition(SUniquePlayerIdentifier playerID);
 

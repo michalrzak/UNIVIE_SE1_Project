@@ -1,6 +1,8 @@
 package gamedata.map;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -19,6 +21,7 @@ public class SFullMap implements ISFullMapAccesser {
 
 	private final Map<Position, ETerrain> terrain = new HashMap<>();
 	private final Map<OwnedGameEntity, Position> entities = new HashMap<>();
+	private final Map<SUniquePlayerIdentifier, Collection<OwnedGameEntity>> playerRevealedEntities = new HashMap<>();
 
 	private static Logger logger = LoggerFactory.getLogger(SFullMap.class);
 
@@ -40,8 +43,8 @@ public class SFullMap implements ISFullMapAccesser {
 		return new SFullMap(hmdataPlayer1, hmdataPlayer2, mapType, castlePositionPlayer1, castlePositionPlayer2);
 	}
 
-	public SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType,
-			Position castlePositionPlayer1, Position castlePositionPlayer2) {
+	public SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType, Position castlePositionPlayer1,
+			Position castlePositionPlayer2) {
 
 		assert (hmdataPlayer1 != null && hmdataPlayer2 != null && mapType != null);
 
@@ -76,6 +79,10 @@ public class SFullMap implements ISFullMapAccesser {
 		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.TREASURE), castlePositionPlayer1);
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.TREASURE), castlePositionPlayer2);
 
+		// save entities that are visible by default
+		playerRevealedEntities.put(p1Owner, getDefaultVisbleEntities(p1Owner, p2Owner));
+		playerRevealedEntities.put(p2Owner, getDefaultVisbleEntities(p2Owner, p1Owner));
+
 		assert (terrain.size() == mapType.getHeight() * mapType.getWidth());
 	}
 
@@ -89,14 +96,29 @@ public class SFullMap implements ISFullMapAccesser {
 		entities.remove(treasure);
 	}
 
+	private static Collection<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,
+			SUniquePlayerIdentifier other) {
+
+		Collection<OwnedGameEntity> visible = new HashSet<>();
+		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.CASTLE));
+		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.PLAYER));
+		visible.add(new OwnedGameEntity(other, EGameEntity.PLAYER));
+
+		return visible;
+	}
+
 	@Override
 	public Map<Position, ETerrain> getTerrain() {
 		return terrain;
 	}
 
 	@Override
-	public Optional<Position> getTreasurePosition(SUniquePlayerIdentifier playerID) {
-		OwnedGameEntity treasure = new OwnedGameEntity(playerID, EGameEntity.TREASURE);
+	public Optional<Position> getTreasurePosition(SUniquePlayerIdentifier requesting, SUniquePlayerIdentifier of) {
+		OwnedGameEntity treasure = new OwnedGameEntity(of, EGameEntity.TREASURE);
+
+		if (!playerRevealedEntities.get(requesting).contains(treasure)) {
+			return Optional.empty();
+		}
 
 		if (!entities.containsKey(treasure)) {
 			return Optional.empty();
@@ -106,10 +128,14 @@ public class SFullMap implements ISFullMapAccesser {
 	}
 
 	@Override
-	public Position getCastlePosition(SUniquePlayerIdentifier playerID) {
-		OwnedGameEntity castle = new OwnedGameEntity(playerID, EGameEntity.CASTLE);
+	public Optional<Position> getCastlePosition(SUniquePlayerIdentifier requesting, SUniquePlayerIdentifier of) {
+		OwnedGameEntity castle = new OwnedGameEntity(of, EGameEntity.CASTLE);
 
-		return entities.get(castle);
+		if (!playerRevealedEntities.get(requesting).contains(castle)) {
+			return Optional.empty();
+		}
+
+		return Optional.of(entities.get(castle));
 	}
 
 	@Override

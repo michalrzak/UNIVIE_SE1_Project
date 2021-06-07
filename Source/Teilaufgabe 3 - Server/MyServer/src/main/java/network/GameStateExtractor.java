@@ -89,16 +89,18 @@ public class GameStateExtractor {
 
 			ETreasureState treasureState = ETreasureState.NoOrUnknownTreasureState;
 			// fullmap.getTreasurePosition() returns an optional
-			if (fullmap.getTreasurePosition(me).isPresent()
-					&& fullmap.getTreasurePosition(me).get().equals(currentPos)) {
+			if (fullmap.getTreasurePosition(me, me).isPresent()
+					&& fullmap.getTreasurePosition(me, me).get().equals(currentPos)) {
 				treasureState = ETreasureState.MyTreasureIsPresent;
 			}
 
 			EFortState fortState = EFortState.NoOrUnknownFortState;
-			if (fullmap.getCastlePosition(me).equals(currentPos)) {
+			if (fullmap.getCastlePosition(me, me).isPresent()
+					&& fullmap.getCastlePosition(me, me).get().equals(currentPos)) {
 				fortState = EFortState.MyFortPresent;
 			}
-			if (fullmap.getCastlePosition(other).equals(currentPos)) {
+			if (fullmap.getCastlePosition(me, other).isPresent()
+					&& fullmap.getCastlePosition(me, other).get().equals(currentPos)) {
 				fortState = EFortState.EnemyFortPresent;
 			}
 
