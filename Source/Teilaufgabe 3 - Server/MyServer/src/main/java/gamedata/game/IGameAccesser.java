@@ -16,4 +16,6 @@ public interface IGameAccesser {
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID);
 
 	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer);
+
+	public int getTurn();
 }

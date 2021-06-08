@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.PlayerInvalidTurn;
-import gamedata.map.SHalfMap;
 import gamedata.map.ISFullMapAccesser;
 import gamedata.map.MapController;
+import gamedata.map.SHalfMap;
 import gamedata.player.IPlayerAccesser;
 import gamedata.player.PlayersController;
 import gamedata.player.helpers.ESPlayerGameState;
@@ -70,6 +70,11 @@ public class Game implements IGameAccesser {
 	@Override
 	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
 		return players.getOtherPlayer(myPlayer);
+	}
+
+	@Override
+	public int getTurn() {
+		return players.getTurn();
 	}
 
 }

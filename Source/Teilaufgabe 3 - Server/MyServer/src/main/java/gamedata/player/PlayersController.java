@@ -27,6 +27,7 @@ public class PlayersController {
 	private final Queue<Player> playerTurn = new LinkedList<>();
 
 	private Optional<SUniquePlayerIdentifier> winner = Optional.empty();
+	private int turn = 0;
 
 	private static Logger logger = LoggerFactory.getLogger(PlayersController.class);
 
@@ -66,7 +67,12 @@ public class PlayersController {
 	}
 
 	public void nextTurn() {
+		++turn;
 		playerTurn.add(playerTurn.remove());
+	}
+
+	public int getTurn() {
+		return turn;
 	}
 
 	public Collection<IPlayerAccesser> getPlayers() {

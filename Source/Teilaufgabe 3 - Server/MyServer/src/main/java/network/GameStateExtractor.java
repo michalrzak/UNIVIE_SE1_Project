@@ -44,10 +44,10 @@ public class GameStateExtractor {
 		Optional<ISFullMapAccesser> fmd = game.getFullMap();
 
 		if (fmd.isEmpty()) {
-			return new GameState(ps, generateGameStateID());
+			return new GameState(ps, generateGameStateID(game));
 		}
 
-		return new GameState(Optional.of(extractFullMap(fmd.get())), ps, generateGameStateID());
+		return new GameState(Optional.of(extractFullMap(fmd.get())), ps, generateGameStateID(game));
 	}
 
 	private PlayerState extractPlayerState(IPlayerAccesser player, ESPlayerGameState playerState) {
@@ -112,8 +112,8 @@ public class GameStateExtractor {
 		return new FullMap(mapNodes);
 	}
 
-	private String generateGameStateID() {
-		return "Not implemented!";
+	private String generateGameStateID(IGameAccesser game) {
+		return Integer.toString(game.getTurn());
 	}
 
 	private EPlayerGameState translatePlayerState(ESPlayerGameState playerState) {
