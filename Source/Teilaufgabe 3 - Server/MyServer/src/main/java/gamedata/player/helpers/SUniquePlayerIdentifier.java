@@ -5,12 +5,12 @@ import java.util.UUID;
 public class SUniquePlayerIdentifier {
 	private final String playerID;
 
-	public SUniquePlayerIdentifier() {
-		this.playerID = UUID.randomUUID().toString();
-	}
-
 	public SUniquePlayerIdentifier(String playerID) {
 		this.playerID = playerID;
+	}
+
+	public static SUniquePlayerIdentifier getRandomID() {
+		return new SUniquePlayerIdentifier(UUID.randomUUID().toString());
 	}
 
 	public String getPlayerIDAsString() {

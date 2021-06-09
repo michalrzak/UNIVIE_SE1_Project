@@ -1,6 +1,7 @@
 package gamedata.map;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class SFullMap implements ISFullMapAccesser {
 	private final Map<Position, ETerrain> terrain = new HashMap<>();
 	private final Map<OwnedGameEntity, Position> entities = new HashMap<>();
 	private final Map<SUniquePlayerIdentifier, Collection<OwnedGameEntity>> playerRevealedEntities = new HashMap<>();
+	private final EMapType mapType;
 
 	private static Logger logger = LoggerFactory.getLogger(SFullMap.class);
 
@@ -47,6 +49,8 @@ public class SFullMap implements ISFullMapAccesser {
 			Position castlePositionPlayer2) {
 
 		assert (hmdataPlayer1 != null && hmdataPlayer2 != null && mapType != null);
+
+		this.mapType = mapType;
 
 		var player1HMTerrainMap = hmdataPlayer1.getTerrain();
 		var player2HMTerrainMap = hmdataPlayer2.getTerrain();
@@ -109,16 +113,12 @@ public class SFullMap implements ISFullMapAccesser {
 
 	@Override
 	public Map<Position, ETerrain> getTerrain() {
-		return terrain;
+		return new HashMap<Position, ETerrain>(terrain);
 	}
 
 	@Override
-	public Optional<Position> getTreasurePosition(SUniquePlayerIdentifier requesting, SUniquePlayerIdentifier of) {
+	public Optional<Position> getTreasurePosition(SUniquePlayerIdentifier of) {
 		OwnedGameEntity treasure = new OwnedGameEntity(of, EGameEntity.TREASURE);
-
-		if (!playerRevealedEntities.get(requesting).contains(treasure)) {
-			return Optional.empty();
-		}
 
 		if (!entities.containsKey(treasure)) {
 			return Optional.empty();
@@ -128,21 +128,39 @@ public class SFullMap implements ISFullMapAccesser {
 	}
 
 	@Override
-	public Optional<Position> getCastlePosition(SUniquePlayerIdentifier requesting, SUniquePlayerIdentifier of) {
+	public Position getCastlePosition(SUniquePlayerIdentifier of) {
 		OwnedGameEntity castle = new OwnedGameEntity(of, EGameEntity.CASTLE);
 
-		if (!playerRevealedEntities.get(requesting).contains(castle)) {
-			return Optional.empty();
-		}
+		// should be contained as player checks happen in other classes and a castle
+		// should be always present
+		assert (entities.containsKey(castle));
 
-		return Optional.of(entities.get(castle));
+		return entities.get(castle);
 	}
 
 	@Override
-	public Position getPlayerPosition(SUniquePlayerIdentifier playerID) {
-		OwnedGameEntity player = new OwnedGameEntity(playerID, EGameEntity.PLAYER);
+	public Position getPlayerPosition(SUniquePlayerIdentifier of) {
+		OwnedGameEntity player = new OwnedGameEntity(of, EGameEntity.PLAYER);
+
+		// should be contained as player checks happen in other classes and a player
+		// should be always present
+		assert (entities.containsKey(player));
 
 		return entities.get(player);
+	}
+
+	@Override
+	public Collection<OwnedGameEntity> getVisisbleEntitites(SUniquePlayerIdentifier of) {
+
+		// should contain key as this should be checked in game and player already!
+		assert (playerRevealedEntities.containsKey(of));
+
+		return Collections.unmodifiableCollection(playerRevealedEntities.get(of));
+	}
+
+	@Override
+	public EMapType getMapType() {
+		return mapType;
 	}
 
 }

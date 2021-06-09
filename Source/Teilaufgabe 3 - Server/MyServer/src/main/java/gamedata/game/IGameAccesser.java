@@ -1,6 +1,5 @@
 package gamedata.game;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import gamedata.map.ISFullMapAccesser;
@@ -9,7 +8,8 @@ import gamedata.player.helpers.ESPlayerGameState;
 import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 public interface IGameAccesser {
-	public Collection<IPlayerAccesser> getPlayers();
+
+	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID);
 
 	public Optional<ISFullMapAccesser> getFullMap();
 

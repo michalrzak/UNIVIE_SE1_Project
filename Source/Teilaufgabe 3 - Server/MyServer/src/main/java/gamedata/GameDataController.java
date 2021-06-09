@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import exceptions.GameNotFoundException;
 import exceptions.PlayerInvalidTurn;
 import gamedata.game.Game;
-import gamedata.game.IGameAccesser;
 import gamedata.game.helpers.SUniqueGameIdentifier;
 import gamedata.map.SHalfMap;
 import gamedata.player.helpers.PlayerInformation;
@@ -25,9 +24,9 @@ public class GameDataController {
 	private static Logger logger = LoggerFactory.getLogger(GameDataController.class);
 
 	public SUniqueGameIdentifier createNewGame() {
-		SUniqueGameIdentifier newID = new SUniqueGameIdentifier();
+		SUniqueGameIdentifier newID = SUniqueGameIdentifier.getRandomID();
 		while (checkGameIDUsed(newID)) {
-			newID = new SUniqueGameIdentifier();
+			newID = SUniqueGameIdentifier.getRandomID();
 		}
 
 		createNewGameWithGameID(newID);
@@ -61,7 +60,7 @@ public class GameDataController {
 		}
 	}
 
-	public IGameAccesser getGame(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
+	public SGameState getGameState(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
 
 		if (!games.containsKey(gameID)) {
 			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
@@ -77,7 +76,7 @@ public class GameDataController {
 			throw new GameNotFoundException("The passed playerID was not found");
 		}
 
-		return games.get(gameID);
+		return new SGameState(playerID, games.get(gameID));
 	}
 
 	private boolean checkGameIDUsed(SUniqueGameIdentifier gameID) {

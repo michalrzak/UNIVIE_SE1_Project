@@ -27,11 +27,19 @@ public class Player extends SUniquePlayerIdentifier implements IPlayerAccesser {
 		this(playerID.getPlayerIDAsString(), playerInf);
 	}
 
-	public Player(PlayerInformation playerInf) {
-		super();
-		this.playerInf = playerInf;
+	public static Player getRandomPlayer(PlayerInformation playerInf) {
+		SUniquePlayerIdentifier randomID = SUniquePlayerIdentifier.getRandomID();
+		return new Player(randomID, playerInf);
 	}
 
+	public static Player getRandomPlayer(String firstName, String lastName, String studentID) {
+		return getRandomPlayer(new PlayerInformation(firstName, lastName, studentID));
+	}
+
+	/*
+	 * public Player(PlayerInformation playerInf) { super(); this.playerInf =
+	 * playerInf; }
+	 */
 	public void collectTreasure() {
 		if (collectedTreasure) {
 			logger.error("collected treasure even though the treassure has already been collected."

@@ -1,6 +1,5 @@
 package gamedata.game;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -53,11 +52,6 @@ public class Game implements IGameAccesser {
 	}
 
 	@Override
-	public Collection<IPlayerAccesser> getPlayers() {
-		return players.getPlayers();
-	}
-
-	@Override
 	public Optional<ISFullMapAccesser> getFullMap() {
 		return map.getFullMap();
 	}
@@ -75,6 +69,11 @@ public class Game implements IGameAccesser {
 	@Override
 	public int getTurn() {
 		return players.getTurn();
+	}
+
+	@Override
+	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID) {
+		return players.getPlayer(playerID);
 	}
 
 }

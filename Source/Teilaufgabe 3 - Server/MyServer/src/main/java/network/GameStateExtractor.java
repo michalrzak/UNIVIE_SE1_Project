@@ -16,38 +16,27 @@ import MessagesGameState.FullMapNode;
 import MessagesGameState.GameState;
 import MessagesGameState.PlayerState;
 import exceptions.InternalServerException;
-import gamedata.game.IGameAccesser;
-import gamedata.map.ISFullMapAccesser;
+import gamedata.SGameState;
+import gamedata.map.FullMapState;
 import gamedata.map.helpers.Position;
 import gamedata.player.IPlayerAccesser;
 import gamedata.player.helpers.ESPlayerGameState;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
 
 public class GameStateExtractor {
 
-	private final SUniquePlayerIdentifier me;
-	private final SUniquePlayerIdentifier other;
-
-	public GameStateExtractor(SUniquePlayerIdentifier me, SUniquePlayerIdentifier other) {
-		this.me = me;
-		this.other = other;
-	}
-
-	public GameState extractGameState(IGameAccesser game) {
-		Collection<IPlayerAccesser> players = game.getPlayers();
+	public GameState extractGameState(SGameState gameState) {
 		Collection<PlayerState> ps = new ArrayList<>();
-		for (IPlayerAccesser iplayer : players) {
-			ESPlayerGameState playerState = game.getPlayerState(iplayer.getPlayerID());
-			ps.add(extractPlayerState(iplayer, playerState));
+
+		ps.add(extractPlayerState(gameState.getOwnerPlayer(), gameState.getOwnerPlayerGameState()));
+		ps.add(extractPlayerState(gameState.getOtherPlayer(), gameState.getOtherPlayerGameState()));
+
+		Optional<FullMapState> fullMapState = gameState.getFullMap();
+
+		if (fullMapState.isEmpty()) {
+			return new GameState(ps, generateGameStateID(gameState));
 		}
 
-		Optional<ISFullMapAccesser> fmd = game.getFullMap();
-
-		if (fmd.isEmpty()) {
-			return new GameState(ps, generateGameStateID(game));
-		}
-
-		return new GameState(Optional.of(extractFullMap(fmd.get())), ps, generateGameStateID(game));
+		return new GameState(Optional.of(extractFullMap(fullMapState.get())), ps, generateGameStateID(gameState));
 	}
 
 	private PlayerState extractPlayerState(IPlayerAccesser player, ESPlayerGameState playerState) {
@@ -64,10 +53,10 @@ public class GameStateExtractor {
 		return ret;
 	}
 
-	private FullMap extractFullMap(ISFullMapAccesser fullmap) {
+	private FullMap extractFullMap(FullMapState fullMapState) {
 		NetworkTranslator nt = new NetworkTranslator();
 
-		var positionToTerrainMap = fullmap.getTerrain();
+		var positionToTerrainMap = fullMapState.getTerrain();
 
 		Set<FullMapNode> mapNodes = new HashSet<>();
 		for (var positionTerrainPair : positionToTerrainMap.entrySet()) {
@@ -76,31 +65,30 @@ public class GameStateExtractor {
 			Position currentPos = positionTerrainPair.getKey();
 
 			EPlayerPositionState playerPositionState = EPlayerPositionState.NoPlayerPresent;
-			if (fullmap.getPlayerPosition(me).equals(currentPos)) {
+			if (fullMapState.getOwnerPosition().equals(currentPos)) {
 				playerPositionState = EPlayerPositionState.MyPosition;
 			}
-			if (fullmap.getPlayerPosition(other).equals(currentPos)) {
+			if (fullMapState.getOtherPosition().equals(currentPos)) {
 				if (playerPositionState == EPlayerPositionState.MyPosition) {
 					playerPositionState = EPlayerPositionState.BothPlayerPosition;
 				} else {
 					playerPositionState = EPlayerPositionState.EnemyPlayerPosition;
 				}
+				System.out.println("em, helo?");
 			}
 
 			ETreasureState treasureState = ETreasureState.NoOrUnknownTreasureState;
 			// fullmap.getTreasurePosition() returns an optional
-			if (fullmap.getTreasurePosition(me, me).isPresent()
-					&& fullmap.getTreasurePosition(me, me).get().equals(currentPos)) {
+			if (fullMapState.getOwnerTreasure().isPresent()
+					&& fullMapState.getOwnerTreasure().get().equals(currentPos)) {
 				treasureState = ETreasureState.MyTreasureIsPresent;
 			}
 
 			EFortState fortState = EFortState.NoOrUnknownFortState;
-			if (fullmap.getCastlePosition(me, me).isPresent()
-					&& fullmap.getCastlePosition(me, me).get().equals(currentPos)) {
+			if (fullMapState.getOwnerCastle().equals(currentPos)) {
 				fortState = EFortState.MyFortPresent;
 			}
-			if (fullmap.getCastlePosition(me, other).isPresent()
-					&& fullmap.getCastlePosition(me, other).get().equals(currentPos)) {
+			if (fullMapState.getOtherCastle().isPresent() && fullMapState.getOtherCastle().get().equals(currentPos)) {
 				fortState = EFortState.EnemyFortPresent;
 			}
 
@@ -112,8 +100,8 @@ public class GameStateExtractor {
 		return new FullMap(mapNodes);
 	}
 
-	private String generateGameStateID(IGameAccesser game) {
-		return Integer.toString(game.getTurn());
+	private String generateGameStateID(SGameState gameState) {
+		return Integer.toString(gameState.getTurn());
 	}
 
 	private EPlayerGameState translatePlayerState(ESPlayerGameState playerState) {

@@ -6,13 +6,13 @@ public class SUniqueGameIdentifier {
 
 	final private String gameID;
 
-	public SUniqueGameIdentifier() {
-		RandomString rand = new RandomString();
-		gameID = rand.nextString(GAMEID_LENGTH);
-	}
-
 	public SUniqueGameIdentifier(String id) {
 		gameID = id;
+	}
+
+	public static SUniqueGameIdentifier getRandomID() {
+		RandomString rand = new RandomString();
+		return new SUniqueGameIdentifier(rand.nextString(GAMEID_LENGTH));
 	}
 
 	public String getIDAsString() {

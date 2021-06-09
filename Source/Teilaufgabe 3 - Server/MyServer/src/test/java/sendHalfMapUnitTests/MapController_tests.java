@@ -10,8 +10,8 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 import exceptions.GenericExampleException;
-import gamedata.map.SHalfMap;
 import gamedata.map.MapController;
+import gamedata.map.SHalfMap;
 import gamedata.map.helpers.ETerrain;
 import gamedata.map.helpers.Position;
 import gamedata.player.helpers.SUniquePlayerIdentifier;
@@ -33,7 +33,7 @@ class MapController_tests {
 		// Mockito.when(hmd.getOwner()).thenReturn(new
 		// ServerUniquePlayerIdentifier("totally-legit-playerID"));
 		Mockito.when(hmd.getCastlePosition()).thenReturn(new Position(0, 0));
-		Mockito.when(hmd.getOwner()).thenReturn(new SUniquePlayerIdentifier());
+		Mockito.when(hmd.getOwner()).thenReturn(SUniquePlayerIdentifier.getRandomID());
 
 		return hmd;
 	}

@@ -1,6 +1,5 @@
 package gamedata.player;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.InternalServerException;
+import exceptions.PlayerNotFoundException;
 import exceptions.TooManyPlayersRegistered;
 import gamedata.EGameConstants;
 import gamedata.player.helpers.ESPlayerGameState;
@@ -33,7 +33,7 @@ public class PlayersController {
 
 	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
 
-		Player newPlayer = new Player(playerInf);
+		Player newPlayer = Player.getRandomPlayer(playerInf);
 		if (registeredPlayers.size() == EGameConstants.MAX_PLAYER_COUNT.getValue()) {
 			logger.warn("Tried registering a player even though the game is already full!");
 			throw new TooManyPlayersRegistered("The game you tried to register for is already full");
@@ -75,9 +75,13 @@ public class PlayersController {
 		return turn;
 	}
 
-	public Collection<IPlayerAccesser> getPlayers() {
-		// convert the Player objects to IPlayerAccesser
-		return registeredPlayers.stream().collect(Collectors.toList());
+	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID) {
+		if (!registeredPlayers.contains(playerID)) {
+			throw new PlayerNotFoundException("The playerID provided is not registered!");
+		}
+
+		// find the player in the registered players set
+		return registeredPlayers.stream().filter(player -> player.getPlayerID().equals(playerID)).findFirst().get();
 	}
 
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID) {
