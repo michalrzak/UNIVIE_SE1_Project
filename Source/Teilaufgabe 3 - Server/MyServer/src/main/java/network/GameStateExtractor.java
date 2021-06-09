@@ -74,7 +74,6 @@ public class GameStateExtractor {
 				} else {
 					playerPositionState = EPlayerPositionState.EnemyPlayerPosition;
 				}
-				System.out.println("em, helo?");
 			}
 
 			ETreasureState treasureState = ETreasureState.NoOrUnknownTreasureState;

@@ -79,6 +79,17 @@ public class GameDataController {
 		return new SGameState(playerID, games.get(gameID));
 	}
 
+	public void setLooser(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
+		if (!games.containsKey(gameID)) {
+			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
+					+ " tried requesting the gamestate of a game that does not exist (was: " + gameID.getIDAsString()
+					+ ")");
+			throw new GameNotFoundException("The passed gameID was not found");
+		}
+
+		games.get(gameID).setLooser(playerID);
+	}
+
 	private boolean checkGameIDUsed(SUniqueGameIdentifier gameID) {
 		return games.containsKey(gameID);
 	}

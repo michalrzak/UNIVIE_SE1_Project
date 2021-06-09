@@ -20,12 +20,14 @@ import gamedata.player.helpers.SUniquePlayerIdentifier;
 import rules.IRules;
 import rules.RuleHalfMapCastle;
 import rules.RuleHalfMapDimensions;
+import rules.RuleHalfMapEdges;
 import rules.RuleHalfMapNoIslands;
+import rules.RuleHalfMapTerrainCount;
 
 public class GameManager {
 
-	private final static List<IRules> rules = List.of(new RuleHalfMapDimensions(), new RuleHalfMapNoIslands(),
-			new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
+	private final static List<IRules> rules = List.of(new RuleHalfMapDimensions(), new RuleHalfMapTerrainCount(),
+			new RuleHalfMapEdges(), new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
 
 	private final GameDataController games = new GameDataController();
 	private final NetworkTranslator translate = new NetworkTranslator();
@@ -51,6 +53,9 @@ public class GameManager {
 			try {
 				rule.validateHalfMap(receivedHalfMap);
 			} catch (GenericExampleException e) {
+				SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+				SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(receivedHalfMap);
+				games.setLooser(serverGameID, serverPlayerID);
 				logger.warn("A buisness rule threw an error " + e.getMessage());
 				throw e;
 			}

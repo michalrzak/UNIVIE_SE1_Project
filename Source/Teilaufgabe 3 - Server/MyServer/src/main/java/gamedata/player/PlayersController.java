@@ -71,6 +71,14 @@ public class PlayersController {
 		playerTurn.add(playerTurn.remove());
 	}
 
+	public void setAsWinner(SUniquePlayerIdentifier winnerID) {
+		winner = Optional.of(winnerID);
+	}
+
+	public void setAsLooser(SUniquePlayerIdentifier looserID) {
+		setAsWinner(getOtherPlayer(looserID));
+	}
+
 	public int getTurn() {
 		return turn;
 	}

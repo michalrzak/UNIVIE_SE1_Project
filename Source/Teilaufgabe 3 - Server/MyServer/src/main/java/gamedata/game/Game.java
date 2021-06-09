@@ -29,6 +29,7 @@ public class Game implements IGameAccesser {
 
 	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
 		if (!players.checkPlayerTurn(playerID)) {
+			players.setAsLooser(playerID);
 			logger.warn("A player with playerID: " + playerID.getPlayerIDAsString()
 					+ "; tried sending a HalfMap, but it was not his turn! It was ");
 			throw new PlayerInvalidTurn(
@@ -40,6 +41,10 @@ public class Game implements IGameAccesser {
 
 	public boolean checkPlayer(SUniquePlayerIdentifier playerID) {
 		return players.checkPlayer(playerID);
+	}
+
+	public void setLooser(SUniquePlayerIdentifier playerID) {
+		players.setAsLooser(playerID);
 	}
 
 	public boolean hasStarted() {
