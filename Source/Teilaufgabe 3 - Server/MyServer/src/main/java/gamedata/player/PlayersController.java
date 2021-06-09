@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import exceptions.GameNotReadyException;
 import exceptions.InternalServerException;
 import exceptions.PlayerNotFoundException;
 import exceptions.TooManyPlayersRegistered;
@@ -52,7 +53,7 @@ public class PlayersController {
 	public boolean checkPlayerTurn(SUniquePlayerIdentifier playerID) {
 		if (playerTurn.isEmpty()) {
 			logger.warn("Tried checking player turn even though the game is not ready!");
-			return false;
+			throw new GameNotReadyException("Tried to perform an action while the game is not ready");
 		}
 
 		SUniquePlayerIdentifier current = playerTurn.element();
@@ -81,6 +82,10 @@ public class PlayersController {
 
 	public int getTurn() {
 		return turn;
+	}
+
+	public boolean getReady() {
+		return !playerTurn.isEmpty();
 	}
 
 	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID) {

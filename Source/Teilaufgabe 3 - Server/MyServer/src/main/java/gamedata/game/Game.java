@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import exceptions.GameNotReadyException;
 import exceptions.PlayerInvalidTurn;
 import gamedata.map.ISFullMapAccesser;
 import gamedata.map.MapController;
@@ -28,6 +29,12 @@ public class Game implements IGameAccesser {
 	}
 
 	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
+		if (!getReady()) {
+			System.err.println("TEST!@$");
+			logger.warn("Tried tp send a HalfMap to a game that is not ready");
+			throw new GameNotReadyException("Tried to send a HalfMap to a game that is not ready");
+		}
+
 		if (!players.checkPlayerTurn(playerID)) {
 			players.setAsLooser(playerID);
 			logger.warn("A player with playerID: " + playerID.getPlayerIDAsString()
@@ -47,9 +54,8 @@ public class Game implements IGameAccesser {
 		players.setAsLooser(playerID);
 	}
 
-	public boolean hasStarted() {
-		// TODO: make this meaningfull
-		return false;
+	public boolean getReady() {
+		return players.getReady();
 	}
 
 	public long getTimeAlive() {
