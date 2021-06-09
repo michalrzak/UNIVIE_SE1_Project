@@ -21,6 +21,7 @@ class MapController_tests {
 	Map<Position, ETerrain> createMockedMap() {
 		Map<Position, ETerrain> map = Mockito.mock(Map.class);
 		Mockito.when(map.get(Mockito.any())).thenReturn(ETerrain.GRASS);
+		Mockito.when(map.size()).thenReturn(32);
 		return map;
 	}
 
