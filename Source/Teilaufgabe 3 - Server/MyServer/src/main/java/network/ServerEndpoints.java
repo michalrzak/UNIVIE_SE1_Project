@@ -1,7 +1,11 @@
 package network;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -19,12 +23,32 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
+import gamedata.GameDataController;
+import gamedata.SGameState;
+import gamedata.game.helpers.SUniqueGameIdentifier;
+import gamedata.map.SHalfMap;
+import gamedata.player.helpers.PlayerInformation;
+import gamedata.player.helpers.SUniquePlayerIdentifier;
+import rules.IRules;
+import rules.RuleHalfMapCastle;
+import rules.RuleHalfMapDimensions;
+import rules.RuleHalfMapEdges;
+import rules.RuleHalfMapNoIslands;
+import rules.RuleHalfMapTerrainCount;
 
 @Controller
 @RequestMapping(value = "/games")
 public class ServerEndpoints {
 
-	final private GameManager games = new GameManager();
+	// private final GameManager games = new GameManager();
+
+	private final static List<IRules> rules = List.of(new RuleHalfMapDimensions(), new RuleHalfMapTerrainCount(),
+			new RuleHalfMapEdges(), new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
+
+	private static Logger logger = LoggerFactory.getLogger(ServerEndpoints.class);
+
+	private final GameDataController games = new GameDataController();
+	private final NetworkTranslator translate = new NetworkTranslator();
 
 	// ADDITONAL TIPS ON THIS MATTER ARE GIVEN THROUGHOUT THE TUTORIAL SESSION!
 	// Note, the same network messages which you have used for the client (along
@@ -77,7 +101,7 @@ public class ServerEndpoints {
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody UniqueGameIdentifier newGame() {
-		return games.newGame();
+		return translate.internalGameIDToNetwork(games.createNewGame());
 	}
 
 	// example for a POST endpoint based on games/{gameID}/players
@@ -86,18 +110,51 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerRegistration playerRegistration) {
 
-		UniquePlayerIdentifier newPlayerID = games.registerPlayer(gameID, playerRegistration);
+		// translate data for server
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		PlayerInformation playerInf = translate.networkPlayerRegistrationtoInternal(playerRegistration);
 
-		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(newPlayerID);
-		return playerIDMessage;
+		// generate result
+		SUniquePlayerIdentifier playerID = games.registerPlayer(serverGameID, playerInf);
+
+		// translate result for network
+		UniquePlayerIdentifier netPlayerID = translate.internalPlayerIDToNetwork(playerID);
+
+		// return result
+		return new ResponseEnvelope<>(netPlayerID);
 	}
 
 	@RequestMapping(value = "/{gameID}/halfmaps", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody ResponseEnvelope receiveHalfMap(@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
-		games.receiveHalfMap(gameID, halfMap);
+		// translate data
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(halfMap);
 
+		// validate complex data
+		for (IRules rule : rules) {
+			try {
+				rule.validateHalfMap(halfMap);
+			} catch (GenericExampleException e) {
+				games.setLooser(serverGameID, serverPlayerID);
+				logger.warn("A buisness rule threw an error " + e.getMessage());
+				throw e;
+			}
+		}
+
+		// translate complex data
+		SHalfMap hmdata = translate.networkHalfMapToInernal(halfMap);
+
+		// save half map
+		try {
+			games.addHalfMap(serverGameID, serverPlayerID, hmdata);
+		} catch (GenericExampleException e) {
+			logger.warn("Failed to add a halfmap" + e.getMessage());
+			throw e;
+		}
+
+		// if it got here no error was thrown and return
 		return new ResponseEnvelope();
 	}
 
@@ -106,8 +163,18 @@ public class ServerEndpoints {
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @PathVariable UniquePlayerIdentifier playerID) {
 
-		ResponseEnvelope<GameState> gameState = new ResponseEnvelope<>(games.getGameState(gameID, playerID));
-		return gameState;
+		// translate data
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(playerID);
+
+		// get required data from server
+		SGameState gameState = games.getGameState(serverGameID, serverPlayerID);
+
+		// translate complex data
+		GameStateExtractor gse = new GameStateExtractor();
+		GameState netGameState = gse.extractGameState(gameState);
+
+		return new ResponseEnvelope<>(netGameState);
 	}
 
 	/*
