@@ -18,4 +18,6 @@ public interface IGameAccesser {
 	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer);
 
 	public int getTurn();
+
+	public boolean getReady();
 }

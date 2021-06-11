@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.GameNotFoundException;
-import exceptions.GameNotReadyException;
 import exceptions.PlayerInvalidTurn;
 import gamedata.game.Game;
 import gamedata.game.helpers.SUniqueGameIdentifier;
@@ -77,10 +76,11 @@ public class GameDataController {
 			throw new GameNotFoundException("The passed playerID was not found");
 		}
 
-		if (!games.get(gameID).getReady()) {
-			logger.warn("The accessed game was not ready");
-			throw new GameNotReadyException("The accessed game is not ready");
-		}
+		/*
+		 * if (!games.get(gameID).getReady()) {
+		 * logger.warn("The accessed game was not ready"); throw new
+		 * GameNotReadyException("The accessed game is not ready"); }
+		 */
 
 		return new SGameState(playerID, games.get(gameID));
 	}

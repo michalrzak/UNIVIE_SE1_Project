@@ -54,12 +54,13 @@ public class Game implements IGameAccesser {
 		players.setAsLooser(playerID);
 	}
 
-	public boolean getReady() {
-		return players.getReady();
-	}
-
 	public long getTimeAlive() {
 		return System.currentTimeMillis() - created;
+	}
+
+	@Override
+	public boolean getReady() {
+		return players.getReady();
 	}
 
 	@Override

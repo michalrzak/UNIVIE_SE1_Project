@@ -98,6 +98,11 @@ public class PlayersController {
 	}
 
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID) {
+		// if is empty return should wait
+		if (playerTurn.isEmpty()) {
+			return ESPlayerGameState.SHOULD_WAIT;
+		}
+
 		if (winner.isPresent()) {
 			if (playerID.equals(winner.get())) {
 				return ESPlayerGameState.WON;

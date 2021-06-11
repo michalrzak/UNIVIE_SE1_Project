@@ -28,7 +28,11 @@ public class GameStateExtractor {
 		Collection<PlayerState> ps = new ArrayList<>();
 
 		ps.add(extractPlayerState(gameState.getOwnerPlayer(), gameState.getOwnerPlayerGameState()));
-		ps.add(extractPlayerState(gameState.getOtherPlayer(), gameState.getOtherPlayerGameState()));
+
+		Optional<IPlayerAccesser> otherPlayer = gameState.getOtherPlayer();
+		if (otherPlayer.isPresent()) {
+			ps.add(extractPlayerState(otherPlayer.get(), gameState.getOtherPlayerGameState().get()));
+		}
 
 		Optional<FullMapState> fullMapState = gameState.getFullMap();
 
