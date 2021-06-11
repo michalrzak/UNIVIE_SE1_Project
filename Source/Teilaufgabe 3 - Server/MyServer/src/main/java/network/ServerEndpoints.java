@@ -82,30 +82,31 @@ public class ServerEndpoints {
 
 	// example for a POST endpoint based on games/{gameID}/players
 	@RequestMapping(value = "/{gameID}/players", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
-	public @ResponseBody ResponseEnvelope<UniquePlayerIdentifier> registerPlayer(@PathVariable String gameID,
+	public @ResponseBody ResponseEnvelope<UniquePlayerIdentifier> registerPlayer(
+			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerRegistration playerRegistration) {
 
-		UniquePlayerIdentifier newPlayerID = games.registerPlayer(new UniqueGameIdentifier(gameID), playerRegistration);
+		UniquePlayerIdentifier newPlayerID = games.registerPlayer(gameID, playerRegistration);
 
 		ResponseEnvelope<UniquePlayerIdentifier> playerIDMessage = new ResponseEnvelope<>(newPlayerID);
 		return playerIDMessage;
 	}
 
 	@RequestMapping(value = "/{gameID}/halfmaps", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
-	public @ResponseBody ResponseEnvelope receiveHalfMap(@PathVariable String gameID,
+	public @ResponseBody ResponseEnvelope receiveHalfMap(@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
-		games.receiveHalfMap(new UniqueGameIdentifier(gameID), halfMap);
+		games.receiveHalfMap(gameID, halfMap);
 
 		return new ResponseEnvelope();
 	}
 
 	@RequestMapping(value = "/{gameID}/states/{playerID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-	public @ResponseBody ResponseEnvelope<GameState> receiveHalfMap(@PathVariable String gameID,
-			@PathVariable String playerID) {
+	public @ResponseBody ResponseEnvelope<GameState> receiveHalfMap(
+			@Validated @PathVariable UniqueGameIdentifier gameID,
+			@Validated @PathVariable UniquePlayerIdentifier playerID) {
 
-		ResponseEnvelope<GameState> gameState = new ResponseEnvelope<>(
-				games.getGameState(new UniqueGameIdentifier(gameID), new UniquePlayerIdentifier(playerID)));
+		ResponseEnvelope<GameState> gameState = new ResponseEnvelope<>(games.getGameState(gameID, playerID));
 		return gameState;
 	}
 
