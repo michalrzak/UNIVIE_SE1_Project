@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import exceptions.GameNotReadyException;
 import exceptions.PlayerInvalidTurn;
@@ -15,12 +17,18 @@ import game.player.PlayersController;
 import game.player.helpers.ESPlayerGameState;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
+import game.propertychange.PropertyChangeListener;
+import game.propertychange.PropertyChangeSupport;
 
+@Component
 public class Game implements IGameAccesser {
 
-	private final long created = System.currentTimeMillis();
 	private final PlayersController players = new PlayersController();
 	private final MapController map = new MapController();
+
+	private boolean isAlive = true;
+
+	private final PropertyChangeSupport<Void> gameDied = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(Game.class);
 
@@ -30,7 +38,6 @@ public class Game implements IGameAccesser {
 
 	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
 		if (!getReady()) {
-			System.err.println("TEST!@$");
 			logger.warn("Tried tp send a HalfMap to a game that is not ready");
 			throw new GameNotReadyException("Tried to send a HalfMap to a game that is not ready");
 		}
@@ -46,6 +53,10 @@ public class Game implements IGameAccesser {
 		players.nextTurn();
 	}
 
+	public void registerListenForDeath(PropertyChangeListener<Void> listener) {
+		gameDied.register(listener);
+	}
+
 	public boolean checkPlayer(SUniquePlayerIdentifier playerID) {
 		return players.checkPlayer(playerID);
 	}
@@ -54,8 +65,16 @@ public class Game implements IGameAccesser {
 		players.setAsLooser(playerID);
 	}
 
-	public long getTimeAlive() {
-		return System.currentTimeMillis() - created;
+	public boolean getAlive() {
+		return isAlive;
+	}
+
+	// 10 minutes in milliseconds. Does not allow to use my constants enum or final
+	// static variables defined in this class
+	@Scheduled(fixedRate = 1 * 60 * 1000)
+	private void die() {
+		isAlive = false;
+		gameDied.fire();
 	}
 
 	@Override

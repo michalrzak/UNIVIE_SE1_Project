@@ -25,11 +25,12 @@ public class SFullMap implements ISFullMapAccesser {
 	private final Map<SUniquePlayerIdentifier, Collection<OwnedGameEntity>> playerRevealedEntities = new HashMap<>();
 	private final EMapType mapType;
 
+	private final static Random rand = new Random();
+
 	private static Logger logger = LoggerFactory.getLogger(SFullMap.class);
 
 	public static SFullMap generateRandomMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2) {
 		// Pick first map on random
-		Random rand = new Random();
 		if (rand.nextBoolean()) {
 			var temp = hmdataPlayer1;
 			hmdataPlayer1 = hmdataPlayer2;

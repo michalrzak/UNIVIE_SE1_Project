@@ -104,12 +104,23 @@ public class GameController {
 		return games.containsKey(gameID);
 	}
 
+	private void deleteGame(SUniqueGameIdentifier gameID) {
+		games.remove(gameID);
+		gameIDCreation.remove(gameID);
+		logger.debug(String.format("Removed game with id: %s", gameID.getIDAsString()));
+	}
+
 	private void createNewGameWithGameID(SUniqueGameIdentifier gameID) {
 		if (gameIDCreation.size() >= EGameConstants.MAX_NUM_OF_GAMES.getValue()) {
-			games.remove(gameIDCreation.remove());
+			deleteGame(gameIDCreation.element());
 		}
 
 		games.put(gameID, new Game());
 		gameIDCreation.add(gameID);
+
+		games.get(gameID).registerListenForDeath(eleIsNull -> {
+			logger.debug(String.format("Called the PropertyChangeSupport for gameID: %s", gameID.getIDAsString()));
+			deleteGame(gameID);
+		});
 	}
 }
