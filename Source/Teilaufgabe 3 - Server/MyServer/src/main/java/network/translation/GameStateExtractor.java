@@ -1,4 +1,4 @@
-package network;
+package network.translation;
 
 import java.util.ArrayList;
 import java.util.Collection;

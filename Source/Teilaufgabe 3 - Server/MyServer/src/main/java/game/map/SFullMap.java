@@ -13,14 +13,14 @@ import org.slf4j.LoggerFactory;
 
 import game.map.helpers.EGameEntity;
 import game.map.helpers.EMapType;
-import game.map.helpers.ETerrain;
+import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.player.helpers.SUniquePlayerIdentifier;
 
 public class SFullMap implements ISFullMapAccesser {
 
-	private final Map<Position, ETerrain> terrain = new HashMap<>();
+	private final Map<Position, ESTerrain> terrain = new HashMap<>();
 	private final Map<OwnedGameEntity, Position> entities = new HashMap<>();
 	private final Map<SUniquePlayerIdentifier, Collection<OwnedGameEntity>> playerRevealedEntities = new HashMap<>();
 	private final EMapType mapType;
@@ -112,8 +112,8 @@ public class SFullMap implements ISFullMapAccesser {
 	}
 
 	@Override
-	public Map<Position, ETerrain> getTerrain() {
-		return new HashMap<Position, ETerrain>(terrain);
+	public Map<Position, ESTerrain> getTerrain() {
+		return new HashMap<Position, ESTerrain>(terrain);
 	}
 
 	@Override

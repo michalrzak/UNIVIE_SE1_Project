@@ -5,14 +5,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import game.map.helpers.EMapType;
-import game.map.helpers.ETerrain;
+import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.player.helpers.SUniquePlayerIdentifier;
 
 public interface ISFullMapAccesser {
 
-	Map<Position, ETerrain> getTerrain();
+	Map<Position, ESTerrain> getTerrain();
 
 	EMapType getMapType();
 

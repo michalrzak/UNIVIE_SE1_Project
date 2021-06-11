@@ -29,6 +29,8 @@ import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
+import network.translation.GameStateExtractor;
+import network.translation.NetworkTranslator;
 import rules.IRules;
 import rules.RuleHalfMapCastle;
 import rules.RuleHalfMapDimensions;

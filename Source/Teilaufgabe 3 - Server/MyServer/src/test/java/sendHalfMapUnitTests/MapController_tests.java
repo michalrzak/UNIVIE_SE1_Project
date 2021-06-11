@@ -12,15 +12,15 @@ import org.mockito.Mockito;
 import exceptions.GenericExampleException;
 import game.map.MapController;
 import game.map.SHalfMap;
-import game.map.helpers.ETerrain;
+import game.map.helpers.ESTerrain;
 import game.map.helpers.Position;
 import game.player.helpers.SUniquePlayerIdentifier;
 
 class MapController_tests {
 
-	Map<Position, ETerrain> createMockedMap() {
-		Map<Position, ETerrain> map = Mockito.mock(Map.class);
-		Mockito.when(map.get(Mockito.any())).thenReturn(ETerrain.GRASS);
+	Map<Position, ESTerrain> createMockedMap() {
+		Map<Position, ESTerrain> map = Mockito.mock(Map.class);
+		Mockito.when(map.get(Mockito.any())).thenReturn(ESTerrain.GRASS);
 		Mockito.when(map.size()).thenReturn(32);
 		return map;
 	}

@@ -3,20 +3,20 @@ package game.map;
 import java.util.Map;
 
 import game.map.helpers.EGameEntity;
-import game.map.helpers.ETerrain;
+import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.player.helpers.SUniquePlayerIdentifier;
 
 public class SHalfMap {
 
-	private final Map<Position, ETerrain> terrain;
+	private final Map<Position, ESTerrain> terrain;
 	private final Position castlePosition;
 	private final OwnedGameEntity castle;
 
 	// private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 
-	public SHalfMap(Map<Position, ETerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
+	public SHalfMap(Map<Position, ESTerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
 		// TODO: magic number
 		assert (terrain.size() == 32);
 
@@ -25,7 +25,7 @@ public class SHalfMap {
 		this.castlePosition = castlePosition;
 	}
 
-	public Map<Position, ETerrain> getTerrain() {
+	public Map<Position, ESTerrain> getTerrain() {
 		return terrain;
 	}
 

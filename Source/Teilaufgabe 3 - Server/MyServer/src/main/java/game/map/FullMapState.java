@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import game.map.helpers.EGameEntity;
 import game.map.helpers.EMapType;
-import game.map.helpers.ETerrain;
+import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.player.helpers.SUniquePlayerIdentifier;
@@ -32,7 +32,7 @@ public class FullMapState {
 		}
 	}
 
-	public Map<Position, ETerrain> getTerrain() {
+	public Map<Position, ESTerrain> getTerrain() {
 		return fullMap.getTerrain();
 	}
 

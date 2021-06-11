@@ -6,21 +6,22 @@ import MessagesBase.ETerrain;
 import MessagesBase.HalfMap;
 import exceptions.InvalidMapException;
 import game.map.helpers.Position;
-import rules.helpers.EHalfMapHelpers;
+import network.translation.NetworkHalfMapTranslator;
 
 public class RuleHalfMapNoIslands implements IRules {
 
 	@Override
 	public void validateHalfMap(HalfMap halfmap) {
 		// extract map from halfmap
-		Map<Position, ETerrain> nodes = EHalfMapHelpers.extractMap(halfmap);
+		NetworkHalfMapTranslator halfMapTrans = new NetworkHalfMapTranslator();
+		Map<Position, ETerrain> positionMap = halfMapTrans.extractNetorkHalfMapTerrainMap(halfmap);
 
 		// start floodfill from 0, 0
-		floodfill(new Position(0, 0), nodes);
+		floodfill(new Position(0, 0), positionMap);
 
 		// map contains islands if it is not empty and at least one node inside is not
 		// water
-		if (nodes.size() != 0 && !nodes.values().stream().allMatch(ele -> ele == ETerrain.Water)) {
+		if (positionMap.size() != 0 && !positionMap.values().stream().allMatch(ele -> ele == ETerrain.Water)) {
 			throw new InvalidMapException("The half map contains an island!");
 		}
 	}

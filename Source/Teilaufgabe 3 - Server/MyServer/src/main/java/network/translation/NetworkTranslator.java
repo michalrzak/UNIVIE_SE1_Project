@@ -1,7 +1,4 @@
-package network;
-
-import java.util.HashMap;
-import java.util.Map;
+package network.translation;
 
 import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
@@ -10,11 +7,9 @@ import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidDataException;
 import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
-import game.map.helpers.ETerrain;
-import game.map.helpers.Position;
+import game.map.helpers.ESTerrain;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
-import rules.helpers.EHalfMapHelpers;
 
 public class NetworkTranslator {
 
@@ -40,18 +35,11 @@ public class NetworkTranslator {
 	}
 
 	public SHalfMap networkHalfMapToInernal(HalfMap halfmap) {
-		var halfmapNodes = halfmap.getNodes();
-
-		Map<Position, ETerrain> terrainMap = extractTerrainMap(halfmap);
-		Position castlePosition = findCastle(halfmap);
-
-		// TODO: MAGIC NUMBER!
-		assert (terrainMap.size() == 32);
-
-		return new SHalfMap(terrainMap, castlePosition, networkPlayerIDToInternal(halfmap));
+		NetworkHalfMapTranslator halfMapTrans = new NetworkHalfMapTranslator();
+		return halfMapTrans.translateNetworkHalfMap(halfmap);
 	}
 
-	public MessagesBase.ETerrain internalTerrainToNetwork(ETerrain terrain) {
+	public MessagesBase.ETerrain internalTerrainToNetwork(ESTerrain terrain) {
 
 		switch (terrain) {
 		case GRASS:
@@ -65,34 +53,4 @@ public class NetworkTranslator {
 		throw new InvalidDataException("the passed terrain contained an unexpected realization");
 
 	}
-
-	private Map<Position, ETerrain> extractTerrainMap(HalfMap halfmap) {
-		Map<Position, MessagesBase.ETerrain> networkTerrain = EHalfMapHelpers.extractMap(halfmap);
-
-		Map<Position, ETerrain> ret = new HashMap<>();
-		for (var posTerrain : networkTerrain.entrySet()) {
-			switch (posTerrain.getValue()) {
-			case Grass:
-				ret.put(posTerrain.getKey(), ETerrain.GRASS);
-				break;
-			case Mountain:
-				ret.put(posTerrain.getKey(), ETerrain.MOUNTAIN);
-				break;
-			case Water:
-				ret.put(posTerrain.getKey(), ETerrain.WATER);
-				break;
-			}
-		}
-
-		return ret;
-	}
-
-	private Position findCastle(HalfMap halfmap) {
-		var halfmapNodes = halfmap.getNodes();
-
-		var castleNode = halfmapNodes.stream().filter(node -> node.isFortPresent()).findFirst().get();
-
-		return new Position(castleNode.getX(), castleNode.getY());
-	}
-
 }
