@@ -47,6 +47,11 @@ public class Game implements IGameAccesser {
 		});
 	}
 
+	public void registerListenForDeath(PropertyChangeListener<Void> listener) {
+		checkAlive();
+		gameDied.register(listener);
+	}
+
 	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
 		checkAlive();
 		return players.registerPlayer(playerInf);
@@ -65,11 +70,6 @@ public class Game implements IGameAccesser {
 		}
 		map.receiveHalfMap(hmData);
 		players.nextTurn();
-	}
-
-	public void registerListenForDeath(PropertyChangeListener<Void> listener) {
-		checkAlive();
-		gameDied.register(listener);
 	}
 
 	public boolean checkPlayer(SUniquePlayerIdentifier playerID) {
@@ -114,6 +114,7 @@ public class Game implements IGameAccesser {
 	// static variables defined in this class
 	@Scheduled(fixedRate = 1 * 60 * 1000)
 	private void die() {
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		isAlive = false;
 		gameDied.fire();
 	}

@@ -5,18 +5,23 @@ import java.util.List;
 
 public class PropertyChangeSupport<T> {
 
-	private final List<PropertyChangeListener<T>> listners = new ArrayList<>();
+	private final List<PropertyChangeListener<T>> listeners = new ArrayList<>();
 
 	public void fire(T data) {
-		listners.forEach(listner -> listner.handle(data));
+		listeners.stream().forEach(listener -> listener.handle(data));
 	}
 
 	public void fire() {
-		listners.forEach(listner -> listner.handle(null));
+		for (var listener : listeners) {
+			listener.handle(null);
+		}
+
+		// listeners.stream().forEach(listener -> listener.handle(null));
 	}
 
 	public void register(PropertyChangeListener<T> listener) {
-		listners.add(listener);
+		listeners.add(listener);
+		// listener.handle(null);
 	}
 
 }

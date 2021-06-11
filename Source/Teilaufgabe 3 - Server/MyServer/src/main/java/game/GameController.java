@@ -7,6 +7,8 @@ import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import exceptions.GameNotFoundException;
 import exceptions.PlayerInvalidTurn;
@@ -16,6 +18,7 @@ import game.map.SHalfMap;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 
+@Component
 public class GameController {
 
 	private final Map<SUniqueGameIdentifier, Game> games = new HashMap<>();
@@ -108,6 +111,7 @@ public class GameController {
 		games.remove(gameID);
 		gameIDCreation.remove(gameID);
 		logger.debug(String.format("Removed game with id: %s", gameID.getIDAsString()));
+		System.out.print(games.size());
 	}
 
 	private void createNewGameWithGameID(SUniqueGameIdentifier gameID) {
@@ -119,8 +123,14 @@ public class GameController {
 		gameIDCreation.add(gameID);
 
 		games.get(gameID).registerListenForDeath(eleIsNull -> {
+			System.out.println("-----------------------------------------");
 			logger.debug(String.format("Called the PropertyChangeSupport for gameID: %s", gameID.getIDAsString()));
 			deleteGame(gameID);
 		});
+	}
+
+	@Scheduled(fixedRate = 1000)
+	private void printGameNum() {
+		System.out.println(games.size());
 	}
 }
