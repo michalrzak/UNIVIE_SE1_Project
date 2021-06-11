@@ -1,4 +1,4 @@
-package gamedata.game.helpers;
+package game.helpers;
 
 public class SUniqueGameIdentifier {
 

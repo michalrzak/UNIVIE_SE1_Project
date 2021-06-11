@@ -16,11 +16,11 @@ import MessagesGameState.FullMapNode;
 import MessagesGameState.GameState;
 import MessagesGameState.PlayerState;
 import exceptions.InternalServerException;
-import gamedata.SGameState;
-import gamedata.map.FullMapState;
-import gamedata.map.helpers.Position;
-import gamedata.player.IPlayerAccesser;
-import gamedata.player.helpers.ESPlayerGameState;
+import game.SGameState;
+import game.map.FullMapState;
+import game.map.helpers.Position;
+import game.player.IPlayerAccesser;
+import game.player.helpers.ESPlayerGameState;
 
 public class GameStateExtractor {
 

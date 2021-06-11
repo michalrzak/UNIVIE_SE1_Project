@@ -6,7 +6,7 @@ import java.util.Set;
 import MessagesBase.HalfMap;
 import MessagesBase.HalfMapNode;
 import exceptions.InvalidMapException;
-import gamedata.map.helpers.Position;
+import game.map.helpers.Position;
 import rules.helpers.EHalfMapHelpers;
 
 public class RuleHalfMapDimensions implements IRules {

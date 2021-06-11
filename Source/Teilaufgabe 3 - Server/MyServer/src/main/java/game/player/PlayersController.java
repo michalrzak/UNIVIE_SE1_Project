@@ -1,4 +1,4 @@
-package gamedata.player;
+package game.player;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,10 +16,10 @@ import exceptions.GameNotReadyException;
 import exceptions.InternalServerException;
 import exceptions.PlayerNotFoundException;
 import exceptions.TooManyPlayersRegistered;
-import gamedata.EGameConstants;
-import gamedata.player.helpers.ESPlayerGameState;
-import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.helpers.EGameConstants;
+import game.player.helpers.ESPlayerGameState;
+import game.player.helpers.PlayerInformation;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public class PlayersController {
 

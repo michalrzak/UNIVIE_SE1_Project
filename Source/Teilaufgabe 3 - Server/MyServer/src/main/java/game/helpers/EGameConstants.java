@@ -1,4 +1,4 @@
-package gamedata;
+package game.helpers;
 
 public enum EGameConstants {
 	MAX_PLAYER_COUNT(2), MAX_NUM_OF_GAMES(999), MAX_PART_MAPS(2);

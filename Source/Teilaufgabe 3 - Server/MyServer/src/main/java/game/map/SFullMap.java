@@ -1,4 +1,4 @@
-package gamedata.map;
+package game.map;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,12 +11,12 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gamedata.map.helpers.EGameEntity;
-import gamedata.map.helpers.EMapType;
-import gamedata.map.helpers.ETerrain;
-import gamedata.map.helpers.OwnedGameEntity;
-import gamedata.map.helpers.Position;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.map.helpers.EGameEntity;
+import game.map.helpers.EMapType;
+import game.map.helpers.ETerrain;
+import game.map.helpers.OwnedGameEntity;
+import game.map.helpers.Position;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public class SFullMap implements ISFullMapAccesser {
 

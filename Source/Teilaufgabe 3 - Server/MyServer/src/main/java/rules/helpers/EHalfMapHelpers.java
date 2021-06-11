@@ -5,7 +5,7 @@ import java.util.Map;
 
 import MessagesBase.ETerrain;
 import MessagesBase.HalfMap;
-import gamedata.map.helpers.Position;
+import game.map.helpers.Position;
 
 public enum EHalfMapHelpers {
 	HALF_MAP_WIDTH(8), HALF_MAP_HEIGHT(4), MIN_GRASS_COUNT(15), MIN_MOUNTAIN_COUNT(3), MIN_WATER_COUNT(4);

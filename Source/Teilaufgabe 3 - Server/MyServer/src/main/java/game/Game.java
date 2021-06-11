@@ -1,4 +1,4 @@
-package gamedata.game;
+package game;
 
 import java.util.Optional;
 
@@ -7,14 +7,14 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.GameNotReadyException;
 import exceptions.PlayerInvalidTurn;
-import gamedata.map.ISFullMapAccesser;
-import gamedata.map.MapController;
-import gamedata.map.SHalfMap;
-import gamedata.player.IPlayerAccesser;
-import gamedata.player.PlayersController;
-import gamedata.player.helpers.ESPlayerGameState;
-import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.map.ISFullMapAccesser;
+import game.map.MapController;
+import game.map.SHalfMap;
+import game.player.IPlayerAccesser;
+import game.player.PlayersController;
+import game.player.helpers.ESPlayerGameState;
+import game.player.helpers.PlayerInformation;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public class Game implements IGameAccesser {
 

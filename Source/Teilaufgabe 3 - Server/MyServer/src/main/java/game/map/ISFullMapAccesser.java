@@ -1,14 +1,14 @@
-package gamedata.map;
+package game.map;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-import gamedata.map.helpers.EMapType;
-import gamedata.map.helpers.ETerrain;
-import gamedata.map.helpers.OwnedGameEntity;
-import gamedata.map.helpers.Position;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.map.helpers.EMapType;
+import game.map.helpers.ETerrain;
+import game.map.helpers.OwnedGameEntity;
+import game.map.helpers.Position;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public interface ISFullMapAccesser {
 

@@ -5,7 +5,7 @@ import java.util.Map;
 import MessagesBase.ETerrain;
 import MessagesBase.HalfMap;
 import exceptions.InvalidMapException;
-import gamedata.map.helpers.Position;
+import game.map.helpers.Position;
 import rules.helpers.EHalfMapHelpers;
 
 public class RuleHalfMapEdges implements IRules {

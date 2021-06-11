@@ -1,10 +1,10 @@
-package gamedata.player;
+package game.player;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.player.helpers.PlayerInformation;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public class Player extends SUniquePlayerIdentifier implements IPlayerAccesser {
 

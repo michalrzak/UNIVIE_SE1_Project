@@ -1,6 +1,6 @@
-package gamedata.map.helpers;
+package game.map.helpers;
 
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public class OwnedGameEntity {
 	final private SUniquePlayerIdentifier owner;

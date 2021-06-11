@@ -1,6 +1,6 @@
-package gamedata.player;
+package game.player;
 
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public interface IPlayerAccesser {
 

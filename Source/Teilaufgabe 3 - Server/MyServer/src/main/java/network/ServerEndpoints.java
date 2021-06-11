@@ -23,12 +23,12 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
-import gamedata.GameDataController;
-import gamedata.SGameState;
-import gamedata.game.helpers.SUniqueGameIdentifier;
-import gamedata.map.SHalfMap;
-import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.GameController;
+import game.SGameState;
+import game.helpers.SUniqueGameIdentifier;
+import game.map.SHalfMap;
+import game.player.helpers.PlayerInformation;
+import game.player.helpers.SUniquePlayerIdentifier;
 import rules.IRules;
 import rules.RuleHalfMapCastle;
 import rules.RuleHalfMapDimensions;
@@ -47,7 +47,7 @@ public class ServerEndpoints {
 
 	private static Logger logger = LoggerFactory.getLogger(ServerEndpoints.class);
 
-	private final GameDataController games = new GameDataController();
+	private final GameController games = new GameController();
 	private final NetworkTranslator translate = new NetworkTranslator();
 
 	// ADDITONAL TIPS ON THIS MATTER ARE GIVEN THROUGHOUT THE TUTORIAL SESSION!

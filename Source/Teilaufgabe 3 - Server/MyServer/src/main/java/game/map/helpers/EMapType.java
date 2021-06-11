@@ -1,4 +1,4 @@
-package gamedata.map.helpers;
+package game.map.helpers;
 
 import java.util.Random;
 

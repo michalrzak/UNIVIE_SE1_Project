@@ -8,12 +8,12 @@ import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidDataException;
-import gamedata.game.helpers.SUniqueGameIdentifier;
-import gamedata.map.SHalfMap;
-import gamedata.map.helpers.ETerrain;
-import gamedata.map.helpers.Position;
-import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.helpers.SUniqueGameIdentifier;
+import game.map.SHalfMap;
+import game.map.helpers.ETerrain;
+import game.map.helpers.Position;
+import game.player.helpers.PlayerInformation;
+import game.player.helpers.SUniquePlayerIdentifier;
 import rules.helpers.EHalfMapHelpers;
 
 public class NetworkTranslator {

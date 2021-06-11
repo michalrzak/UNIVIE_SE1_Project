@@ -1,4 +1,4 @@
-package gamedata;
+package game;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,18 +10,18 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.GameNotFoundException;
 import exceptions.PlayerInvalidTurn;
-import gamedata.game.Game;
-import gamedata.game.helpers.SUniqueGameIdentifier;
-import gamedata.map.SHalfMap;
-import gamedata.player.helpers.PlayerInformation;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.helpers.EGameConstants;
+import game.helpers.SUniqueGameIdentifier;
+import game.map.SHalfMap;
+import game.player.helpers.PlayerInformation;
+import game.player.helpers.SUniquePlayerIdentifier;
 
-public class GameDataController {
+public class GameController {
 
 	private final Map<SUniqueGameIdentifier, Game> games = new HashMap<>();
 	private final Queue<SUniqueGameIdentifier> gameIDCreation = new LinkedList<>();
 
-	private static Logger logger = LoggerFactory.getLogger(GameDataController.class);
+	private static Logger logger = LoggerFactory.getLogger(GameController.class);
 
 	public SUniqueGameIdentifier createNewGame() {
 		SUniqueGameIdentifier newID = SUniqueGameIdentifier.getRandomID();

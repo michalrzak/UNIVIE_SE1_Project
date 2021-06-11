@@ -1,4 +1,4 @@
-package gamedata.map;
+package game.map;
 
 import java.util.Optional;
 

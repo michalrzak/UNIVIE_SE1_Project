@@ -1,11 +1,11 @@
-package gamedata.game;
+package game;
 
 import java.util.Optional;
 
-import gamedata.map.ISFullMapAccesser;
-import gamedata.player.IPlayerAccesser;
-import gamedata.player.helpers.ESPlayerGameState;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.map.ISFullMapAccesser;
+import game.player.IPlayerAccesser;
+import game.player.helpers.ESPlayerGameState;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public interface IGameAccesser {
 

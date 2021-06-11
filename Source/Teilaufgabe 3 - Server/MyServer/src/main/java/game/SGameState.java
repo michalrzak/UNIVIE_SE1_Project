@@ -1,14 +1,13 @@
-package gamedata;
+package game;
 
 import java.util.Optional;
 
-import gamedata.game.IGameAccesser;
-import gamedata.map.FullMapState;
-import gamedata.map.ISFullMapAccesser;
-import gamedata.player.IPlayerAccesser;
-import gamedata.player.Player;
-import gamedata.player.helpers.ESPlayerGameState;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.map.FullMapState;
+import game.map.ISFullMapAccesser;
+import game.player.IPlayerAccesser;
+import game.player.Player;
+import game.player.helpers.ESPlayerGameState;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 public class SGameState {
 

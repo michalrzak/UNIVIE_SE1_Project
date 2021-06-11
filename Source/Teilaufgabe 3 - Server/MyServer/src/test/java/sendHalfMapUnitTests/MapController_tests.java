@@ -10,11 +10,11 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
 
 import exceptions.GenericExampleException;
-import gamedata.map.MapController;
-import gamedata.map.SHalfMap;
-import gamedata.map.helpers.ETerrain;
-import gamedata.map.helpers.Position;
-import gamedata.player.helpers.SUniquePlayerIdentifier;
+import game.map.MapController;
+import game.map.SHalfMap;
+import game.map.helpers.ETerrain;
+import game.map.helpers.Position;
+import game.player.helpers.SUniquePlayerIdentifier;
 
 class MapController_tests {
 
