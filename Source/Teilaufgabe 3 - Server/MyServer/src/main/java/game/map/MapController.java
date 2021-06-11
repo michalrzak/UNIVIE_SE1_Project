@@ -6,15 +6,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.TooManyHalfMapsReceived;
+import game.propertychange.PropertyChangeListener;
+import game.propertychange.PropertyChangeSupport;
 
 public class MapController {
 
 	private Optional<SHalfMap> hmdata1 = Optional.empty();
 	private Optional<SHalfMap> hmdata2 = Optional.empty();
-
 	private Optional<SFullMap> fullMap = Optional.empty();
 
+	private final PropertyChangeSupport<Void> mapReady = new PropertyChangeSupport<>();
+
 	private static Logger logger = LoggerFactory.getLogger(MapController.class);
+
+	public void registerListenForMapReady(PropertyChangeListener<Void> listener) {
+		mapReady.register(listener);
+	}
 
 	public void receiveHalfMap(SHalfMap hmData) {
 		if (hmdata1.isPresent() && hmdata2.isPresent()) {

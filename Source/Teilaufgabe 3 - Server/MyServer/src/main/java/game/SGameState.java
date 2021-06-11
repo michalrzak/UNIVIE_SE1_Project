@@ -20,7 +20,7 @@ public class SGameState {
 		this.owner = owner;
 		this.game = game;
 
-		if (game.getReady()) {
+		if (game.getPlayersReady()) {
 			other = Optional.of(game.getOtherPlayer(owner));
 		}
 	}

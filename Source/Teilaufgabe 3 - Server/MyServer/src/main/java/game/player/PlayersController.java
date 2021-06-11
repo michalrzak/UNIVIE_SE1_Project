@@ -20,6 +20,8 @@ import game.helpers.EGameConstants;
 import game.player.helpers.ESPlayerGameState;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
+import game.propertychange.PropertyChangeListener;
+import game.propertychange.PropertyChangeSupport;
 
 public class PlayersController {
 
@@ -29,6 +31,8 @@ public class PlayersController {
 
 	private Optional<SUniquePlayerIdentifier> winner = Optional.empty();
 	private int turn = 0;
+
+	private final PropertyChangeSupport<Void> playersReady = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(PlayersController.class);
 
@@ -48,6 +52,10 @@ public class PlayersController {
 		}
 
 		return newPlayer;
+	}
+
+	public void registerListenForPlayersReady(PropertyChangeListener<Void> listener) {
+		playersReady.register(listener);
 	}
 
 	public boolean checkPlayerTurn(SUniquePlayerIdentifier playerID) {
@@ -133,6 +141,7 @@ public class PlayersController {
 		Collections.shuffle(players);
 		playerTurn.addAll(players);
 
+		playersReady.fire();
 	}
 
 }

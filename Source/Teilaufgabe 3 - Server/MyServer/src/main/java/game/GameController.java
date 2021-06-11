@@ -93,7 +93,7 @@ public class GameController {
 			throw new GameNotFoundException("The passed gameID was not found");
 		}
 
-		if (!games.get(gameID).getReady()) {
+		if (!games.get(gameID).getPlayersReady()) {
 			return;
 		}
 
