@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import exceptions.GameNotFoundException;
 import exceptions.GameNotReadyException;
 import exceptions.PlayerInvalidTurn;
 import game.map.ISFullMapAccesser;
@@ -24,7 +23,6 @@ public class Game implements IGameAccesser {
 
 	private boolean playersReady = false;
 	private boolean mapReady = false;
-	private boolean isAlive = true;
 
 	private static Logger logger = LoggerFactory.getLogger(Game.class);
 
@@ -41,12 +39,10 @@ public class Game implements IGameAccesser {
 	}
 
 	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
-		checkAlive();
 		return players.registerPlayer(playerInf);
 	}
 
 	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
-		checkAlive();
 		checkPlayersReady();
 
 		if (!players.checkPlayerTurn(playerID)) {
@@ -61,25 +57,12 @@ public class Game implements IGameAccesser {
 	}
 
 	public boolean checkPlayer(SUniquePlayerIdentifier playerID) {
-		checkAlive();
 		return players.checkPlayer(playerID);
 	}
 
 	public void setLooser(SUniquePlayerIdentifier playerID) {
-		checkAlive();
 		checkPlayersReady();
 		players.setAsLooser(playerID);
-	}
-
-	public boolean getAlive() {
-		return isAlive;
-	}
-
-	private void checkAlive() {
-		if (!isAlive) {
-			logger.error("Tried accessing a game that is not alive");
-			throw new GameNotFoundException("The game you tried to access is expired!");
-		}
 	}
 
 	private void checkPlayersReady() {
