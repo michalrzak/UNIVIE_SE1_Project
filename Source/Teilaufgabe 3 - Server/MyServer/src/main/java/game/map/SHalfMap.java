@@ -3,6 +3,7 @@ package game.map;
 import java.util.Map;
 
 import game.map.helpers.EGameEntity;
+import game.map.helpers.EMapType;
 import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
@@ -17,8 +18,7 @@ public class SHalfMap {
 	// private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
 
 	public SHalfMap(Map<Position, ESTerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
-		// TODO: magic number
-		assert (terrain.size() == 32);
+		assert (terrain.size() == EMapType.LONGMAP.getHalfHeight() * EMapType.LONGMAP.getHalfWidth());
 
 		this.terrain = terrain;
 		castle = new OwnedGameEntity(owner, EGameEntity.CASTLE);

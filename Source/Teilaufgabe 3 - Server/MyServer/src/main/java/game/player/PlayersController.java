@@ -92,10 +92,6 @@ public class PlayersController {
 		return turn;
 	}
 
-	public boolean getReady() {
-		return !playerTurn.isEmpty();
-	}
-
 	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID) {
 		if (!registeredPlayers.contains(playerID)) {
 			throw new PlayerNotFoundException("The playerID provided is not registered!");

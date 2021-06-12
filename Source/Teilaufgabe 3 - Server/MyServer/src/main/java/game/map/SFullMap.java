@@ -46,7 +46,7 @@ public class SFullMap implements ISFullMapAccesser {
 		return new SFullMap(hmdataPlayer1, hmdataPlayer2, mapType, castlePositionPlayer1, castlePositionPlayer2);
 	}
 
-	public SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType, Position castlePositionPlayer1,
+	private SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType, Position castlePositionPlayer1,
 			Position castlePositionPlayer2) {
 
 		assert (hmdataPlayer1 != null && hmdataPlayer2 != null && mapType != null);
