@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import exceptions.GameNotFoundException;
 import exceptions.GameNotReadyException;
@@ -18,10 +16,7 @@ import game.player.PlayersController;
 import game.player.helpers.ESPlayerGameState;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
-import game.propertychange.PropertyChangeListener;
-import game.propertychange.PropertyChangeSupport;
 
-@Component
 public class Game implements IGameAccesser {
 
 	private final PlayersController players = new PlayersController();
@@ -30,8 +25,6 @@ public class Game implements IGameAccesser {
 	private boolean playersReady = false;
 	private boolean mapReady = false;
 	private boolean isAlive = true;
-
-	private final PropertyChangeSupport<Void> gameDied = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(Game.class);
 
@@ -45,11 +38,6 @@ public class Game implements IGameAccesser {
 		players.registerListenForPlayersReady(eleIsNull -> {
 			playersReady = true;
 		});
-	}
-
-	public void registerListenForDeath(PropertyChangeListener<Void> listener) {
-		checkAlive();
-		gameDied.register(listener);
 	}
 
 	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
@@ -108,15 +96,6 @@ public class Game implements IGameAccesser {
 			throw new GameNotReadyException(
 					"Tried to access a game that is not ready. (Both players haven't sent a halfmap!)");
 		}
-	}
-
-	// 10 minutes in milliseconds. Does not allow to use my constants enum or final
-	// static variables defined in this class
-	@Scheduled(fixedRate = 1 * 60 * 1000)
-	private void die() {
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		isAlive = false;
-		gameDied.fire();
 	}
 
 	@Override

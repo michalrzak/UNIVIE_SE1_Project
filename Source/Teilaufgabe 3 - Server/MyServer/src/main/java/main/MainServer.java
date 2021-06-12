@@ -4,9 +4,13 @@ import java.util.Collections;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
+import game.helpers.EGameConstants;
 
 /*
  * Should already be configured correctly for all use cases, i.e., you will most likely not 
@@ -34,7 +38,16 @@ public class MainServer {
 	// the test client assumes 18235 as its default port
 	private static final int DEFAULT_PORT = 18235;
 
+	@Bean
+	public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
+		ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+		threadPoolTaskScheduler.setPoolSize(EGameConstants.MAX_NUM_OF_GAMES.getValue());
+		threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
+		return threadPoolTaskScheduler;
+	}
+
 	public static void main(String[] args) {
+
 		SpringApplication app = new SpringApplication(MainServer.class);
 
 		// sets the port programmatically

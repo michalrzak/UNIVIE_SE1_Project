@@ -1,5 +1,6 @@
 package game;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -7,7 +8,8 @@ import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
 import exceptions.GameNotFoundException;
@@ -24,7 +26,14 @@ public class GameController {
 	private final Map<SUniqueGameIdentifier, Game> games = new HashMap<>();
 	private final Queue<SUniqueGameIdentifier> gameIDCreation = new LinkedList<>();
 
+	private final ThreadPoolTaskScheduler taskScheduler;
+
 	private static Logger logger = LoggerFactory.getLogger(GameController.class);
+
+	@Autowired
+	public GameController(ThreadPoolTaskScheduler taskScheduler) {
+		this.taskScheduler = taskScheduler;
+	}
 
 	public SUniqueGameIdentifier createNewGame() {
 		SUniqueGameIdentifier newID = SUniqueGameIdentifier.getRandomID();
@@ -111,7 +120,6 @@ public class GameController {
 		games.remove(gameID);
 		gameIDCreation.remove(gameID);
 		logger.debug(String.format("Removed game with id: %s", gameID.getIDAsString()));
-		System.out.print(games.size());
 	}
 
 	private void createNewGameWithGameID(SUniqueGameIdentifier gameID) {
@@ -122,15 +130,15 @@ public class GameController {
 		games.put(gameID, new Game());
 		gameIDCreation.add(gameID);
 
-		games.get(gameID).registerListenForDeath(eleIsNull -> {
-			System.out.println("-----------------------------------------");
-			logger.debug(String.format("Called the PropertyChangeSupport for gameID: %s", gameID.getIDAsString()));
-			deleteGame(gameID);
-		});
+		// schedule the death of the game
+		taskScheduler.schedule(() -> deleteGame(gameID),
+				Instant.now().plusMillis(EGameConstants.GAME_ALIVE_MILLISECONDS.getValue()));
 	}
 
-	@Scheduled(fixedRate = 1000)
-	private void printGameNum() {
-		System.out.println(games.size());
-	}
+	/*
+	 * @Scheduled(fixedRate = 1000) private void printGameNum() {
+	 * System.out.println(games.size());
+	 * System.out.println(taskScheduler.getActiveCount());
+	 * System.out.println("++++++++++++++"); }
+	 */
 }

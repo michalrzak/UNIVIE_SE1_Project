@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -49,8 +50,13 @@ public class ServerEndpoints {
 
 	private static Logger logger = LoggerFactory.getLogger(ServerEndpoints.class);
 
-	private final GameController games = new GameController();
+	private final GameController games;
 	private final NetworkTranslator translate = new NetworkTranslator();
+
+	@Autowired
+	public ServerEndpoints(GameController games) {
+		this.games = games;
+	}
 
 	// ADDITONAL TIPS ON THIS MATTER ARE GIVEN THROUGHOUT THE TUTORIAL SESSION!
 	// Note, the same network messages which you have used for the client (along
