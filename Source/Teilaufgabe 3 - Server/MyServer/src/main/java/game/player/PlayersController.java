@@ -1,5 +1,6 @@
 package game.player;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.GameNotReadyException;
-import exceptions.PlayerNotFoundException;
 import exceptions.TooManyPlayersRegistered;
 import game.helpers.EGameConstants;
 import game.player.helpers.ESPlayerGameState;
@@ -67,7 +67,7 @@ public class PlayersController {
 		return true;
 	}
 
-	public boolean checkPlayer(SUniquePlayerIdentifier playerID) {
+	public boolean isPlayerRegistered(SUniquePlayerIdentifier playerID) {
 		return registeredPlayers.contains(playerID);
 	}
 
@@ -88,13 +88,9 @@ public class PlayersController {
 		return turn;
 	}
 
-	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID) {
-		if (!registeredPlayers.contains(playerID)) {
-			throw new PlayerNotFoundException("The playerID provided is not registered!");
-		}
-
-		// find the player in the registered players set
-		return registeredPlayers.stream().filter(player -> player.getPlayerID().equals(playerID)).findFirst().get();
+	public Collection<IPlayerAccesser> getRegisteredPlayers() {
+		// make a copy so the collection cannot be modified
+		return registeredPlayers.stream().map(ele -> ele).collect(Collectors.toList());
 	}
 
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID) {
@@ -118,7 +114,7 @@ public class PlayersController {
 		return ESPlayerGameState.SHOULD_WAIT;
 	}
 
-	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
+	private SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
 		allPlayersRegisteredOrThrow();
 
 		return registeredPlayers.stream().filter(player -> !player.equals(myPlayer)).findFirst().get();

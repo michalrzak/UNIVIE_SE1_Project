@@ -1,5 +1,6 @@
 package game;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import game.map.ISFullMapAccesser;
@@ -9,13 +10,11 @@ import game.player.helpers.SUniquePlayerIdentifier;
 
 public interface IGameAccesser {
 
-	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID);
-
 	public Optional<ISFullMapAccesser> getFullMap();
 
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID);
 
-	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer);
+	public Collection<IPlayerAccesser> getRegisteredPlayers();
 
 	public int getTurn();
 

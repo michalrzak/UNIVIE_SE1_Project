@@ -1,5 +1,6 @@
 package game;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import game.map.FullMapState;
@@ -11,22 +12,23 @@ import game.player.helpers.SUniquePlayerIdentifier;
 
 public class SGameState {
 
-	private final SUniquePlayerIdentifier owner;
+	private final IPlayerAccesser owner;
 	private final IGameAccesser game;
 
-	private Optional<SUniquePlayerIdentifier> other = Optional.empty();
+	private final Optional<IPlayerAccesser> other;
 
 	public SGameState(SUniquePlayerIdentifier owner, IGameAccesser game) {
-		this.owner = owner;
 		this.game = game;
 
-		if (game.getPlayersReady()) {
-			other = Optional.of(game.getOtherPlayer(owner));
-		}
+		Collection<IPlayerAccesser> registeredPlayers = game.getRegisteredPlayers();
+		assert (registeredPlayers.contains(owner));
+
+		this.owner = registeredPlayers.stream().filter(player -> player.equals(owner)).findFirst().get();
+		this.other = registeredPlayers.stream().filter(player -> !player.equals(owner)).findFirst();
 	}
 
 	public IPlayerAccesser getOwnerPlayer() {
-		return game.getPlayer(owner);
+		return owner;
 	}
 
 	public Optional<IPlayerAccesser> getOtherPlayer() {
@@ -35,7 +37,7 @@ public class SGameState {
 			return Optional.empty();
 		}
 
-		IPlayerAccesser otherPlayerOriginal = game.getPlayer(other.get());
+		IPlayerAccesser otherPlayerOriginal = other.get();
 
 		// create a new player with a random ID, but with the correct playerInformation
 		Player otherPlayerReturn = Player.getRandomPlayer(otherPlayerOriginal.getFirstName(),
@@ -45,14 +47,14 @@ public class SGameState {
 	}
 
 	public ESPlayerGameState getOwnerPlayerGameState() {
-		return game.getPlayerState(owner);
+		return game.getPlayerState(owner.getPlayerID());
 	}
 
 	public Optional<ESPlayerGameState> getOtherPlayerGameState() {
 		if (other.isEmpty()) {
 			return Optional.empty();
 		}
-		return Optional.of(game.getPlayerState(other.get()));
+		return Optional.of(game.getPlayerState(other.get().getPlayerID()));
 	}
 
 	public Optional<FullMapState> getFullMap() {
@@ -62,7 +64,8 @@ public class SGameState {
 			return Optional.empty();
 		}
 
-		return Optional.of(new FullMapState(owner, other.get(), fullMap.get(), game.getTurn()));
+		return Optional
+				.of(new FullMapState(owner.getPlayerID(), other.get().getPlayerID(), fullMap.get(), game.getTurn()));
 	}
 
 	public int getTurn() {

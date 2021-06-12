@@ -1,5 +1,6 @@
 package game;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -86,7 +87,7 @@ public class Game implements IGameAccesser {
 	}
 
 	private boolean isPlayerRegistered(SUniquePlayerIdentifier playerID) {
-		return players.checkPlayer(playerID);
+		return players.isPlayerRegistered(playerID);
 	}
 
 	private void playerRegisteredOrThrow(SUniquePlayerIdentifier playerID) {
@@ -120,18 +121,13 @@ public class Game implements IGameAccesser {
 	}
 
 	@Override
-	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
-		return players.getOtherPlayer(myPlayer);
-	}
-
-	@Override
 	public int getTurn() {
 		return players.getTurn();
 	}
 
 	@Override
-	public IPlayerAccesser getPlayer(SUniquePlayerIdentifier playerID) {
-		return players.getPlayer(playerID);
+	public Collection<IPlayerAccesser> getRegisteredPlayers() {
+		return players.getRegisteredPlayers();
 	}
 
 }
