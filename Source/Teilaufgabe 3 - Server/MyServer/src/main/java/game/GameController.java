@@ -47,21 +47,14 @@ public class GameController {
 	}
 
 	public SUniquePlayerIdentifier registerPlayer(SUniqueGameIdentifier gameID, PlayerInformation playerInf) {
-		if (!(games.containsKey(gameID))) {
-			logger.warn("Tried registering a player to a gameID that does not exist. GameID was: "
-					+ gameID.getIDAsString());
-			throw new GameNotFoundException("The passed gameID was not found");
-		}
+		gameIDUsedOrThrow(gameID);
 
 		return games.get(gameID).registerPlayer(playerInf);
 	}
 
 	public void addHalfMap(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID, SHalfMap hmdata) {
-		if (!games.containsKey(gameID)) {
-			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
-					+ " tried adding a halfmap to a gameID which does not exist (was: " + gameID.getIDAsString() + ")");
-			throw new GameNotFoundException("The passed gameID was not found");
-		}
+		gameIDUsedOrThrow(gameID);
+
 		try {
 			games.get(gameID).receiveHalfMap(playerID, hmdata);
 		} catch (PlayerInvalidTurn e) {
@@ -73,47 +66,27 @@ public class GameController {
 	}
 
 	public SGameState getGameState(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
+		gameIDUsedOrThrow(gameID);
 
-		if (!games.containsKey(gameID)) {
-			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
-					+ " tried requesting the gamestate of a game that does not exist (was: " + gameID.getIDAsString()
-					+ ")");
-			throw new GameNotFoundException("The passed gameID was not found");
-		}
-
-		if (!games.get(gameID).checkPlayer(playerID)) {
-			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
-					+ " tried accessing the gamestate of a game where he is not registered (was: "
-					+ gameID.getIDAsString() + ")");
-			throw new GameNotFoundException("The passed playerID was not found");
-		}
-
-		/*
-		 * if (!games.get(gameID).getReady()) {
-		 * logger.warn("The accessed game was not ready"); throw new
-		 * GameNotReadyException("The accessed game is not ready"); }
-		 */
-
-		return new SGameState(playerID, games.get(gameID));
+		return games.get(gameID).getGameState(playerID);
 	}
 
 	public void setLooser(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID) {
-		if (!games.containsKey(gameID)) {
-			logger.warn("Player with ID: " + playerID.getPlayerIDAsString()
-					+ " tried requesting the gamestate of a game that does not exist (was: " + gameID.getIDAsString()
-					+ ")");
-			throw new GameNotFoundException("The passed gameID was not found");
-		}
-
-		if (!games.get(gameID).getPlayersReady()) {
-			return;
-		}
+		gameIDUsedOrThrow(gameID);
 
 		games.get(gameID).setLooser(playerID);
 	}
 
 	private boolean checkGameIDUsed(SUniqueGameIdentifier gameID) {
 		return games.containsKey(gameID);
+	}
+
+	private void gameIDUsedOrThrow(SUniqueGameIdentifier gameID) {
+		if (!checkGameIDUsed(gameID)) {
+			logger.warn(String.format("Tried accessing a game (id: %s) which does not exist", gameID.getIDAsString()));
+			throw new GameNotFoundException(
+					String.format("Tried accessing a game (id: %s) which does not exist", gameID.getIDAsString()));
+		}
 	}
 
 	private void deleteGame(SUniqueGameIdentifier gameID) {

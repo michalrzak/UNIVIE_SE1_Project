@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import exceptions.GameNotFoundException;
 import exceptions.GameNotReadyException;
 import exceptions.PlayerInvalidTurn;
 import game.map.ISFullMapAccesser;
@@ -43,7 +44,7 @@ public class Game implements IGameAccesser {
 	}
 
 	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
-		checkPlayersReady();
+		playersReadyOrThrow();
 
 		if (!players.checkPlayerTurn(playerID)) {
 			setLooser(playerID);
@@ -56,16 +57,19 @@ public class Game implements IGameAccesser {
 		players.nextTurn();
 	}
 
-	public boolean checkPlayer(SUniquePlayerIdentifier playerID) {
-		return players.checkPlayer(playerID);
-	}
-
 	public void setLooser(SUniquePlayerIdentifier playerID) {
-		checkPlayersReady();
-		players.setAsLooser(playerID);
+		// TODO: think about this
+		if (playersReady) {
+			players.setAsLooser(playerID);
+		}
 	}
 
-	private void checkPlayersReady() {
+	public SGameState getGameState(SUniquePlayerIdentifier playerID) {
+		playerRegisteredOrThrow(playerID);
+		return new SGameState(playerID, this);
+	}
+
+	private void playersReadyOrThrow() {
 		if (!getPlayersReady()) {
 			logger.warn("Tried to access a game that is not ready. Not all players registerd!");
 			throw new GameNotReadyException(
@@ -73,11 +77,25 @@ public class Game implements IGameAccesser {
 		}
 	}
 
-	private void checkMapReady() {
+	private void mapReadyOrThrow() {
 		if (!getMapReady()) {
 			logger.warn("Tried to access a game that is not ready. The map is not combined!");
 			throw new GameNotReadyException(
 					"Tried to access a game that is not ready. (Both players haven't sent a halfmap!)");
+		}
+	}
+
+	private boolean isPlayerRegistered(SUniquePlayerIdentifier playerID) {
+		return players.checkPlayer(playerID);
+	}
+
+	private void playerRegisteredOrThrow(SUniquePlayerIdentifier playerID) {
+		if (!isPlayerRegistered(playerID)) {
+			logger.warn(String.format("Player with ID: %s tried accessing a game where he is not registered",
+					playerID.getPlayerIDAsString()));
+			throw new GameNotFoundException(
+					String.format("Player with ID: %s tried accessing a game where he is not registered",
+							playerID.getPlayerIDAsString()));
 		}
 	}
 

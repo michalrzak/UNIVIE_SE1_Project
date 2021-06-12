@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.GameNotReadyException;
-import exceptions.InternalServerException;
 import exceptions.PlayerNotFoundException;
 import exceptions.TooManyPlayersRegistered;
 import game.helpers.EGameConstants;
@@ -59,10 +58,7 @@ public class PlayersController {
 	}
 
 	public boolean checkPlayerTurn(SUniquePlayerIdentifier playerID) {
-		if (playerTurn.isEmpty()) {
-			logger.warn("Tried checking player turn even though the game is not ready!");
-			throw new GameNotReadyException("Tried to perform an action while the game is not ready");
-		}
+		allPlayersRegisteredOrThrow();
 
 		SUniquePlayerIdentifier current = playerTurn.element();
 		if (!current.equals(playerID)) {
@@ -102,8 +98,8 @@ public class PlayersController {
 	}
 
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID) {
-		// if is empty return should wait
-		if (playerTurn.isEmpty()) {
+
+		if (!allPlayersRegistered()) {
 			return ESPlayerGameState.SHOULD_WAIT;
 		}
 
@@ -117,18 +113,27 @@ public class PlayersController {
 
 		if (playerID.equals(playerTurn.element())) {
 			return ESPlayerGameState.SHOULD_ACT_NEXT;
-		} else {
-			return ESPlayerGameState.SHOULD_WAIT;
 		}
+
+		return ESPlayerGameState.SHOULD_WAIT;
 	}
 
 	public SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
-		if (playerTurn.isEmpty()) {
-			logger.error("Tried accessing other player even though the game has not started yet!");
-			throw new InternalServerException("Sorry, but the server had an internal error!");
-		}
+		allPlayersRegisteredOrThrow();
 
 		return registeredPlayers.stream().filter(player -> !player.equals(myPlayer)).findFirst().get();
+	}
+
+	private boolean allPlayersRegistered() {
+		return !playerTurn.isEmpty();
+	}
+
+	private void allPlayersRegisteredOrThrow() {
+		if (!allPlayersRegistered()) {
+			logger.warn("Tried to perform an action even though the both players are not registered!");
+			throw new GameNotReadyException(
+					"Tried to perform an action even though the both players are not registered!");
+		}
 	}
 
 	private void pickPlayerOrder() {
