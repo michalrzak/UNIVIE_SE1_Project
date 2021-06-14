@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.TooManyHalfMapsReceived;
+import game.map.helpers.ESMove;
+import game.player.helpers.SUniquePlayerIdentifier;
 import game.propertychange.PropertyChangeListener;
 import game.propertychange.PropertyChangeSupport;
 
@@ -38,6 +40,12 @@ public class MapController {
 		if (hmdata2.isPresent()) {
 			generateFullMap();
 		}
+	}
+
+	public void movePlayer(SUniquePlayerIdentifier playerID, ESMove move) {
+		assert (fullMap.isPresent());
+
+		fullMap.get().movePlayer(playerID, move);
 	}
 
 	private void generateFullMap() {

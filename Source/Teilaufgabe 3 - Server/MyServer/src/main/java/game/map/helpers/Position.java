@@ -26,6 +26,10 @@ public class Position {
 		return new Position(rhs.getx() + x, rhs.gety() + y);
 	}
 
+	public Position addOffset(int xDiff, int yDiff) {
+		return new Position(x + xDiff, y + yDiff);
+	}
+
 	@Override
 	public int hashCode() {
 		// this will always return a unique number as x is from 0 to 16 and y is also

@@ -1,13 +1,16 @@
 package network.translation;
 
+import MessagesBase.EMove;
 import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.GameState;
+import exceptions.InternalServerException;
 import game.SGameState;
 import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
+import game.map.helpers.ESMove;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 
@@ -43,6 +46,20 @@ public class NetworkTranslator {
 
 	public GameState internalGameStateToNetwork(SGameState gameState) {
 		return gameStateTranslate.extractGameState(gameState);
+	}
+
+	public ESMove networkMoveToInternal(EMove move) {
+		switch (move) {
+		case Down:
+			return ESMove.DOWN;
+		case Left:
+			return ESMove.LEFT;
+		case Right:
+			return ESMove.RIGHT;
+		case Up:
+			return ESMove.UP;
+		}
+		throw new InternalServerException("Failed to convert network move to internal.");
 	}
 
 }

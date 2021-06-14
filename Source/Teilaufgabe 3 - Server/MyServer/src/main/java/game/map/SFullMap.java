@@ -13,10 +13,12 @@ import org.slf4j.LoggerFactory;
 
 import game.map.helpers.EGameEntity;
 import game.map.helpers.EMapType;
+import game.map.helpers.ESMove;
 import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.player.helpers.SUniquePlayerIdentifier;
+import game.propertychange.PropertyChangeSupport;
 
 public class SFullMap implements ISFullMapAccesser {
 
@@ -26,6 +28,9 @@ public class SFullMap implements ISFullMapAccesser {
 	private final EMapType mapType;
 
 	private final static Random rand = new Random();
+
+	private final PropertyChangeSupport<SUniquePlayerIdentifier> playerCollectedTreasure = new PropertyChangeSupport<>();
+	private final PropertyChangeSupport<SUniquePlayerIdentifier> playerSteppedOnEnemyCastle = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(SFullMap.class);
 
@@ -91,7 +96,22 @@ public class SFullMap implements ISFullMapAccesser {
 		assert (terrain.size() == mapType.getHeight() * mapType.getWidth());
 	}
 
-	public void collectTreasure(SUniquePlayerIdentifier playerID) {
+	public void movePlayer(SUniquePlayerIdentifier playerID, ESMove move) {
+		final OwnedGameEntity player = new OwnedGameEntity(playerID, EGameEntity.PLAYER);
+		final OwnedGameEntity treassure = new OwnedGameEntity(playerID, EGameEntity.TREASURE);
+
+		assert (entities.containsKey(player));
+
+		final Position newPos = entities.get(player).addOffset(move.getXDiff(), move.getYDiff());
+
+		if (entities.get(treassure).equals(newPos)) {
+			collectTreasure(playerID);
+		}
+
+		// TODO: add castle stuff
+	}
+
+	private void collectTreasure(SUniquePlayerIdentifier playerID) {
 		OwnedGameEntity treasure = new OwnedGameEntity(playerID, EGameEntity.TREASURE);
 		if (!entities.containsKey(treasure)) {
 			logger.error("collecting treassure, even though it has already been collected");
@@ -99,6 +119,9 @@ public class SFullMap implements ISFullMapAccesser {
 		}
 
 		entities.remove(treasure);
+
+		// let listeners know the treasure has been collected
+		playerCollectedTreasure.fire(playerID);
 	}
 
 	private static Collection<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,

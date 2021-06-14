@@ -12,6 +12,7 @@ import exceptions.PlayerInvalidTurn;
 import game.map.ISFullMapAccesser;
 import game.map.MapController;
 import game.map.SHalfMap;
+import game.map.helpers.ESMove;
 import game.player.IPlayerAccesser;
 import game.player.PlayersController;
 import game.player.helpers.ESPlayerGameState;
@@ -46,14 +47,8 @@ public class Game implements IGameAccesser {
 
 	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
 		playersReadyOrThrow();
+		playersTurnOrThrow(playerID);
 
-		if (!players.checkPlayerTurn(playerID)) {
-			setLooser(playerID);
-			logger.warn("A player with playerID: " + playerID.getPlayerIDAsString()
-					+ "; tried sending a HalfMap, but it was not his turn! It was ");
-			throw new PlayerInvalidTurn(
-					"It is not the players with playerID: " + playerID.getPlayerIDAsString() + "; turn!");
-		}
 		map.receiveHalfMap(hmData);
 		players.nextTurn();
 	}
@@ -68,6 +63,13 @@ public class Game implements IGameAccesser {
 	public SGameState getGameState(SUniquePlayerIdentifier playerID) {
 		playerRegisteredOrThrow(playerID);
 		return new SGameState(playerID, this);
+	}
+
+	public void receiveMove(SUniquePlayerIdentifier playerID, ESMove move) {
+		playerRegisteredOrThrow(playerID);
+		mapReadyOrThrow();
+		playersTurnOrThrow(playerID);
+
 	}
 
 	private void playersReadyOrThrow() {
@@ -97,6 +99,16 @@ public class Game implements IGameAccesser {
 			throw new GameNotFoundException(
 					String.format("Player with ID: %s tried accessing a game where he is not registered",
 							playerID.getPlayerIDAsString()));
+		}
+	}
+
+	private void playersTurnOrThrow(SUniquePlayerIdentifier playerID) {
+		if (!players.checkPlayerTurn(playerID)) {
+			setLooser(playerID);
+			logger.warn("A player with playerID: " + playerID.getPlayerIDAsString()
+					+ "; tried performing an action, but it was not his turn!");
+			throw new PlayerInvalidTurn(
+					"It is not the players with playerID: " + playerID.getPlayerIDAsString() + "; turn!");
 		}
 	}
 

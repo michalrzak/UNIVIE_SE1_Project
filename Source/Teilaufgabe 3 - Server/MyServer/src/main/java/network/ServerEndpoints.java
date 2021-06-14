@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import MessagesBase.HalfMap;
+import MessagesBase.PlayerMove;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.ResponseEnvelope;
 import MessagesBase.UniqueGameIdentifier;
@@ -28,6 +29,7 @@ import game.GameController;
 import game.SGameState;
 import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
+import game.map.helpers.ESMove;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 import network.translation.NetworkTranslator;
@@ -56,55 +58,6 @@ public class ServerEndpoints {
 	public ServerEndpoints(GameController games) {
 		this.games = games;
 	}
-
-	// ADDITONAL TIPS ON THIS MATTER ARE GIVEN THROUGHOUT THE TUTORIAL SESSION!
-	// Note, the same network messages which you have used for the client (along
-	// with its documentation) apply to the server too.
-
-	/*
-	 * Please do NOT add all the necessary code in the methods provided below. When
-	 * following the single responsibility principle those methods should only
-	 * contain the bare minimum related to network handling. Such as the converts
-	 * which convert the objects from/to internal data objects to/from messages.
-	 * Include the other logic (e.g., new game creation and game id handling) by
-	 * means of composition (i.e., it should be provided by other classes).
-	 */
-
-	// below you can find two example endpoints (i.e., one GET and one POST based
-	// endpoint which are all endpoint types which you need),
-	// Hence, all the other endpoints can be defined similarly.
-
-	// example for a GET endpoint based on /games
-	// similar to the client, the HTTP method and the expected data types are
-	// specified at the server side too
-	/*
-	 * @RequestMapping(value = "", method = RequestMethod.GET, produces =
-	 * MediaType.APPLICATION_XML_VALUE) public @ResponseBody UniqueGameIdentifier
-	 * newGame() {
-	 * 
-	 * // set showExceptionHandling to true to test/play around with the automatic
-	 * // exception handling (see the handleException method at the bottom) // this
-	 * is just some testing code that you can see how exceptions can be used to //
-	 * signal errors to the client, you can REMOVE // these lines in your real
-	 * server implementation boolean showExceptionHandling = false; if
-	 * (showExceptionHandling) { // if any error occurs, simply throw an exception
-	 * with inherits from // GenericExampleException // the given code than takes
-	 * care of responding with an error message to the // client based on
-	 * the @ExceptionHandler below // make yourself familiar with this concept by
-	 * setting showExceptionHandling=true // and creating a new game through the
-	 * browser // your implementation should use more useful error messages and
-	 * specialized exception classes throw new
-	 * GenericExampleException("Name: Something", "Message: went totally wrong"); }
-	 * 
-	 * // TIP: you will need to adapt this part to generate a game id with the valid
-	 * // length. A simple solution for this // would be creating an alphabet and
-	 * choosing random characters from it till the // new game id becomes long
-	 * enough UniqueGameIdentifier gameIdentifier = new
-	 * UniqueGameIdentifier("game1"); return gameIdentifier;
-	 * 
-	 * // note you will need to include additional logic, e.g., additional classes
-	 * // which create, store, validate, etc. game ids }
-	 */
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody UniqueGameIdentifier newGame() {
@@ -181,6 +134,22 @@ public class ServerEndpoints {
 		GameState netGameState = translate.internalGameStateToNetwork(gameState);
 
 		return new ResponseEnvelope<>(netGameState);
+	}
+
+	@RequestMapping(value = "/{gameID}/moves", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+	public @ResponseBody ResponseEnvelope receiveMove(@Validated @PathVariable UniqueGameIdentifier gameID,
+			@Validated PlayerMove playerMove) {
+
+		// translate data
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(playerMove);
+		ESMove serverMove = translate.networkMoveToInternal(playerMove.getMove());
+
+		// move the player
+		games.receiveMove(serverGameID, serverPlayerID, serverMove);
+
+		// if it got here no error was thrown and return
+		return new ResponseEnvelope();
 	}
 
 	/*

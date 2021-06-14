@@ -17,6 +17,7 @@ import exceptions.PlayerInvalidTurn;
 import game.helpers.EGameConstants;
 import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
+import game.map.helpers.ESMove;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 
@@ -75,6 +76,12 @@ public class GameController {
 		gameIDUsedOrThrow(gameID);
 
 		games.get(gameID).setLooser(playerID);
+	}
+
+	public void receiveMove(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID, ESMove move) {
+		gameIDUsedOrThrow(gameID);
+
+		games.get(gameID).receiveMove(playerID, move);
 	}
 
 	private boolean checkGameIDUsed(SUniqueGameIdentifier gameID) {
