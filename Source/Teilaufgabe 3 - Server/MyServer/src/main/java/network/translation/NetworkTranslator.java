@@ -4,14 +4,17 @@ import MessagesBase.HalfMap;
 import MessagesBase.PlayerRegistration;
 import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
-import exceptions.InvalidDataException;
+import MessagesGameState.GameState;
+import game.SGameState;
 import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
-import game.map.helpers.ESTerrain;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 
 public class NetworkTranslator {
+
+	GameStateExtractor gameStateTranslate = new GameStateExtractor();
+	NetworkHalfMapTranslator halfMapTrans = new NetworkHalfMapTranslator();
 
 	public SUniqueGameIdentifier networkGameIDToInternal(UniqueGameIdentifier gameID) {
 		return new SUniqueGameIdentifier(gameID.getUniqueGameID());
@@ -35,22 +38,11 @@ public class NetworkTranslator {
 	}
 
 	public SHalfMap networkHalfMapToInernal(HalfMap halfmap) {
-		NetworkHalfMapTranslator halfMapTrans = new NetworkHalfMapTranslator();
 		return halfMapTrans.translateNetworkHalfMap(halfmap);
 	}
 
-	public MessagesBase.ETerrain internalTerrainToNetwork(ESTerrain terrain) {
-
-		switch (terrain) {
-		case GRASS:
-			return MessagesBase.ETerrain.Grass;
-		case MOUNTAIN:
-			return MessagesBase.ETerrain.Mountain;
-		case WATER:
-			return MessagesBase.ETerrain.Water;
-		}
-
-		throw new InvalidDataException("the passed terrain contained an unexpected realization");
-
+	public GameState internalGameStateToNetwork(SGameState gameState) {
+		return gameStateTranslate.extractGameState(gameState);
 	}
+
 }

@@ -30,7 +30,6 @@ import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
-import network.translation.GameStateExtractor;
 import network.translation.NetworkTranslator;
 import rules.IRules;
 import rules.RuleHalfMapCastle;
@@ -179,8 +178,7 @@ public class ServerEndpoints {
 		SGameState gameState = games.getGameState(serverGameID, serverPlayerID);
 
 		// translate complex data
-		GameStateExtractor gse = new GameStateExtractor();
-		GameState netGameState = gse.extractGameState(gameState);
+		GameState netGameState = translate.internalGameStateToNetwork(gameState);
 
 		return new ResponseEnvelope<>(netGameState);
 	}

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import MessagesBase.ETerrain;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.EFortState;
 import MessagesGameState.EPlayerGameState;
@@ -18,13 +19,14 @@ import MessagesGameState.PlayerState;
 import exceptions.InternalServerException;
 import game.SGameState;
 import game.map.FullMapState;
+import game.map.helpers.ESTerrain;
 import game.map.helpers.Position;
 import game.player.IPlayerAccesser;
 import game.player.helpers.ESPlayerGameState;
 
 public class GameStateExtractor {
 
-	public GameState extractGameState(SGameState gameState) {
+	protected GameState extractGameState(SGameState gameState) {
 		Collection<PlayerState> ps = new ArrayList<>();
 
 		ps.add(extractPlayerState(gameState.getOwnerPlayer(), gameState.getOwnerPlayerGameState()));
@@ -64,7 +66,7 @@ public class GameStateExtractor {
 
 		Set<FullMapNode> mapNodes = new HashSet<>();
 		for (var positionTerrainPair : positionToTerrainMap.entrySet()) {
-			MessagesBase.ETerrain terrain = nt.internalTerrainToNetwork(positionTerrainPair.getValue());
+			ETerrain terrain = internalTerrainToNetwork(positionTerrainPair.getValue());
 
 			Position currentPos = positionTerrainPair.getKey();
 
@@ -124,5 +126,19 @@ public class GameStateExtractor {
 
 		throw new InternalServerException(
 				"Sorry, but something went wrong on the server. (Player game state conversion)");
+	}
+
+	public ETerrain internalTerrainToNetwork(ESTerrain terrain) {
+		switch (terrain) {
+		case GRASS:
+			return ETerrain.Grass;
+		case MOUNTAIN:
+			return ETerrain.Mountain;
+		case WATER:
+			return ETerrain.Water;
+		}
+
+		throw new InternalServerException(
+				"Sorry, but something went wrong on the server. (Internal Terrain conversion)");
 	}
 }

@@ -13,7 +13,7 @@ import game.map.helpers.Position;
 
 public class NetworkHalfMapTranslator {
 
-	public SHalfMap translateNetworkHalfMap(HalfMap netHalfMap) {
+	protected SHalfMap translateNetworkHalfMap(HalfMap netHalfMap) {
 
 		Map<Position, ESTerrain> terrainMap = extractTerrainMap(netHalfMap);
 		// assert the terrain map has the right number of nodes. Any of the two map
@@ -27,7 +27,7 @@ public class NetworkHalfMapTranslator {
 
 	}
 
-	// has to be public as it is usefull for rule validation
+	// has to be public as it is useful for rule validation
 	public Map<Position, ETerrain> extractNetorkHalfMapTerrainMap(HalfMap netHalfMap) {
 		Map<Position, ETerrain> ret = new HashMap<>();
 
