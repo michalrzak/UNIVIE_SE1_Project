@@ -16,12 +16,19 @@ public class RuleHalfMapNoIslands implements IRules {
 		NetworkHalfMapTranslator halfMapTrans = new NetworkHalfMapTranslator();
 		Map<Position, ETerrain> positionMap = halfMapTrans.extractNetorkHalfMapTerrainMap(halfmap);
 
-		// start floodfill from 0, 0
-		floodfill(new Position(0, 0), positionMap);
+		// find a start node
+		Position start = new Position(0, 0);
+		while (positionMap.get(start) == ETerrain.Water) {
+			start = new Position(start.getx() + 1, start.gety());
+		}
+
+		floodfill(start, positionMap);
 
 		// map contains islands if it is not empty and at least one node inside is not
 		// water
 		if (positionMap.size() != 0 && !positionMap.values().stream().allMatch(ele -> ele == ETerrain.Water)) {
+			positionMap.entrySet().stream()
+					.forEach(ele -> System.out.println(ele.getKey().toString() + " " + ele.getValue().toString()));
 			throw new InvalidMapException("The half map contains an island!");
 		}
 	}

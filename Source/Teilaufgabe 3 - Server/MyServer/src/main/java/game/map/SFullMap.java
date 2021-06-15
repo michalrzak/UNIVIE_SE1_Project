@@ -104,7 +104,7 @@ public class SFullMap implements ISFullMapAccesser {
 
 		final Position newPos = entities.get(player).addOffset(move.getXDiff(), move.getYDiff());
 
-		if (entities.get(treassure).equals(newPos)) {
+		if (entities.containsKey(treassure) && entities.get(treassure).equals(newPos)) {
 			collectTreasure(playerID);
 		}
 
