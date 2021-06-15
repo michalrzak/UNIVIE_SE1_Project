@@ -29,7 +29,7 @@ import game.GameController;
 import game.SGameState;
 import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
-import game.map.helpers.ESMove;
+import game.move.helpers.ESMove;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 import network.translation.NetworkTranslator;
@@ -138,7 +138,7 @@ public class ServerEndpoints {
 
 	@RequestMapping(value = "/{gameID}/moves", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody ResponseEnvelope receiveMove(@Validated @PathVariable UniqueGameIdentifier gameID,
-			@Validated PlayerMove playerMove) {
+			@Validated @RequestBody PlayerMove playerMove) {
 
 		// translate data
 		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);

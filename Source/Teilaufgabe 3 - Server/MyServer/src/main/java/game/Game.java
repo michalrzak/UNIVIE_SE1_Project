@@ -12,7 +12,8 @@ import exceptions.PlayerInvalidTurn;
 import game.map.ISFullMapAccesser;
 import game.map.MapController;
 import game.map.SHalfMap;
-import game.map.helpers.ESMove;
+import game.move.MoveController;
+import game.move.helpers.ESMove;
 import game.player.IPlayerAccesser;
 import game.player.PlayersController;
 import game.player.helpers.ESPlayerGameState;
@@ -23,6 +24,7 @@ public class Game implements IGameAccesser {
 
 	private final PlayersController players = new PlayersController();
 	private final MapController map = new MapController();
+	private final MoveController moves = new MoveController();
 
 	private boolean playersReady = false;
 	private boolean mapReady = false;
@@ -30,6 +32,9 @@ public class Game implements IGameAccesser {
 	private static Logger logger = LoggerFactory.getLogger(Game.class);
 
 	public Game() {
+		moves.registerToMap(map.rergisterForFullMap());
+		map.registerToMoveController(moves.registerPlayerMove());
+
 		// add a listener for if the map is ready. If the map is ready then the game is
 		// ready
 		map.registerListenForMapReady(eleIsNull -> {
@@ -70,6 +75,9 @@ public class Game implements IGameAccesser {
 		mapReadyOrThrow();
 		playersTurnOrThrow(playerID);
 
+		moves.move(playerID, move);
+
+		players.nextTurn();
 	}
 
 	private void playersReadyOrThrow() {

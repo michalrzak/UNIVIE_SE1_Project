@@ -1,18 +1,14 @@
 package game.map;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 import game.map.helpers.EMapType;
-import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.player.helpers.SUniquePlayerIdentifier;
 
-public interface ISFullMapAccesser {
-
-	Map<Position, ESTerrain> getTerrain();
+public interface ISFullMapAccesser extends IMapTerrainAccesser {
 
 	EMapType getMapType();
 

@@ -10,7 +10,7 @@ import exceptions.InternalServerException;
 import game.SGameState;
 import game.helpers.SUniqueGameIdentifier;
 import game.map.SHalfMap;
-import game.map.helpers.ESMove;
+import game.move.helpers.ESMove;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 

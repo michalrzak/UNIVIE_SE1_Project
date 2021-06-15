@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import game.map.helpers.EGameEntity;
 import game.map.helpers.EMapType;
-import game.map.helpers.ESMove;
 import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
+import game.move.helpers.ESMove;
 import game.player.helpers.SUniquePlayerIdentifier;
 import game.propertychange.PropertyChangeSupport;
 
@@ -109,6 +109,9 @@ public class SFullMap implements ISFullMapAccesser {
 		}
 
 		// TODO: add castle stuff
+
+		entities.put(player, newPos);
+
 	}
 
 	private void collectTreasure(SUniquePlayerIdentifier playerID) {
@@ -133,11 +136,6 @@ public class SFullMap implements ISFullMapAccesser {
 		visible.add(new OwnedGameEntity(other, EGameEntity.PLAYER));
 
 		return visible;
-	}
-
-	@Override
-	public Map<Position, ESTerrain> getTerrain() {
-		return new HashMap<Position, ESTerrain>(terrain);
 	}
 
 	@Override
@@ -185,6 +183,21 @@ public class SFullMap implements ISFullMapAccesser {
 	@Override
 	public EMapType getMapType() {
 		return mapType;
+	}
+
+	@Override
+	public ESTerrain getTerrainAt(Position pos) {
+		return terrain.get(pos);
+	}
+
+	@Override
+	public ESTerrain getTerrainAt(int x, int y) {
+		return getTerrainAt(new Position(x, y));
+	}
+
+	@Override
+	public Map<Position, ESTerrain> getTerrainMap() {
+		return new HashMap<Position, ESTerrain>(terrain);
 	}
 
 }

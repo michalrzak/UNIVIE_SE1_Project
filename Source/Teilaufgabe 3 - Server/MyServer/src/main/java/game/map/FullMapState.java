@@ -33,7 +33,7 @@ public class FullMapState {
 	}
 
 	public Map<Position, ESTerrain> getTerrain() {
-		return fullMap.getTerrain();
+		return fullMap.getTerrainMap();
 	}
 
 	public Position getOwnerPosition() {

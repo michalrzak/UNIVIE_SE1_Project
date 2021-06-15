@@ -3,7 +3,7 @@ package game.propertychange;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropertyChangeSupport<T> {
+public class PropertyChangeSupport<T> implements IRegisterForEvent<T> {
 
 	private final List<PropertyChangeListener<T>> listeners = new ArrayList<>();
 
@@ -19,6 +19,7 @@ public class PropertyChangeSupport<T> {
 		// listeners.stream().forEach(listener -> listener.handle(null));
 	}
 
+	@Override
 	public void register(PropertyChangeListener<T> listener) {
 		listeners.add(listener);
 		// listener.handle(null);
