@@ -56,6 +56,7 @@ public class GameController {
 	public void addHalfMap(SUniqueGameIdentifier gameID, SUniquePlayerIdentifier playerID, SHalfMap hmdata) {
 		gameIDUsedOrThrow(gameID);
 
+		// TODO: change this to propertylistner maybe?
 		try {
 			games.get(gameID).receiveHalfMap(playerID, hmdata);
 		} catch (PlayerInvalidTurn e) {
