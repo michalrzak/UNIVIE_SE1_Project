@@ -120,6 +120,8 @@ public class SFullMap implements IMapAccesser {
 	public EMoveEvent movePlayer(SUniquePlayerIdentifier playerID, ESMove move) {
 		final OwnedGameEntity player = new OwnedGameEntity(playerID, EGameEntity.PLAYER);
 		final OwnedGameEntity treassure = new OwnedGameEntity(playerID, EGameEntity.TREASURE);
+		final OwnedGameEntity enemyCastle = getEnemyCastleEntity(playerID);
+		assert (!enemyCastle.getOwner().equals(playerID));
 
 		EMoveEvent ret = EMoveEvent.NOTHING;
 
@@ -132,7 +134,12 @@ public class SFullMap implements IMapAccesser {
 			ret = EMoveEvent.COLLECTED_TREASURE;
 		}
 
-		// TODO: add castle stuff
+		assert (entities.containsKey(enemyCastle));
+		if (entities.get(enemyCastle).equals(newPos)) {
+			assert (ret == EMoveEvent.NOTHING);
+			steppedOnEnemyCastle(playerID);
+			ret = EMoveEvent.STEPPED_ON_CASTLE;
+		}
 
 		entities.put(player, newPos);
 
@@ -150,6 +157,22 @@ public class SFullMap implements IMapAccesser {
 		entities.remove(treasure);
 
 		logger.debug("A player collected the treassure! Nice!");
+	}
+
+	private void steppedOnEnemyCastle(SUniquePlayerIdentifier playerID) {
+		assert (playerRevealedEntities.containsKey(playerID));
+		playerRevealedEntities.get(playerID).add(getEnemyCastleEntity(playerID));
+		logger.debug("A player stepped on the enemy castle");
+	}
+
+	private OwnedGameEntity getEnemyCastleEntity(SUniquePlayerIdentifier me) {
+		Optional<OwnedGameEntity> ret = entities.entrySet().stream()
+				.filter(entry -> !entry.getKey().getOwner().equals(me))
+				.filter(entry -> entry.getKey().getEntity() == EGameEntity.CASTLE).map(entry -> entry.getKey())
+				.findFirst();
+		// castle must be always present
+		assert (ret.isPresent());
+		return ret.get();
 	}
 
 	private static Collection<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,

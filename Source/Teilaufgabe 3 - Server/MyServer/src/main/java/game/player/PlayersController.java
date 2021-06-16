@@ -38,11 +38,11 @@ public class PlayersController {
 
 	// add objects this listens to
 	public void listenToTreassureCollected(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnTreassure) {
-		steppedOnTreassure.register(playerID -> collectTreassure(playerID));
+		steppedOnTreassure.register(this::collectTreassure);
 	}
 
 	public void listenToSteppedOnCastle(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnCastle) {
-		// TODO: this
+		steppedOnCastle.register(this::steppedOnCastle);
 	}
 
 	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
@@ -128,6 +128,14 @@ public class PlayersController {
 		assert (isPlayerRegistered(playerID));
 		Player player = getPlayer(playerID);
 		player.collectTreasure();
+	}
+
+	private void steppedOnCastle(SUniquePlayerIdentifier playerID) {
+		assert (isPlayerRegistered(playerID));
+		Player player = getPlayer(playerID);
+		if (player.getCollectedTreasure()) {
+			setAsWinner(player);
+		}
 	}
 
 	private Player getPlayer(SUniquePlayerIdentifier playerID) {

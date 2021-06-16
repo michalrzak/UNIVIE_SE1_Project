@@ -58,8 +58,10 @@ public class MapController {
 		switch (event) {
 		case COLLECTED_TREASURE:
 			playerCollectedTreasure.fire(move);
+			break;
 		case STEPPED_ON_CASTLE:
 			playerSteppedOnCastle.fire(move);
+			break;
 		}
 
 	}
