@@ -11,6 +11,7 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.helpers.EGameConstants;
 import game.map.helpers.EGameEntity;
 import game.map.helpers.EMapType;
 import game.map.helpers.ESTerrain;
@@ -43,14 +44,31 @@ public class SFullMap implements ISFullMapAccesser {
 			hmdataPlayer2 = temp;
 		}
 
+		var hmMapPlayer1 = hmdataPlayer1.getTerrain();
+		Position castlePlayer1 = hmdataPlayer1.getCastlePosition();
+
+		var hmMapPlayer2 = hmdataPlayer2.getTerrain();
+		Position castlePlayer2 = hmdataPlayer2.getCastlePosition();
+
 		EMapType mapType = EMapType.getRandomMapType();
 
 		// the treasure is placed quite wrongly here. This needs a major rework
 		// maybe generate a number between (1->32)-9?
-		Position treasurePositionPlayer1 = Position.getRandomMapPosition(mapType.getHalfWidth(),
-				mapType.getHalfHeight());
-		Position treasurePositionPlayer2 = mapType.getSecondHalfOffset()
-				.addPosition(Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight()));
+		Position treasurePositionPlayer1;
+		do {
+			treasurePositionPlayer1 = Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight());
+		} while (hmMapPlayer1.get(treasurePositionPlayer1) != ESTerrain.GRASS || Position.distance(castlePlayer1,
+				treasurePositionPlayer1) < EGameConstants.RADIUS_WITHOUT_TREASURE.getValue());
+		// repeat until the treasure is on grass and further than 1 tile away from the
+		// castle
+
+		Position treasurePositionPlayer2;
+		do {
+			treasurePositionPlayer2 = Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight());
+		} while (hmMapPlayer2.get(treasurePositionPlayer2) != ESTerrain.GRASS || Position.distance(castlePlayer2,
+				treasurePositionPlayer2) < EGameConstants.RADIUS_WITHOUT_TREASURE.getValue());
+		// add offset that shifts the map to the second half
+		treasurePositionPlayer2 = mapType.getSecondHalfOffset().addPosition(treasurePositionPlayer2);
 
 		return new SFullMap(hmdataPlayer1, hmdataPlayer2, mapType, treasurePositionPlayer1, treasurePositionPlayer2);
 	}
@@ -89,6 +107,9 @@ public class SFullMap implements ISFullMapAccesser {
 		SUniquePlayerIdentifier p2Owner = hmdataPlayer2.getOwner();
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.CASTLE), p2CastlePosition);
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.PLAYER), p2CastlePosition);
+
+		assert (terrain.get(treasurePositionPlayer1) == ESTerrain.GRASS);
+		assert (terrain.get(treasurePositionPlayer2) == ESTerrain.GRASS);
 
 		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.TREASURE), treasurePositionPlayer1);
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.TREASURE), treasurePositionPlayer2);

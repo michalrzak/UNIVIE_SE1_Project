@@ -6,7 +6,7 @@ import java.util.Optional;
 import game.map.FullMapState;
 import game.map.ISFullMapAccesser;
 import game.player.IPlayerAccesser;
-import game.player.Player;
+import game.player.PlayerMaskedID;
 import game.player.helpers.ESPlayerGameState;
 import game.player.helpers.SUniquePlayerIdentifier;
 
@@ -40,8 +40,7 @@ public class SGameState {
 		IPlayerAccesser otherPlayerOriginal = other.get();
 
 		// create a new player with a random ID, but with the correct playerInformation
-		Player otherPlayerReturn = Player.getRandomPlayer(otherPlayerOriginal.getFirstName(),
-				otherPlayerOriginal.getLastName(), otherPlayerOriginal.getStudentID());
+		PlayerMaskedID otherPlayerReturn = new PlayerMaskedID(otherPlayerOriginal);
 
 		return Optional.of(otherPlayerReturn);
 	}
