@@ -23,7 +23,7 @@ import game.player.helpers.SUniquePlayerIdentifier;
 
 public class SFullMap implements IMapAccesser {
 
-	private final Map<Position, ESTerrain> terrain = new HashMap<>();
+	private final Map<Position, ESTerrain> terrain;
 	private final Map<OwnedGameEntity, Position> entities = new HashMap<>();
 	private final Map<SUniquePlayerIdentifier, Collection<OwnedGameEntity>> playerRevealedEntities = new HashMap<>();
 	private final EMapType mapType;
@@ -48,13 +48,12 @@ public class SFullMap implements IMapAccesser {
 
 		EMapType mapType = EMapType.getRandomMapType();
 
-		// the treasure is placed quite wrongly here. This needs a major rework
-		// maybe generate a number between (1->32)-9?
+		// generate random trasure positions
 		Position treasurePositionPlayer1;
 		do {
 			treasurePositionPlayer1 = Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight());
 		} while (hmMapPlayer1.get(treasurePositionPlayer1) != ESTerrain.GRASS || Position.distance(castlePlayer1,
-				treasurePositionPlayer1) < EGameConstants.RADIUS_WITHOUT_TREASURE.getValue());
+				treasurePositionPlayer1) < EGameConstants.RADIUS_WITHOUT_TREASURE.get());
 		// repeat until the treasure is on grass and further than 1 tile away from the
 		// castle
 
@@ -62,36 +61,21 @@ public class SFullMap implements IMapAccesser {
 		do {
 			treasurePositionPlayer2 = Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight());
 		} while (hmMapPlayer2.get(treasurePositionPlayer2) != ESTerrain.GRASS || Position.distance(castlePlayer2,
-				treasurePositionPlayer2) < EGameConstants.RADIUS_WITHOUT_TREASURE.getValue());
+				treasurePositionPlayer2) < EGameConstants.RADIUS_WITHOUT_TREASURE.get());
 		// add offset that shifts the map to the second half
 		treasurePositionPlayer2 = mapType.getSecondHalfOffset().addPosition(treasurePositionPlayer2);
 
 		return new SFullMap(hmdataPlayer1, hmdataPlayer2, mapType, treasurePositionPlayer1, treasurePositionPlayer2);
 	}
 
+	// this can be private as every map should be random anyway
 	private SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType, Position treasurePositionPlayer1,
 			Position treasurePositionPlayer2) {
 
 		assert (hmdataPlayer1 != null && hmdataPlayer2 != null && mapType != null);
 
 		this.mapType = mapType;
-
-		var player1HMTerrainMap = hmdataPlayer1.getTerrain();
-		var player2HMTerrainMap = hmdataPlayer2.getTerrain();
-
-		assert (player1HMTerrainMap.size() == mapType.getHalfHeight() * mapType.getHalfWidth());
-		assert (player2HMTerrainMap.size() == mapType.getHalfHeight() * mapType.getHalfWidth());
-
-		// extract terrain from halfmaps
-		for (int y = 0; y < mapType.getHalfHeight(); ++y) {
-			for (int x = 0; x < mapType.getHalfWidth(); ++x) {
-				Position current = new Position(x, y);
-				Position currentOffset = current.addPosition(mapType.getSecondHalfOffset());
-
-				terrain.put(current, player1HMTerrainMap.get(current));
-				terrain.put(currentOffset, player2HMTerrainMap.get(current));
-			}
-		}
+		this.terrain = extractTerrainFromHalfMaps(hmdataPlayer1, hmdataPlayer2, mapType);
 
 		// extract entities from HalfMaps
 		Position p1CastlePosition = hmdataPlayer1.getCastlePosition();
@@ -115,6 +99,41 @@ public class SFullMap implements IMapAccesser {
 		playerRevealedEntities.put(p2Owner, getDefaultVisbleEntities(p2Owner, p1Owner));
 
 		assert (terrain.size() == mapType.getHeight() * mapType.getWidth());
+	}
+
+	private static Map<Position, ESTerrain> extractTerrainFromHalfMaps(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2,
+			EMapType mapType) {
+
+		var player1HMTerrainMap = hmdataPlayer1.getTerrain();
+		var player2HMTerrainMap = hmdataPlayer2.getTerrain();
+
+		assert (player1HMTerrainMap.size() == mapType.getHalfHeight() * mapType.getHalfWidth());
+		assert (player2HMTerrainMap.size() == mapType.getHalfHeight() * mapType.getHalfWidth());
+
+		Map<Position, ESTerrain> ret = new HashMap<>();
+		// extract terrain from halfmaps
+		for (int y = 0; y < mapType.getHalfHeight(); ++y) {
+			for (int x = 0; x < mapType.getHalfWidth(); ++x) {
+				Position current = new Position(x, y);
+				Position currentOffset = current.addPosition(mapType.getSecondHalfOffset());
+
+				ret.put(current, player1HMTerrainMap.get(current));
+				ret.put(currentOffset, player2HMTerrainMap.get(current));
+			}
+		}
+
+		return ret;
+	}
+
+	private static Collection<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,
+			SUniquePlayerIdentifier other) {
+
+		Collection<OwnedGameEntity> visible = new HashSet<>();
+		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.CASTLE));
+		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.PLAYER));
+		visible.add(new OwnedGameEntity(other, EGameEntity.PLAYER));
+
+		return visible;
 	}
 
 	public EMoveEvent movePlayer(SUniquePlayerIdentifier playerID, ESMove move) {
@@ -173,17 +192,6 @@ public class SFullMap implements IMapAccesser {
 		// castle must be always present
 		assert (ret.isPresent());
 		return ret.get();
-	}
-
-	private static Collection<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,
-			SUniquePlayerIdentifier other) {
-
-		Collection<OwnedGameEntity> visible = new HashSet<>();
-		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.CASTLE));
-		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.PLAYER));
-		visible.add(new OwnedGameEntity(other, EGameEntity.PLAYER));
-
-		return visible;
 	}
 
 	@Override

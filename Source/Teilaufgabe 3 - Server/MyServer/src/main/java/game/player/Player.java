@@ -24,7 +24,7 @@ public class Player extends SUniquePlayerIdentifier implements IPlayerAccesser {
 	}
 
 	public Player(SUniquePlayerIdentifier playerID, PlayerInformation playerInf) {
-		this(playerID.getPlayerIDAsString(), playerInf);
+		this(playerID.asString(), playerInf);
 	}
 
 	public static Player getRandomPlayer(PlayerInformation playerInf) {
@@ -82,7 +82,7 @@ public class Player extends SUniquePlayerIdentifier implements IPlayerAccesser {
 
 		SUniquePlayerIdentifier other = (SUniquePlayerIdentifier) obj;
 
-		if (!other.getPlayerIDAsString().equals(getPlayerID().getPlayerIDAsString()))
+		if (!other.asString().equals(getPlayerID().asString()))
 			return false;
 		return true;
 	}

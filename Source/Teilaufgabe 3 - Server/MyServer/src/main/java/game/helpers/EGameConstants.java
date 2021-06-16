@@ -10,7 +10,7 @@ public enum EGameConstants {
 		this.value = value;
 	}
 
-	public int getValue() {
+	public int get() {
 		return value;
 	}
 }

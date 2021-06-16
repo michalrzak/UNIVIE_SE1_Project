@@ -24,7 +24,7 @@ public class NetworkTranslator {
 	}
 
 	public UniqueGameIdentifier internalGameIDToNetwork(SUniqueGameIdentifier gameID) {
-		return new UniqueGameIdentifier(gameID.getIDAsString());
+		return new UniqueGameIdentifier(gameID.asString());
 	}
 
 	public SUniquePlayerIdentifier networkPlayerIDToInternal(UniquePlayerIdentifier playerID) {
@@ -32,7 +32,7 @@ public class NetworkTranslator {
 	}
 
 	public UniquePlayerIdentifier internalPlayerIDToNetwork(SUniquePlayerIdentifier playerID) {
-		return new UniquePlayerIdentifier(playerID.getPlayerIDAsString());
+		return new UniquePlayerIdentifier(playerID.asString());
 	}
 
 	public PlayerInformation networkPlayerRegistrationtoInternal(PlayerRegistration playerReg) {

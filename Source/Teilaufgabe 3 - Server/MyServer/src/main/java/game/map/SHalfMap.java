@@ -20,7 +20,7 @@ public class SHalfMap implements IMapAccesser {
 	private final Position castlePosition;
 	private final OwnedGameEntity castle;
 
-	// private static Logger logger = LoggerFactory.getLogger(HalfMapData.class);
+	// private static Logger logger = LoggerFactory.getLogger(SHalfMap.class);
 
 	public SHalfMap(Map<Position, ESTerrain> terrain, Position castlePosition, SUniquePlayerIdentifier owner) {
 		assert (terrain.size() == EMapType.LONGMAP.getHalfHeight() * EMapType.LONGMAP.getHalfWidth());

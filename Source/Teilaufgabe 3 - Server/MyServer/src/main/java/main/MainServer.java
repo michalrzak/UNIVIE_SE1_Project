@@ -41,7 +41,7 @@ public class MainServer {
 	@Bean
 	public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
 		ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-		threadPoolTaskScheduler.setPoolSize(EGameConstants.MAX_NUM_OF_GAMES.getValue());
+		threadPoolTaskScheduler.setPoolSize(EGameConstants.MAX_NUM_OF_GAMES.get());
 		threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
 		return threadPoolTaskScheduler;
 	}

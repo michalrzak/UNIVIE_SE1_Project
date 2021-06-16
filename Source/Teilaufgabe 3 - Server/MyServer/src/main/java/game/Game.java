@@ -81,7 +81,7 @@ public class Game implements IGameAccesser {
 	}
 
 	private void playersReadyOrThrow() {
-		if (!getPlayersReady()) {
+		if (!arePlayersReady()) {
 			logger.warn("Tried to access a game that is not ready. Not all players registerd!");
 			throw new GameNotReadyException(
 					"Tried to access a game that is not ready. (Both players aren't registered!)");
@@ -89,7 +89,7 @@ public class Game implements IGameAccesser {
 	}
 
 	private void mapReadyOrThrow() {
-		if (!getMapReady()) {
+		if (!isMapReady()) {
 			logger.warn("Tried to access a game that is not ready. The map is not combined!");
 			throw new GameNotReadyException(
 					"Tried to access a game that is not ready. (Both players haven't sent a halfmap!)");
@@ -103,30 +103,30 @@ public class Game implements IGameAccesser {
 	private void playerRegisteredOrThrow(SUniquePlayerIdentifier playerID) {
 		if (!isPlayerRegistered(playerID)) {
 			logger.warn(String.format("Player with ID: %s tried accessing a game where he is not registered",
-					playerID.getPlayerIDAsString()));
+					playerID.asString()));
 			throw new GameNotFoundException(
 					String.format("Player with ID: %s tried accessing a game where he is not registered",
-							playerID.getPlayerIDAsString()));
+							playerID.asString()));
 		}
 	}
 
 	private void playersTurnOrThrow(SUniquePlayerIdentifier playerID) {
 		if (!players.checkPlayerTurn(playerID)) {
 			setLooser(playerID);
-			logger.warn("A player with playerID: " + playerID.getPlayerIDAsString()
+			logger.warn("A player with playerID: " + playerID.asString()
 					+ "; tried performing an action, but it was not his turn!");
 			throw new PlayerInvalidTurn(
-					"It is not the players with playerID: " + playerID.getPlayerIDAsString() + "; turn!");
+					"It is not the players with playerID: " + playerID.asString() + "; turn!");
 		}
 	}
 
 	@Override
-	public boolean getPlayersReady() {
+	public boolean arePlayersReady() {
 		return playersReady;
 	}
 
 	@Override
-	public boolean getMapReady() {
+	public boolean isMapReady() {
 		return mapReady;
 	}
 

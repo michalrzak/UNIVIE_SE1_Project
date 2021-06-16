@@ -15,7 +15,7 @@ public class SUniqueGameIdentifier {
 		return new SUniqueGameIdentifier(rand.nextString(GAMEID_LENGTH));
 	}
 
-	public String getIDAsString() {
+	public String asString() {
 		return gameID;
 	}
 

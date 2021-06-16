@@ -37,33 +37,53 @@ public class MoveController {
 	public void move(SUniquePlayerIdentifier playerID, ESMove move) {
 		assert (finnishedFullMap.isPresent());
 
+		// if player is NOT already moving in the appropriate direction
 		if (!moveDirection.containsKey(playerID) || moveDirection.get(playerID) != move) {
 			// calculate how many moves the player needs to send
-			Position playerPos = finnishedFullMap.get().getPlayerPosition(playerID);
-			ESTerrain standingAt = finnishedFullMap.get().getTerrainAt(playerPos);
-			ESTerrain next = finnishedFullMap.get().getTerrainAt(playerPos.addOffset(move.getXDiff(), move.getYDiff()));
-			assert (next != ESTerrain.WATER);
-			int count = standingAt.cost() + next.cost();
+			int count = getDistance(playerID, move);
 
 			logger.debug(String.format("A player with id %s started a move which will take %s turns",
-					playerID.getPlayerIDAsString(), Integer.toString(count)));
+					playerID.toString(), Integer.toString(count)));
 
 			moveDirection.put(playerID, move);
-			moveCommandsLeft.put(playerID, count - 1);
-		} else {
-			Integer newCount = moveCommandsLeft.get(playerID) - 1;
-			moveCommandsLeft.put(playerID, newCount);
+			moveCommandsLeft.put(playerID, count);
+
 		}
 
-		if (moveCommandsLeft.get(playerID) == 0) {
-			SPlayerMove playerMove = new SPlayerMove(playerID, move);
-			moveDirection.remove(playerMove);
-			moveCommandsLeft.remove(playerMove);
+		// the player performed a command
+		waitATurn(playerID);
 
-			logger.debug(String.format("Player with id %s finnished a move", playerID.getPlayerIDAsString()));
-
-			playerExecutedMove.fire(playerMove);
+		if (finnishedWaiting(playerID)) {
+			finnishTurn(playerID);
 		}
+	}
+
+	private int getDistance(SUniquePlayerIdentifier playerID, ESMove move) {
+		Position playerPos = finnishedFullMap.get().getPlayerPosition(playerID);
+		ESTerrain standingAt = finnishedFullMap.get().getTerrainAt(playerPos);
+		ESTerrain next = finnishedFullMap.get().getTerrainAt(playerPos.addOffset(move.getXDiff(), move.getYDiff()));
+		assert (next != ESTerrain.WATER);
+
+		return standingAt.cost() + next.cost();
+	}
+
+	private void waitATurn(SUniquePlayerIdentifier playerID) {
+		Integer newCount = moveCommandsLeft.get(playerID) - 1;
+		moveCommandsLeft.put(playerID, newCount);
+	}
+
+	private void finnishTurn(SUniquePlayerIdentifier playerID) {
+		SPlayerMove playerMove = new SPlayerMove(playerID, moveDirection.get(playerID));
+		moveDirection.remove(playerMove);
+		moveCommandsLeft.remove(playerMove);
+
+		logger.debug(String.format("Player with id %s finnished a move", playerID.toString()));
+
+		playerExecutedMove.fire(playerMove);
+	}
+
+	private boolean finnishedWaiting(SUniquePlayerIdentifier playerID) {
+		return moveCommandsLeft.get(playerID) == 0;
 	}
 
 	public IRegisterForEvent<SPlayerMove> registerPlayerMove() {

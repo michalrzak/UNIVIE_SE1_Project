@@ -18,7 +18,7 @@ public interface IGameAccesser {
 
 	public int getTurn();
 
-	public boolean getPlayersReady();
+	public boolean arePlayersReady();
 
-	public boolean getMapReady();
+	public boolean isMapReady();
 }

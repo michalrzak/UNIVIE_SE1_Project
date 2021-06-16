@@ -12,7 +12,7 @@ public class SPlayerMove extends SUniquePlayerIdentifier {
 	}
 
 	public SPlayerMove(SUniquePlayerIdentifier playerID, ESMove move) {
-		this(playerID.getPlayerIDAsString(), move);
+		this(playerID.asString(), move);
 	}
 
 	public ESMove getMove() {

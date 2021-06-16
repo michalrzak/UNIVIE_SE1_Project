@@ -61,7 +61,7 @@ public class GameController {
 		} catch (PlayerInvalidTurn e) {
 			logger.warn(String.format(
 					"The player with ID: %s tried to send a HalfMap to the game with ID: %s, but it was not his turn!",
-					playerID.getPlayerIDAsString(), gameID.getIDAsString()));
+					playerID.asString(), gameID.toString()));
 			throw e;
 		}
 	}
@@ -90,20 +90,20 @@ public class GameController {
 
 	private void gameIDUsedOrThrow(SUniqueGameIdentifier gameID) {
 		if (!checkGameIDUsed(gameID)) {
-			logger.warn(String.format("Tried accessing a game (id: %s) which does not exist", gameID.getIDAsString()));
+			logger.warn(String.format("Tried accessing a game (id: %s) which does not exist", gameID.toString()));
 			throw new GameNotFoundException(
-					String.format("Tried accessing a game (id: %s) which does not exist", gameID.getIDAsString()));
+					String.format("Tried accessing a game (id: %s) which does not exist", gameID.toString()));
 		}
 	}
 
 	private void deleteGame(SUniqueGameIdentifier gameID) {
 		games.remove(gameID);
 		gameIDCreation.remove(gameID);
-		logger.debug(String.format("Removed game with id: %s", gameID.getIDAsString()));
+		logger.debug(String.format("Removed game with id: %s", gameID.toString()));
 	}
 
 	private void createNewGameWithGameID(SUniqueGameIdentifier gameID) {
-		if (gameIDCreation.size() >= EGameConstants.MAX_NUM_OF_GAMES.getValue()) {
+		if (gameIDCreation.size() >= EGameConstants.MAX_NUM_OF_GAMES.get()) {
 			deleteGame(gameIDCreation.element());
 		}
 
@@ -112,13 +112,6 @@ public class GameController {
 
 		// schedule the death of the game
 		taskScheduler.schedule(() -> deleteGame(gameID),
-				Instant.now().plusMillis(EGameConstants.GAME_ALIVE_MILLISECONDS.getValue()));
+				Instant.now().plusMillis(EGameConstants.GAME_ALIVE_MILLISECONDS.get()));
 	}
-
-	/*
-	 * @Scheduled(fixedRate = 1000) private void printGameNum() {
-	 * System.out.println(games.size());
-	 * System.out.println(taskScheduler.getActiveCount());
-	 * System.out.println("++++++++++++++"); }
-	 */
 }

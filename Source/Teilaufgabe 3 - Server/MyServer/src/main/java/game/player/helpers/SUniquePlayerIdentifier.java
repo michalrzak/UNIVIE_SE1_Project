@@ -13,7 +13,7 @@ public class SUniquePlayerIdentifier {
 		return new SUniquePlayerIdentifier(UUID.randomUUID().toString());
 	}
 
-	public String getPlayerIDAsString() {
+	public String asString() {
 		return playerID;
 	}
 
@@ -32,5 +32,10 @@ public class SUniquePlayerIdentifier {
 		SUniquePlayerIdentifier arg = (SUniquePlayerIdentifier) obj;
 
 		return playerID.equals(arg.playerID);
+	}
+
+	@Override
+	public String toString() {
+		return "SUniquePlayerIdentifier [playerID=" + playerID + "]";
 	}
 }

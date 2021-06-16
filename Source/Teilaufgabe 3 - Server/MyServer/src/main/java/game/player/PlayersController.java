@@ -54,14 +54,14 @@ public class PlayersController {
 	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
 
 		Player newPlayer = Player.getRandomPlayer(playerInf);
-		if (registeredPlayers.size() == EGameConstants.MAX_PLAYER_COUNT.getValue()) {
+		if (registeredPlayers.size() == EGameConstants.MAX_PLAYER_COUNT.get()) {
 			logger.warn("Tried registering a player even though the game is already full!");
 			throw new TooManyPlayersRegistered("The game you tried to register for is already full");
 		}
 
 		registeredPlayers.add(newPlayer);
 
-		if (registeredPlayers.size() == EGameConstants.MAX_PLAYER_COUNT.getValue()) {
+		if (registeredPlayers.size() == EGameConstants.MAX_PLAYER_COUNT.get()) {
 			logger.debug("Reached max players. Picking player to go first!");
 			pickPlayerOrder();
 		}
