@@ -39,6 +39,8 @@ public class Game implements IGameAccesser {
 		// ready
 		map.registerListenForMapReady(eleIsNull -> {
 			mapReady = true;
+			players.listenToTreassureCollected(map.rergisterForTreassureCollected());
+			players.listenToSteppedOnCastle(map.rergisterForSteppedOnCastle());
 		});
 
 		players.registerListenForPlayersReady(eleIsNull -> {

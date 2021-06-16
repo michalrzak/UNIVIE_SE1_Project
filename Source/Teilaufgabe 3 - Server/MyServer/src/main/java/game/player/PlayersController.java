@@ -19,6 +19,7 @@ import game.helpers.EGameConstants;
 import game.player.helpers.ESPlayerGameState;
 import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
+import game.propertychange.IRegisterForEvent;
 import game.propertychange.PropertyChangeListener;
 import game.propertychange.PropertyChangeSupport;
 
@@ -34,6 +35,15 @@ public class PlayersController {
 	private final PropertyChangeSupport<Void> playersReady = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(PlayersController.class);
+
+	// add objects this listens to
+	public void listenToTreassureCollected(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnTreassure) {
+		steppedOnTreassure.register(playerID -> collectTreassure(playerID));
+	}
+
+	public void listenToSteppedOnCastle(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnCastle) {
+		// TODO: this
+	}
 
 	public SUniquePlayerIdentifier registerPlayer(PlayerInformation playerInf) {
 
@@ -112,6 +122,17 @@ public class PlayersController {
 		}
 
 		return ESPlayerGameState.SHOULD_WAIT;
+	}
+
+	private void collectTreassure(SUniquePlayerIdentifier playerID) {
+		assert (isPlayerRegistered(playerID));
+		Player player = getPlayer(playerID);
+		player.collectTreasure();
+	}
+
+	private Player getPlayer(SUniquePlayerIdentifier playerID) {
+		assert (isPlayerRegistered(playerID));
+		return registeredPlayers.stream().filter(player -> player.equals(playerID)).findFirst().get();
 	}
 
 	private SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {

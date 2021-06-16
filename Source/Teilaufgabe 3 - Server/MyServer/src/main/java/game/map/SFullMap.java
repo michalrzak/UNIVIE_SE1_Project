@@ -18,6 +18,7 @@ import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.move.helpers.ESMove;
 import game.player.helpers.SUniquePlayerIdentifier;
+import game.propertychange.IRegisterForEvent;
 import game.propertychange.PropertyChangeSupport;
 
 public class SFullMap implements ISFullMapAccesser {
@@ -44,15 +45,18 @@ public class SFullMap implements ISFullMapAccesser {
 
 		EMapType mapType = EMapType.getRandomMapType();
 
-		Position castlePositionPlayer1 = Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight());
-		Position castlePositionPlayer2 = mapType.getSecondHalfOffset()
+		// the treasure is placed quite wrongly here. This needs a major rework
+		// maybe generate a number between (1->32)-9?
+		Position treasurePositionPlayer1 = Position.getRandomMapPosition(mapType.getHalfWidth(),
+				mapType.getHalfHeight());
+		Position treasurePositionPlayer2 = mapType.getSecondHalfOffset()
 				.addPosition(Position.getRandomMapPosition(mapType.getHalfWidth(), mapType.getHalfHeight()));
 
-		return new SFullMap(hmdataPlayer1, hmdataPlayer2, mapType, castlePositionPlayer1, castlePositionPlayer2);
+		return new SFullMap(hmdataPlayer1, hmdataPlayer2, mapType, treasurePositionPlayer1, treasurePositionPlayer2);
 	}
 
-	private SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType, Position castlePositionPlayer1,
-			Position castlePositionPlayer2) {
+	private SFullMap(SHalfMap hmdataPlayer1, SHalfMap hmdataPlayer2, EMapType mapType, Position treasurePositionPlayer1,
+			Position treasurePositionPlayer2) {
 
 		assert (hmdataPlayer1 != null && hmdataPlayer2 != null && mapType != null);
 
@@ -86,8 +90,8 @@ public class SFullMap implements ISFullMapAccesser {
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.CASTLE), p2CastlePosition);
 		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.PLAYER), p2CastlePosition);
 
-		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.TREASURE), castlePositionPlayer1);
-		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.TREASURE), castlePositionPlayer2);
+		entities.put(new OwnedGameEntity(p1Owner, EGameEntity.TREASURE), treasurePositionPlayer1);
+		entities.put(new OwnedGameEntity(p2Owner, EGameEntity.TREASURE), treasurePositionPlayer2);
 
 		// save entities that are visible by default
 		playerRevealedEntities.put(p1Owner, getDefaultVisbleEntities(p1Owner, p2Owner));
@@ -114,6 +118,14 @@ public class SFullMap implements ISFullMapAccesser {
 
 	}
 
+	public IRegisterForEvent<SUniquePlayerIdentifier> getRegistrationToTreassureCollected() {
+		return playerCollectedTreasure;
+	}
+
+	public IRegisterForEvent<SUniquePlayerIdentifier> getRegistrationToSteppedOnCastle() {
+		return playerSteppedOnEnemyCastle;
+	}
+
 	private void collectTreasure(SUniquePlayerIdentifier playerID) {
 		OwnedGameEntity treasure = new OwnedGameEntity(playerID, EGameEntity.TREASURE);
 		if (!entities.containsKey(treasure)) {
@@ -123,6 +135,7 @@ public class SFullMap implements ISFullMapAccesser {
 
 		entities.remove(treasure);
 
+		logger.debug("A player collected the treassure! Nice!");
 		// let listeners know the treasure has been collected
 		playerCollectedTreasure.fire(playerID);
 	}

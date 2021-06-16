@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import exceptions.TooManyHalfMapsReceived;
 import game.move.helpers.SPlayerMove;
+import game.player.helpers.SUniquePlayerIdentifier;
 import game.propertychange.IRegisterForEvent;
 import game.propertychange.PropertyChangeListener;
 import game.propertychange.PropertyChangeSupport;
@@ -73,4 +74,15 @@ public class MapController {
 		return fullMapConstructed;
 	}
 
+	public IRegisterForEvent<SUniquePlayerIdentifier> rergisterForTreassureCollected() {
+		assert (fullMap.isPresent());
+
+		return fullMap.get().getRegistrationToTreassureCollected();
+	}
+
+	public IRegisterForEvent<SUniquePlayerIdentifier> rergisterForSteppedOnCastle() {
+		assert (fullMap.isPresent());
+
+		return fullMap.get().getRegistrationToSteppedOnCastle();
+	}
 }
