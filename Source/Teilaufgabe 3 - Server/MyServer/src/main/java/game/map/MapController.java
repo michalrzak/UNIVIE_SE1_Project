@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import exceptions.TooManyHalfMapsReceived;
+import game.map.helpers.EMoveEvent;
 import game.move.helpers.SPlayerMove;
 import game.player.helpers.SUniquePlayerIdentifier;
 import game.propertychange.IRegisterForEvent;
@@ -20,6 +21,8 @@ public class MapController {
 
 	private final PropertyChangeSupport<Void> mapReady = new PropertyChangeSupport<>();
 	private final PropertyChangeSupport<IMapAccesser> fullMapConstructed = new PropertyChangeSupport<>();
+	private final PropertyChangeSupport<SUniquePlayerIdentifier> playerCollectedTreasure = new PropertyChangeSupport<>();
+	private final PropertyChangeSupport<SUniquePlayerIdentifier> playerSteppedOnCastle = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(MapController.class);
 
@@ -51,7 +54,14 @@ public class MapController {
 	private void movePlayer(SPlayerMove move) {
 		assert (fullMap.isPresent());
 
-		fullMap.get().movePlayer(move, move.getMove());
+		EMoveEvent event = fullMap.get().movePlayer(move, move.getMove());
+		switch (event) {
+		case COLLECTED_TREASURE:
+			playerCollectedTreasure.fire(move);
+		case STEPPED_ON_CASTLE:
+			playerSteppedOnCastle.fire(move);
+		}
+
 	}
 
 	private void generateFullMap() {
@@ -80,14 +90,10 @@ public class MapController {
 	}
 
 	public IRegisterForEvent<SUniquePlayerIdentifier> rergisterForTreassureCollected() {
-		assert (fullMap.isPresent());
-
-		return fullMap.get().getRegistrationToTreassureCollected();
+		return playerCollectedTreasure;
 	}
 
 	public IRegisterForEvent<SUniquePlayerIdentifier> rergisterForSteppedOnCastle() {
-		assert (fullMap.isPresent());
-
-		return fullMap.get().getRegistrationToSteppedOnCastle();
+		return playerSteppedOnCastle;
 	}
 }

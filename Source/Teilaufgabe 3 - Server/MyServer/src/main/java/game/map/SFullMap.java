@@ -14,13 +14,12 @@ import org.slf4j.LoggerFactory;
 import game.helpers.EGameConstants;
 import game.map.helpers.EGameEntity;
 import game.map.helpers.EMapType;
+import game.map.helpers.EMoveEvent;
 import game.map.helpers.ESTerrain;
 import game.map.helpers.OwnedGameEntity;
 import game.map.helpers.Position;
 import game.move.helpers.ESMove;
 import game.player.helpers.SUniquePlayerIdentifier;
-import game.propertychange.IRegisterForEvent;
-import game.propertychange.PropertyChangeSupport;
 
 public class SFullMap implements IMapAccesser {
 
@@ -30,9 +29,6 @@ public class SFullMap implements IMapAccesser {
 	private final EMapType mapType;
 
 	private final static Random rand = new Random();
-
-	private final PropertyChangeSupport<SUniquePlayerIdentifier> playerCollectedTreasure = new PropertyChangeSupport<>();
-	private final PropertyChangeSupport<SUniquePlayerIdentifier> playerSteppedOnEnemyCastle = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(SFullMap.class);
 
@@ -121,9 +117,11 @@ public class SFullMap implements IMapAccesser {
 		assert (terrain.size() == mapType.getHeight() * mapType.getWidth());
 	}
 
-	public void movePlayer(SUniquePlayerIdentifier playerID, ESMove move) {
+	public EMoveEvent movePlayer(SUniquePlayerIdentifier playerID, ESMove move) {
 		final OwnedGameEntity player = new OwnedGameEntity(playerID, EGameEntity.PLAYER);
 		final OwnedGameEntity treassure = new OwnedGameEntity(playerID, EGameEntity.TREASURE);
+
+		EMoveEvent ret = EMoveEvent.NOTHING;
 
 		assert (entities.containsKey(player));
 
@@ -131,20 +129,15 @@ public class SFullMap implements IMapAccesser {
 
 		if (entities.containsKey(treassure) && entities.get(treassure).equals(newPos)) {
 			collectTreasure(playerID);
+			ret = EMoveEvent.COLLECTED_TREASURE;
 		}
 
 		// TODO: add castle stuff
 
 		entities.put(player, newPos);
 
-	}
+		return ret;
 
-	public IRegisterForEvent<SUniquePlayerIdentifier> getRegistrationToTreassureCollected() {
-		return playerCollectedTreasure;
-	}
-
-	public IRegisterForEvent<SUniquePlayerIdentifier> getRegistrationToSteppedOnCastle() {
-		return playerSteppedOnEnemyCastle;
 	}
 
 	private void collectTreasure(SUniquePlayerIdentifier playerID) {
@@ -157,8 +150,6 @@ public class SFullMap implements IMapAccesser {
 		entities.remove(treasure);
 
 		logger.debug("A player collected the treassure! Nice!");
-		// let listeners know the treasure has been collected
-		playerCollectedTreasure.fire(playerID);
 	}
 
 	private static Collection<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,

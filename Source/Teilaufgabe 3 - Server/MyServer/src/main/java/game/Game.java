@@ -35,12 +35,13 @@ public class Game implements IGameAccesser {
 		moves.registerToMap(map.rergisterForFullMap());
 		map.registerToMoveController(moves.registerPlayerMove());
 
+		players.listenToTreassureCollected(map.rergisterForTreassureCollected());
+		players.listenToSteppedOnCastle(map.rergisterForSteppedOnCastle());
+
 		// add a listener for if the map is ready. If the map is ready then the game is
 		// ready
 		map.registerListenForMapReady(eleIsNull -> {
 			mapReady = true;
-			players.listenToTreassureCollected(map.rergisterForTreassureCollected());
-			players.listenToSteppedOnCastle(map.rergisterForSteppedOnCastle());
 		});
 
 		players.registerListenForPlayersReady(eleIsNull -> {
