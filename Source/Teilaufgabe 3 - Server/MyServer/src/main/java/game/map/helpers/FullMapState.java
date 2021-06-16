@@ -1,13 +1,9 @@
-package game.map;
+package game.map.helpers;
 
 import java.util.Map;
 import java.util.Optional;
 
-import game.map.helpers.EGameEntity;
-import game.map.helpers.EMapType;
-import game.map.helpers.ESTerrain;
-import game.map.helpers.OwnedGameEntity;
-import game.map.helpers.Position;
+import game.map.IMapAccesser;
 import game.player.helpers.SUniquePlayerIdentifier;
 
 public class FullMapState {

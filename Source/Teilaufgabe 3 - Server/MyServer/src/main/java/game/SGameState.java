@@ -3,11 +3,11 @@ package game;
 import java.util.Collection;
 import java.util.Optional;
 
-import game.map.FullMapState;
 import game.map.IMapAccesser;
+import game.map.helpers.FullMapState;
 import game.player.IPlayerAccesser;
-import game.player.PlayerMaskedID;
 import game.player.helpers.ESPlayerGameState;
+import game.player.helpers.PlayerMaskedID;
 import game.player.helpers.SUniquePlayerIdentifier;
 
 public class SGameState {

@@ -1,6 +1,6 @@
-package game.player;
+package game.player.helpers;
 
-import game.player.helpers.SUniquePlayerIdentifier;
+import game.player.IPlayerAccesser;
 
 public class PlayerMaskedID implements IPlayerAccesser {
 
