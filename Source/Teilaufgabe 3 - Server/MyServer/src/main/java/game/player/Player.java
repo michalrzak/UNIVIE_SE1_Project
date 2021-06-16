@@ -36,10 +36,6 @@ public class Player extends SUniquePlayerIdentifier implements IPlayerAccesser {
 		return getRandomPlayer(new PlayerInformation(firstName, lastName, studentID));
 	}
 
-	/*
-	 * public Player(PlayerInformation playerInf) { super(); this.playerInf =
-	 * playerInf; }
-	 */
 	public void collectTreasure() {
 		if (collectedTreasure) {
 			logger.error("collected treasure even though the treassure has already been collected."

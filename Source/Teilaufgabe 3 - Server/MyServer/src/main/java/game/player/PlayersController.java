@@ -37,11 +37,17 @@ public class PlayersController {
 	private static Logger logger = LoggerFactory.getLogger(PlayersController.class);
 
 	// add objects this listens to
-	public void listenToTreassureCollected(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnTreassure) {
+	public void listenToAllRequiredProperties(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnTreassure,
+			IRegisterForEvent<SUniquePlayerIdentifier> steppedOnCastle) {
+		listenToTreassureCollected(steppedOnTreassure);
+		listenToSteppedOnCastle(steppedOnCastle);
+	}
+
+	private void listenToTreassureCollected(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnTreassure) {
 		steppedOnTreassure.register(this::collectTreassure);
 	}
 
-	public void listenToSteppedOnCastle(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnCastle) {
+	private void listenToSteppedOnCastle(IRegisterForEvent<SUniquePlayerIdentifier> steppedOnCastle) {
 		steppedOnCastle.register(this::steppedOnCastle);
 	}
 

@@ -26,7 +26,11 @@ public class MoveController {
 
 	private static Logger logger = LoggerFactory.getLogger(MoveController.class);
 
-	public void registerToMap(IRegisterForEvent<IMapAccesser> mapFinnished) {
+	public void listenToAllRequiredProperties(IRegisterForEvent<IMapAccesser> mapFinnished) {
+		listenToMap(mapFinnished);
+	}
+
+	private void listenToMap(IRegisterForEvent<IMapAccesser> mapFinnished) {
 		mapFinnished.register(fullmap -> receiveFullMap(fullmap));
 	}
 

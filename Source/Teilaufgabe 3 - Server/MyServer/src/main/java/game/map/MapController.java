@@ -26,7 +26,12 @@ public class MapController {
 
 	private static Logger logger = LoggerFactory.getLogger(MapController.class);
 
-	public void registerToMoveController(IRegisterForEvent<SPlayerMove> playerMoveEvent) {
+	// register to all required properties
+	public void listenToAllRequiredProperties(IRegisterForEvent<SPlayerMove> playerMoveEvent) {
+		listenToMoveController(playerMoveEvent);
+	}
+
+	private void listenToMoveController(IRegisterForEvent<SPlayerMove> playerMoveEvent) {
 		playerMoveEvent.register(move -> movePlayer(move));
 	}
 

@@ -32,18 +32,15 @@ public class Game implements IGameAccesser {
 	private static Logger logger = LoggerFactory.getLogger(Game.class);
 
 	public Game() {
-		moves.registerToMap(map.rergisterForFullMap());
-		map.registerToMoveController(moves.registerPlayerMove());
+		// register the controllers to each other
+		moves.listenToAllRequiredProperties(map.rergisterForFullMap());
+		map.listenToAllRequiredProperties(moves.registerPlayerMove());
+		players.listenToAllRequiredProperties(map.rergisterForTreassureCollected(), map.rergisterForSteppedOnCastle());
 
-		players.listenToTreassureCollected(map.rergisterForTreassureCollected());
-		players.listenToSteppedOnCastle(map.rergisterForSteppedOnCastle());
-
-		// add a listener for if the map is ready. If the map is ready then the game is
-		// ready
+		// register this class to some required controllers
 		map.registerListenForMapReady(eleIsNull -> {
 			mapReady = true;
 		});
-
 		players.registerListenForPlayersReady(eleIsNull -> {
 			playersReady = true;
 		});
