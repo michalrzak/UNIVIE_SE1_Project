@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.map.ISFullMapAccesser;
+import game.map.IMapAccesser;
 import game.map.helpers.ESTerrain;
 import game.map.helpers.Position;
 import game.move.helpers.ESMove;
@@ -20,13 +20,13 @@ public class MoveController {
 	private final Map<SUniquePlayerIdentifier, ESMove> moveDirection = new HashMap<>();
 	private final Map<SUniquePlayerIdentifier, Integer> moveCommandsLeft = new HashMap<>();
 
-	private Optional<ISFullMapAccesser> finnishedFullMap = Optional.empty();
+	private Optional<IMapAccesser> finnishedFullMap = Optional.empty();
 
 	private final PropertyChangeSupport<SPlayerMove> playerExecutedMove = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(MoveController.class);
 
-	public void registerToMap(IRegisterForEvent<ISFullMapAccesser> mapFinnished) {
+	public void registerToMap(IRegisterForEvent<IMapAccesser> mapFinnished) {
 		mapFinnished.register(fullmap -> receiveFullMap(fullmap));
 	}
 
@@ -66,7 +66,7 @@ public class MoveController {
 		return playerExecutedMove;
 	}
 
-	private void receiveFullMap(ISFullMapAccesser fullmap) {
+	private void receiveFullMap(IMapAccesser fullmap) {
 		finnishedFullMap = Optional.of(fullmap);
 	}
 

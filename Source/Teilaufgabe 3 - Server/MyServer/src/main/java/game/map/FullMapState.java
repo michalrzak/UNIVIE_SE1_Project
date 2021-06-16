@@ -13,12 +13,12 @@ import game.player.helpers.SUniquePlayerIdentifier;
 public class FullMapState {
 	private final SUniquePlayerIdentifier owner;
 	private final SUniquePlayerIdentifier other;
-	private final ISFullMapAccesser fullMap;
+	private final IMapAccesser fullMap;
 	private final Optional<Position> otherPlayerRandomPosition;
 
 	private static final int RANDOM_OTHER_PLAYER_POSITION_UNTIL_TURN = 10;
 
-	public FullMapState(SUniquePlayerIdentifier owner, SUniquePlayerIdentifier other, ISFullMapAccesser fullMap,
+	public FullMapState(SUniquePlayerIdentifier owner, SUniquePlayerIdentifier other, IMapAccesser fullMap,
 			int turn) {
 		this.owner = owner;
 		this.other = other;

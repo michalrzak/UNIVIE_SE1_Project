@@ -22,7 +22,7 @@ import game.player.helpers.SUniquePlayerIdentifier;
 import game.propertychange.IRegisterForEvent;
 import game.propertychange.PropertyChangeSupport;
 
-public class SFullMap implements ISFullMapAccesser {
+public class SFullMap implements IMapAccesser {
 
 	private final Map<Position, ESTerrain> terrain = new HashMap<>();
 	private final Map<OwnedGameEntity, Position> entities = new HashMap<>();

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import game.map.FullMapState;
-import game.map.ISFullMapAccesser;
+import game.map.IMapAccesser;
 import game.player.IPlayerAccesser;
 import game.player.PlayerMaskedID;
 import game.player.helpers.ESPlayerGameState;
@@ -57,7 +57,7 @@ public class SGameState {
 	}
 
 	public Optional<FullMapState> getFullMap() {
-		Optional<ISFullMapAccesser> fullMap = game.getFullMap();
+		Optional<IMapAccesser> fullMap = game.getFullMap();
 
 		if (fullMap.isEmpty() || other.isEmpty()) {
 			return Optional.empty();

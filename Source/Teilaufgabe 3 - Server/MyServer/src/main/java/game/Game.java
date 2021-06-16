@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import exceptions.GameNotFoundException;
 import exceptions.GameNotReadyException;
 import exceptions.PlayerInvalidTurn;
-import game.map.ISFullMapAccesser;
+import game.map.IMapAccesser;
 import game.map.MapController;
 import game.map.SHalfMap;
 import game.move.MoveController;
@@ -133,7 +133,7 @@ public class Game implements IGameAccesser {
 	}
 
 	@Override
-	public Optional<ISFullMapAccesser> getFullMap() {
+	public Optional<IMapAccesser> getFullMap() {
 		return map.getFullMap();
 	}
 

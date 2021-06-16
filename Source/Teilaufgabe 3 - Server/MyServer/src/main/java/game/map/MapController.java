@@ -19,7 +19,7 @@ public class MapController {
 	private Optional<SFullMap> fullMap = Optional.empty();
 
 	private final PropertyChangeSupport<Void> mapReady = new PropertyChangeSupport<>();
-	private final PropertyChangeSupport<ISFullMapAccesser> fullMapConstructed = new PropertyChangeSupport<>();
+	private final PropertyChangeSupport<IMapAccesser> fullMapConstructed = new PropertyChangeSupport<>();
 
 	private static Logger logger = LoggerFactory.getLogger(MapController.class);
 
@@ -61,16 +61,21 @@ public class MapController {
 		fullMapConstructed.fire(fullMap.get());
 	}
 
-	public Optional<ISFullMapAccesser> getFullMap() {
+	public Optional<IMapAccesser> getFullMap() {
 		// cannot simply return full map as I need to convert between SFullMap and
 		// ISFullMapAccesser
-		if (fullMap.isEmpty()) {
+		if (fullMap.isEmpty() && hmdata1.isEmpty()) {
 			return Optional.empty();
 		}
+
+		if (fullMap.isEmpty() && hmdata1.isPresent()) {
+			return Optional.of(hmdata1.get());
+		}
+
 		return Optional.of(fullMap.get());
 	}
 
-	public IRegisterForEvent<ISFullMapAccesser> rergisterForFullMap() {
+	public IRegisterForEvent<IMapAccesser> rergisterForFullMap() {
 		return fullMapConstructed;
 	}
 
