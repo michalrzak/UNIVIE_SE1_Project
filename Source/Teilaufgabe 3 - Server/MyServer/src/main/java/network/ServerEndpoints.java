@@ -25,6 +25,7 @@ import MessagesBase.UniqueGameIdentifier;
 import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
+import exceptions.InvalidMapException;
 import game.GameController;
 import game.SGameState;
 import game.helpers.SUniqueGameIdentifier;
@@ -109,22 +110,27 @@ public class ServerEndpoints {
 	public @ResponseBody ResponseEnvelope receiveHalfMap(@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody HalfMap halfMap) {
 
-		// translate data
-		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
-		SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(halfMap);
-
 		// validate complex data
 		for (IRules rule : rules) {
 			try {
 				rule.validateNewHalfMap(gameID, halfMap);
-			} catch (GenericExampleException e) {
+			} catch (InvalidMapException e) {
+				// translate data
+				// if this exception gets thrown the gameID and the playerID are both validated
+				SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+				SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(halfMap);
 				games.setLooser(serverGameID, serverPlayerID);
+				logger.warn("HalfMap validation failed: " + e.getMessage());
+				throw e;
+			} catch (GenericExampleException e) {
 				logger.warn("A buisness rule threw an error " + e.getMessage());
 				throw e;
 			}
 		}
 
 		// translate complex data
+		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+		SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(halfMap);
 		SHalfMap hmdata = translate.networkHalfMapToInernal(halfMap);
 
 		// save half map
