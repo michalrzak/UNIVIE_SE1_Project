@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Map;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mockito;
@@ -69,6 +70,7 @@ class MapController_tests {
 	}
 
 	@Test
+	@Disabled
 	void MapController_Receive3HalfMapData_ShouldThrow() {
 		final MapController mc = new MapController();
 
