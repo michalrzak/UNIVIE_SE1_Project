@@ -1,17 +1,14 @@
-package mapValidationTests;
+package halfMapRulesUnitTests;
 
 import java.util.Collection;
 import java.util.HashSet;
-
-import org.junit.jupiter.api.Test;
 
 import MessagesBase.ETerrain;
 import MessagesBase.HalfMap;
 import MessagesBase.HalfMapNode;
 
-class HalfMapValidationRules_tests {
-
-	private HalfMap halfMapFromArray(char[][] nodes) {
+public class Helper {
+	public static HalfMap halfMapFromArray(char[][] nodes) {
 		Collection<HalfMapNode> hmnodes = new HashSet<>();
 		int x = 0;
 		int y = 0;
@@ -39,10 +36,4 @@ class HalfMapValidationRules_tests {
 
 		return new HalfMap("amazing-ID", hmnodes);
 	}
-
-	@Test
-	void HalfMapInvalidNodes_ShouldThrow() {
-		char[][] nodes = { { 'g', 'g', 'g', 'g', 'g' } };
-	}
-
 }
