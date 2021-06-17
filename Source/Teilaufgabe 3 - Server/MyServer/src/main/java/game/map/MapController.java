@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import exceptions.TooManyHalfMapsReceived;
 import game.map.helpers.EMoveEvent;
 import game.move.helpers.SPlayerMove;
 import game.player.helpers.SUniquePlayerIdentifier;
@@ -40,10 +39,12 @@ public class MapController {
 	}
 
 	public void receiveHalfMap(SHalfMap hmData) {
-		if (hmdata1.isPresent() && hmdata2.isPresent()) {
-			logger.warn("Tried adding a third halfmap");
-			throw new TooManyHalfMapsReceived("The given game has already received 2 halfmaps");
-		}
+		/*
+		 * if (hmdata1.isPresent() && hmdata2.isPresent()) {
+		 * logger.warn("Tried adding a third halfmap"); throw new
+		 * TooManyHalfMapsReceived("The given game has already received 2 halfmaps"); }
+		 */
+		assert (hmdata1.isEmpty() || hmdata2.isEmpty());
 
 		if (hmdata1.isEmpty()) {
 			hmdata1 = Optional.of(hmData);

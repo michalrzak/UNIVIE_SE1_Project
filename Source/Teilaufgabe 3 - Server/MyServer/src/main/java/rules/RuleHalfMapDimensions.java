@@ -5,6 +5,10 @@ import java.util.Set;
 
 import MessagesBase.HalfMap;
 import MessagesBase.HalfMapNode;
+import MessagesBase.PlayerMove;
+import MessagesBase.PlayerRegistration;
+import MessagesBase.UniqueGameIdentifier;
+import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidMapException;
 import game.map.helpers.Position;
 import rules.helpers.EHalfMapHelpers;
@@ -12,7 +16,13 @@ import rules.helpers.EHalfMapHelpers;
 public class RuleHalfMapDimensions implements IRules {
 
 	@Override
-	public void validateHalfMap(HalfMap halfmap) {
+	public void validateNewPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateNewHalfMap(UniqueGameIdentifier gameID, HalfMap halfmap) {
 		var halfmapNodes = halfmap.getNodes();
 
 		if (halfmapNodes.size() != EHalfMapHelpers.HEIGHT.get() * EHalfMapHelpers.WIDTH.get()) {
@@ -32,6 +42,18 @@ public class RuleHalfMapDimensions implements IRules {
 				}
 			}
 		}
+
+	}
+
+	@Override
+	public void validateGetGameState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateReceiveMove(UniqueGameIdentifier gameID, PlayerMove playerMove) {
+		// TODO Auto-generated method stub
 
 	}
 

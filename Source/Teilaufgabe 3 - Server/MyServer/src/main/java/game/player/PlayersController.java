@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import exceptions.GameNotReadyException;
 import exceptions.TooManyPlayersRegistered;
 import game.helpers.EGameConstants;
 import game.player.helpers.ESPlayerGameState;
@@ -74,7 +73,8 @@ public class PlayersController {
 	}
 
 	public boolean checkPlayerTurn(SUniquePlayerIdentifier playerID) {
-		allPlayersRegisteredOrThrow();
+		// allPlayersRegisteredOrThrow();
+		assert (allPlayersRegistered());
 
 		SUniquePlayerIdentifier current = playerTurn.element();
 		if (!current.equals(playerID)) {
@@ -107,6 +107,11 @@ public class PlayersController {
 	public Collection<IPlayerAccesser> getRegisteredPlayers() {
 		// make a copy so the collection cannot be modified
 		return registeredPlayers.stream().map(ele -> ele).collect(Collectors.toList());
+	}
+
+	public SUniquePlayerIdentifier currentTurn() {
+		assert (!playerTurn.isEmpty());
+		return playerTurn.element();
 	}
 
 	public ESPlayerGameState getPlayerState(SUniquePlayerIdentifier playerID) {
@@ -150,7 +155,8 @@ public class PlayersController {
 	}
 
 	private SUniquePlayerIdentifier getOtherPlayer(SUniquePlayerIdentifier myPlayer) {
-		allPlayersRegisteredOrThrow();
+		// allPlayersRegisteredOrThrow();
+		assert (allPlayersRegistered());
 
 		return registeredPlayers.stream().filter(player -> !player.equals(myPlayer)).findFirst().get();
 	}
@@ -159,13 +165,14 @@ public class PlayersController {
 		return !playerTurn.isEmpty();
 	}
 
-	private void allPlayersRegisteredOrThrow() {
-		if (!allPlayersRegistered()) {
-			logger.warn("Tried to perform an action even though the both players are not registered!");
-			throw new GameNotReadyException(
-					"Tried to perform an action even though the both players are not registered!");
-		}
-	}
+	/*
+	 * private void allPlayersRegisteredOrThrow() { if (!allPlayersRegistered()) {
+	 * logger.
+	 * warn("Tried to perform an action even though the both players are not registered!"
+	 * ); throw new GameNotReadyException(
+	 * "Tried to perform an action even though the both players are not registered!"
+	 * ); } }
+	 */
 
 	private void pickPlayerOrder() {
 		List<Player> players = registeredPlayers.stream().collect(Collectors.toList());

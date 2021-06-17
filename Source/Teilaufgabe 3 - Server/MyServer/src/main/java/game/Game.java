@@ -6,9 +6,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import exceptions.GameNotFoundException;
-import exceptions.GameNotReadyException;
-import exceptions.PlayerInvalidTurn;
 import game.map.IMapAccesser;
 import game.map.MapController;
 import game.map.SHalfMap;
@@ -51,8 +48,10 @@ public class Game implements IGameAccesser {
 	}
 
 	public void receiveHalfMap(SUniquePlayerIdentifier playerID, SHalfMap hmData) {
-		playersReadyOrThrow();
-		playersTurnOrThrow(playerID);
+		// playersReadyOrThrow();
+		// playersTurnOrThrow(playerID);
+		assert (playersReady);
+		assert (isPlayerRegistered(playerID));
 
 		map.receiveHalfMap(hmData);
 		players.nextTurn();
@@ -66,59 +65,57 @@ public class Game implements IGameAccesser {
 	}
 
 	public SGameState getGameState(SUniquePlayerIdentifier playerID) {
-		playerRegisteredOrThrow(playerID);
+		// playerRegisteredOrThrow(playerID);
+		assert (isPlayerRegistered(playerID));
 		return new SGameState(playerID, this);
 	}
 
 	public void receiveMove(SUniquePlayerIdentifier playerID, ESMove move) {
-		playerRegisteredOrThrow(playerID);
-		mapReadyOrThrow();
-		playersTurnOrThrow(playerID);
+		// playerRegisteredOrThrow(playerID);
+		// mapReadyOrThrow();
+		// playersTurnOrThrow(playerID);
+		assert (isPlayerRegistered(playerID));
+		assert (mapReady);
+		assert (getPlayerTurn().equals(playerID));
 
 		moves.move(playerID, move);
 
 		players.nextTurn();
 	}
 
-	private void playersReadyOrThrow() {
-		if (!arePlayersReady()) {
-			logger.warn("Tried to access a game that is not ready. Not all players registerd!");
-			throw new GameNotReadyException(
-					"Tried to access a game that is not ready. (Both players aren't registered!)");
-		}
-	}
-
-	private void mapReadyOrThrow() {
-		if (!isMapReady()) {
-			logger.warn("Tried to access a game that is not ready. The map is not combined!");
-			throw new GameNotReadyException(
-					"Tried to access a game that is not ready. (Both players haven't sent a halfmap!)");
-		}
-	}
+	/*
+	 * private void playersReadyOrThrow() { if (!arePlayersReady()) { logger.
+	 * warn("Tried to access a game that is not ready. Not all players registerd!");
+	 * throw new GameNotReadyException(
+	 * "Tried to access a game that is not ready. (Both players aren't registered!)"
+	 * ); } }
+	 * 
+	 * private void mapReadyOrThrow() { if (!isMapReady()) { logger.
+	 * warn("Tried to access a game that is not ready. The map is not combined!");
+	 * throw new GameNotReadyException(
+	 * "Tried to access a game that is not ready. (Both players haven't sent a halfmap!)"
+	 * ); } }
+	 */
 
 	private boolean isPlayerRegistered(SUniquePlayerIdentifier playerID) {
 		return players.isPlayerRegistered(playerID);
 	}
 
-	private void playerRegisteredOrThrow(SUniquePlayerIdentifier playerID) {
-		if (!isPlayerRegistered(playerID)) {
-			logger.warn(String.format("Player with ID: %s tried accessing a game where he is not registered",
-					playerID.asString()));
-			throw new GameNotFoundException(
-					String.format("Player with ID: %s tried accessing a game where he is not registered",
-							playerID.asString()));
-		}
-	}
-
-	private void playersTurnOrThrow(SUniquePlayerIdentifier playerID) {
-		if (!players.checkPlayerTurn(playerID)) {
-			setLooser(playerID);
-			logger.warn("A player with playerID: " + playerID.asString()
-					+ "; tried performing an action, but it was not his turn!");
-			throw new PlayerInvalidTurn(
-					"It is not the players with playerID: " + playerID.asString() + "; turn!");
-		}
-	}
+	/*
+	 * private void playerRegisteredOrThrow(SUniquePlayerIdentifier playerID) { if
+	 * (!isPlayerRegistered(playerID)) { logger.warn(String.
+	 * format("Player with ID: %s tried accessing a game where he is not registered"
+	 * , playerID.asString())); throw new GameNotFoundException(String.format(
+	 * "Player with ID: %s tried accessing a game where he is not registered",
+	 * playerID.asString())); } }
+	 * 
+	 * private void playersTurnOrThrow(SUniquePlayerIdentifier playerID) { if
+	 * (!players.checkPlayerTurn(playerID)) { setLooser(playerID);
+	 * logger.warn("A player with playerID: " + playerID.asString() +
+	 * "; tried performing an action, but it was not his turn!"); throw new
+	 * PlayerInvalidTurn("It is not the players with playerID: " +
+	 * playerID.asString() + "; turn!"); } }
+	 */
 
 	@Override
 	public boolean arePlayersReady() {
@@ -148,6 +145,11 @@ public class Game implements IGameAccesser {
 	@Override
 	public Collection<IPlayerAccesser> getRegisteredPlayers() {
 		return players.getRegisteredPlayers();
+	}
+
+	@Override
+	public SUniquePlayerIdentifier getPlayerTurn() {
+		return players.currentTurn();
 	}
 
 }

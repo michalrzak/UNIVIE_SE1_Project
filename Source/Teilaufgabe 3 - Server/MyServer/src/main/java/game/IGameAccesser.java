@@ -16,6 +16,8 @@ public interface IGameAccesser {
 
 	public Collection<IPlayerAccesser> getRegisteredPlayers();
 
+	public SUniquePlayerIdentifier getPlayerTurn();
+
 	public int getTurn();
 
 	public boolean arePlayersReady();

@@ -34,11 +34,17 @@ import game.player.helpers.PlayerInformation;
 import game.player.helpers.SUniquePlayerIdentifier;
 import network.translation.NetworkTranslator;
 import rules.IRules;
+import rules.RuleBothPlayersRegistered;
+import rules.RuleGameExists;
+import rules.RuleGameNotFull;
 import rules.RuleHalfMapCastle;
 import rules.RuleHalfMapDimensions;
 import rules.RuleHalfMapEdges;
 import rules.RuleHalfMapNoIslands;
 import rules.RuleHalfMapTerrainCount;
+import rules.RuleOnlyOneHalfMapPerPlayer;
+import rules.RulePlayerTurn;
+import rules.RuleUniquePlayerIdentifierRegistered;
 
 @Controller
 @RequestMapping(value = "/games")
@@ -46,17 +52,22 @@ public class ServerEndpoints {
 
 	// private final GameManager games = new GameManager();
 
-	private final static List<IRules> rules = List.of(new RuleHalfMapDimensions(), new RuleHalfMapTerrainCount(),
-			new RuleHalfMapEdges(), new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
-
 	private static Logger logger = LoggerFactory.getLogger(ServerEndpoints.class);
 
 	private final GameController games;
 	private final NetworkTranslator translate = new NetworkTranslator();
 
+	private final List<IRules> rules;
+
 	@Autowired
 	public ServerEndpoints(GameController games) {
 		this.games = games;
+
+		rules = List.of(new RuleGameExists(games), new RuleGameNotFull(games), new RuleBothPlayersRegistered(games),
+				new RuleUniquePlayerIdentifierRegistered(games), new RuleOnlyOneHalfMapPerPlayer(games),
+				new RulePlayerTurn(games), new RuleHalfMapDimensions(), new RuleHalfMapTerrainCount(),
+				new RuleHalfMapEdges(), new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
+
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
@@ -69,6 +80,16 @@ public class ServerEndpoints {
 	public @ResponseBody ResponseEnvelope<UniquePlayerIdentifier> registerPlayer(
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerRegistration playerRegistration) {
+
+		for (IRules rule : rules) {
+			try {
+				rule.validateNewPlayer(gameID, playerRegistration);
+			} catch (GenericExampleException e) {
+				// games.setLooser(serverGameID, serverPlayerID);
+				logger.warn("A buisness rule threw an error " + e.getMessage());
+				throw e;
+			}
+		}
 
 		// translate data for server
 		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
@@ -95,7 +116,7 @@ public class ServerEndpoints {
 		// validate complex data
 		for (IRules rule : rules) {
 			try {
-				rule.validateHalfMap(halfMap);
+				rule.validateNewHalfMap(gameID, halfMap);
 			} catch (GenericExampleException e) {
 				games.setLooser(serverGameID, serverPlayerID);
 				logger.warn("A buisness rule threw an error " + e.getMessage());
@@ -107,21 +128,26 @@ public class ServerEndpoints {
 		SHalfMap hmdata = translate.networkHalfMapToInernal(halfMap);
 
 		// save half map
-		try {
-			games.addHalfMap(serverGameID, serverPlayerID, hmdata);
-		} catch (GenericExampleException e) {
-			logger.warn("Failed to add a halfmap" + e.getMessage());
-			throw e;
-		}
+		games.addHalfMap(serverGameID, serverPlayerID, hmdata);
 
 		// if it got here no error was thrown and return
 		return new ResponseEnvelope();
 	}
 
 	@RequestMapping(value = "/{gameID}/states/{playerID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-	public @ResponseBody ResponseEnvelope<GameState> receiveHalfMap(
+	public @ResponseBody ResponseEnvelope<GameState> returnGameState(
 			@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @PathVariable UniquePlayerIdentifier playerID) {
+
+		for (IRules rule : rules) {
+			try {
+				rule.validateGetGameState(gameID, playerID);
+			} catch (GenericExampleException e) {
+				// games.setLooser(serverGameID, serverPlayerID);
+				logger.warn("A buisness rule threw an error " + e.getMessage());
+				throw e;
+			}
+		}
 
 		// translate data
 		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
@@ -139,6 +165,17 @@ public class ServerEndpoints {
 	@RequestMapping(value = "/{gameID}/moves", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody ResponseEnvelope receiveMove(@Validated @PathVariable UniqueGameIdentifier gameID,
 			@Validated @RequestBody PlayerMove playerMove) {
+
+		for (IRules rule : rules) {
+			try {
+				rule.validateReceiveMove(gameID, playerMove);
+			} catch (GenericExampleException e) {
+				// TODO: how to make them loose!
+				// games.setLooser(serverGameID, serverPlayerID);
+				logger.warn("A buisness rule threw an error " + e.getMessage());
+				throw e;
+			}
+		}
 
 		// translate data
 		SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);

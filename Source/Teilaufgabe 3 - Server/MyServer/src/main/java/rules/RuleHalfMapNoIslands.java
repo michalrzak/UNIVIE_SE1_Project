@@ -1,9 +1,14 @@
 package rules;
 
 import java.util.Map;
+import java.util.Optional;
 
 import MessagesBase.ETerrain;
 import MessagesBase.HalfMap;
+import MessagesBase.PlayerMove;
+import MessagesBase.PlayerRegistration;
+import MessagesBase.UniqueGameIdentifier;
+import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidMapException;
 import game.map.helpers.Position;
 import network.translation.NetworkHalfMapTranslator;
@@ -11,13 +16,32 @@ import network.translation.NetworkHalfMapTranslator;
 public class RuleHalfMapNoIslands implements IRules {
 
 	@Override
-	public void validateHalfMap(HalfMap halfmap) {
+	public void validateNewPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateNewHalfMap(UniqueGameIdentifier gameID, HalfMap halfmap) {
 		// extract map from halfmap
 		NetworkHalfMapTranslator halfMapTrans = new NetworkHalfMapTranslator();
 		Map<Position, ETerrain> positionMap = halfMapTrans.extractNetorkHalfMapTerrainMap(halfmap);
 
-		// find a start node
-		Position start = new Position(0, 0);
+		// find a start node (the first it finds with grass on it)
+		Optional<Position> startOpt = Optional.empty();
+		for (var entry : positionMap.entrySet()) {
+			if (entry.getValue() == ETerrain.Grass) {
+				startOpt = Optional.of(entry.getKey());
+				break;
+			}
+		}
+
+		if (startOpt.isEmpty()) {
+			throw new InvalidMapException("The map did not contain any grass nodes!");
+		}
+
+		Position start = startOpt.get();
+
 		while (positionMap.get(start) == ETerrain.Water) {
 			start = new Position(start.getx() + 1, start.gety());
 		}
@@ -31,6 +55,19 @@ public class RuleHalfMapNoIslands implements IRules {
 					.forEach(ele -> System.out.println(ele.getKey().toString() + " " + ele.getValue().toString()));
 			throw new InvalidMapException("The half map contains an island!");
 		}
+
+	}
+
+	@Override
+	public void validateGetGameState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateReceiveMove(UniqueGameIdentifier gameID, PlayerMove playerMove) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void floodfill(Position node, Map<Position, ETerrain> nodes) {

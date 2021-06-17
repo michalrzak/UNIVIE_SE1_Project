@@ -2,14 +2,36 @@ package rules;
 
 import MessagesBase.ETerrain;
 import MessagesBase.HalfMap;
+import MessagesBase.PlayerMove;
+import MessagesBase.PlayerRegistration;
+import MessagesBase.UniqueGameIdentifier;
+import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidMapException;
 
 public class RuleHalfMapCastle implements IRules {
 
 	@Override
-	public void validateHalfMap(HalfMap halfmap) {
+	public void validateNewPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateNewHalfMap(UniqueGameIdentifier gameID, HalfMap halfmap) {
 		oneCastle(halfmap);
 		castleAtGrass(halfmap);
+	}
+
+	@Override
+	public void validateGetGameState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateReceiveMove(UniqueGameIdentifier gameID, PlayerMove playerMove) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void oneCastle(HalfMap halfmap) {

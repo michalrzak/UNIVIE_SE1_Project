@@ -4,6 +4,10 @@ import java.util.Map;
 
 import MessagesBase.ETerrain;
 import MessagesBase.HalfMap;
+import MessagesBase.PlayerMove;
+import MessagesBase.PlayerRegistration;
+import MessagesBase.UniqueGameIdentifier;
+import MessagesBase.UniquePlayerIdentifier;
 import exceptions.InvalidMapException;
 import game.map.helpers.Position;
 import network.translation.NetworkHalfMapTranslator;
@@ -12,7 +16,13 @@ import rules.helpers.EHalfMapHelpers;
 public class RuleHalfMapEdges implements IRules {
 
 	@Override
-	public void validateHalfMap(HalfMap halfmap) {
+	public void validateNewPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateNewHalfMap(UniqueGameIdentifier gameID, HalfMap halfmap) {
 		NetworkHalfMapTranslator halfMapTrans = new NetworkHalfMapTranslator();
 		Map<Position, ETerrain> positionMap = halfMapTrans.extractNetorkHalfMapTerrainMap(halfmap);
 
@@ -36,6 +46,18 @@ public class RuleHalfMapEdges implements IRules {
 				|| botEdgeCount >= EHalfMapHelpers.WIDTH_EDGE_MAX_WATER.get()) {
 			throw new InvalidMapException("The edges contained too much water!");
 		}
+
+	}
+
+	@Override
+	public void validateGetGameState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void validateReceiveMove(UniqueGameIdentifier gameID, PlayerMove playerMove) {
+		// TODO Auto-generated method stub
 
 	}
 
