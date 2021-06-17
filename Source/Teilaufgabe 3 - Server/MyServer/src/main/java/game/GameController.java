@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import game.helpers.EGameConstants;
 import game.helpers.SUniqueGameIdentifier;
+import game.map.IMapAccesser;
 import game.map.SHalfMap;
 import game.move.helpers.ESMove;
 import game.player.helpers.PlayerInformation;
@@ -135,6 +137,14 @@ public class GameController implements IGameControllerAccesser {
 
 	@Override
 	public boolean isMapReady(SUniqueGameIdentifier gameID) {
+		assert (games.containsKey(gameID));
 		return games.get(gameID).isMapReady();
+	}
+
+	@Override
+	public Optional<IMapAccesser> getMapAccesser(SUniqueGameIdentifier gameID) {
+		assert (games.containsKey(gameID));
+
+		return games.get(gameID).getFullMap();
 	}
 }
