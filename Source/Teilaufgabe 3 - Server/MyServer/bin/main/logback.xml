@@ -9,7 +9,7 @@
     </appender>
 
    <!-- Configure the general logging behaviour for all subpackages of "client" -->
-   <logger name="game" level="DEBUG"/>
+   <logger name="game" level="WARN"/>
 
    <!-- The logger configurations below significantly reduce the very chatty output of webflux -->
    <logger name="reactor" level="ERROR"/>
