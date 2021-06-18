@@ -26,6 +26,7 @@ import MessagesBase.UniquePlayerIdentifier;
 import MessagesGameState.GameState;
 import exceptions.GenericExampleException;
 import exceptions.InvalidMapException;
+import exceptions.InvalidMoveException;
 import game.GameController;
 import game.SGameState;
 import game.helpers.SUniqueGameIdentifier;
@@ -179,8 +180,15 @@ public class ServerEndpoints {
 		for (IRules rule : rules) {
 			try {
 				rule.validateReceiveMove(gameID, playerMove);
+			} catch (InvalidMoveException e) {
+				// translate data
+				// if this exception gets thrown the gameID and the playerID are both validated
+				SUniqueGameIdentifier serverGameID = translate.networkGameIDToInternal(gameID);
+				SUniquePlayerIdentifier serverPlayerID = translate.networkPlayerIDToInternal(playerMove);
+				games.setLooser(serverGameID, serverPlayerID);
+				logger.warn("Move validation failed: " + e.getMessage());
+				throw e;
 			} catch (GenericExampleException e) {
-				// TODO: how to make them loose!
 				// games.setLooser(serverGameID, serverPlayerID);
 				logger.warn("A buisness rule threw an error " + e.getMessage());
 				throw e;
