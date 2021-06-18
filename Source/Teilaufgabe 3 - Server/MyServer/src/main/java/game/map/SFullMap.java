@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +27,7 @@ public class SFullMap implements IMapAccesser {
 
 	private final Map<Position, ESTerrain> terrain;
 	private final Map<OwnedGameEntity, Position> entities = new HashMap<>();
-	private final Map<SUniquePlayerIdentifier, Collection<OwnedGameEntity>> playerRevealedEntities = new HashMap<>();
+	private final Map<SUniquePlayerIdentifier, Set<OwnedGameEntity>> playerRevealedEntities = new HashMap<>();
 	private final EMapType mapType;
 
 	private final static Random rand = new Random();
@@ -125,10 +127,10 @@ public class SFullMap implements IMapAccesser {
 		return ret;
 	}
 
-	private static Collection<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,
+	private static Set<OwnedGameEntity> getDefaultVisbleEntities(SUniquePlayerIdentifier inputingFor,
 			SUniquePlayerIdentifier other) {
 
-		Collection<OwnedGameEntity> visible = new HashSet<>();
+		Set<OwnedGameEntity> visible = new HashSet<>();
 		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.CASTLE));
 		visible.add(new OwnedGameEntity(inputingFor, EGameEntity.PLAYER));
 		visible.add(new OwnedGameEntity(other, EGameEntity.PLAYER));
@@ -162,7 +164,26 @@ public class SFullMap implements IMapAccesser {
 
 		entities.put(player, newPos);
 
+		if (getTerrainAt(newPos) == ESTerrain.MOUNTAIN) {
+			revealAroundPlayer(playerID);
+		}
+
 		return ret;
+
+	}
+
+	private void revealAroundPlayer(SUniquePlayerIdentifier playerID) {
+		final OwnedGameEntity playerEnt = new OwnedGameEntity(playerID, EGameEntity.PLAYER);
+
+		Position playerPos = entities.get(playerEnt);
+
+		// extract all entities where the position is less then 2 from the player (so on
+		// the player, next to the player, diagonally next to the player)
+		Set<OwnedGameEntity> newEntities = entities.entrySet().stream()
+				.filter(entry -> Position.distance(playerPos, entry.getValue()) < 2).map(entry -> entry.getKey())
+				.collect(Collectors.toSet());
+
+		playerRevealedEntities.get(playerID).addAll(newEntities);
 
 	}
 
