@@ -21,10 +21,8 @@ public class RuleGameNotFull implements IRules {
 	@Override
 	public void validateNewPlayer(UniqueGameIdentifier gameID, PlayerRegistration playerRegistration) {
 		// assume gameID is already validated
-		// TODO: is this OK?
 
 		NetworkTranslator translate = new NetworkTranslator();
-
 		var registeredPlayers = games.playersRegisteredInGame(translate.networkGameIDToInternal(gameID));
 
 		if (registeredPlayers.size() >= EGameConstants.MAX_PLAYER_COUNT.get()) {

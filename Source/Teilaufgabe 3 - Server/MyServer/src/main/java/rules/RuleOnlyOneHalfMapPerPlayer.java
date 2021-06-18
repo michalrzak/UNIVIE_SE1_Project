@@ -26,10 +26,8 @@ public class RuleOnlyOneHalfMapPerPlayer implements IRules {
 	@Override
 	public void validateNewHalfMap(UniqueGameIdentifier gameID, HalfMap halfmap) {
 		// assume gameID is already validated
-		// TODO: is this OK?
 
 		NetworkTranslator translate = new NetworkTranslator();
-
 		boolean mapReady = games.isMapReady(translate.networkGameIDToInternal(gameID));
 
 		// if the map is ready the game has combined the two half maps and thus if the

@@ -58,10 +58,8 @@ public class Game implements IGameAccesser {
 	}
 
 	public void setLooser(SUniquePlayerIdentifier playerID) {
-		// TODO: think about this
-		if (playersReady) {
-			players.setAsLooser(playerID);
-		}
+		assert (playersReady);
+		players.setAsLooser(playerID);
 	}
 
 	public SGameState getGameState(SUniquePlayerIdentifier playerID) {

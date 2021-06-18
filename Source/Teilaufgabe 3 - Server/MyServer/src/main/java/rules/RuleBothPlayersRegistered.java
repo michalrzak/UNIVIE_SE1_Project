@@ -43,7 +43,6 @@ public class RuleBothPlayersRegistered implements IRules {
 
 	private void bothPlayersRegistered(UniqueGameIdentifier gameID) {
 		// assume gameID is validate
-		// TODO: is this OK?
 		NetworkTranslator translate = new NetworkTranslator();
 
 		var registeredPlayers = games.playersRegisteredInGame(translate.networkGameIDToInternal(gameID));

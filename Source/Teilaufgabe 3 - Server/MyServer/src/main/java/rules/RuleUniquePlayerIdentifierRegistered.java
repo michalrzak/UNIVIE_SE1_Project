@@ -34,7 +34,6 @@ public class RuleUniquePlayerIdentifierRegistered implements IRules {
 	@Override
 	public void validateGetGameState(UniqueGameIdentifier gameID, UniquePlayerIdentifier playerID) {
 		// assume gameID is already validated
-		// TODO: is this assumption OK?
 
 		NetworkTranslator translate = new NetworkTranslator();
 
