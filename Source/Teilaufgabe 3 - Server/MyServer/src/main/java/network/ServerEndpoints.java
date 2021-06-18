@@ -43,6 +43,9 @@ import rules.RuleHalfMapDimensions;
 import rules.RuleHalfMapEdges;
 import rules.RuleHalfMapNoIslands;
 import rules.RuleHalfMapTerrainCount;
+import rules.RuleMapReady;
+import rules.RuleMoveNotIntoWater;
+import rules.RuleMoveNotOutOfBounds;
 import rules.RuleOnlyOneHalfMapPerPlayer;
 import rules.RulePlayerTurn;
 import rules.RuleUniquePlayerIdentifierRegistered;
@@ -67,7 +70,8 @@ public class ServerEndpoints {
 		rules = List.of(new RuleGameExists(games), new RuleGameNotFull(games), new RuleBothPlayersRegistered(games),
 				new RuleUniquePlayerIdentifierRegistered(games), new RuleOnlyOneHalfMapPerPlayer(games),
 				new RulePlayerTurn(games), new RuleHalfMapDimensions(), new RuleHalfMapTerrainCount(),
-				new RuleHalfMapEdges(), new RuleHalfMapNoIslands(), new RuleHalfMapCastle());
+				new RuleHalfMapEdges(), new RuleHalfMapNoIslands(), new RuleHalfMapCastle(), new RuleMapReady(games),
+				new RuleMoveNotOutOfBounds(games), new RuleMoveNotIntoWater(games));
 
 	}
 

@@ -71,16 +71,16 @@ public class RuleMoveNotIntoWater implements IRules {
 
 		switch (dir) {
 		case Up:
-			posInDirOpt = Optional.of(playerPos.addOffset(-1, 0));
-			break;
-		case Down:
-			posInDirOpt = Optional.of(playerPos.addOffset(1, 0));
-			break;
-		case Left:
 			posInDirOpt = Optional.of(playerPos.addOffset(0, -1));
 			break;
-		case Right:
+		case Down:
 			posInDirOpt = Optional.of(playerPos.addOffset(0, 1));
+			break;
+		case Left:
+			posInDirOpt = Optional.of(playerPos.addOffset(-1, 0));
+			break;
+		case Right:
+			posInDirOpt = Optional.of(playerPos.addOffset(1, 0));
 			break;
 		}
 		assert (posInDirOpt.isPresent());
