@@ -1,5 +1,5 @@
 # About this project
-This is an implementation of the Software Engineering 1 course from the University of Vienna. It was implemented in the Summer Semester 2020.
+This is an implementation of the Software Engineering 1 course from the University of Vienna. It was implemented in the Summer Semester 2021.
 
 # Goals of the project
 The focus of this assignment is on the architecture of the app.
