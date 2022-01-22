@@ -4,7 +4,7 @@ This is an implementation of the Software Engineering 1 course from the Universi
 # Goals of the project
 The focus of this assignment is on the architecture of the app.
 
-The theme was to create a client and a server of a simple game. The game to be implemented is a multiplayer game, where the client needs generate a playing map, find the treassure hidden on this map by the server and bring this treassure to the castle on the map of the oponnent and the server. The server needs to manage the games of different clients, validate inputs and perform simmilar administrative tasks.
+The theme was to create a client and a server of a simple game. The game to be implemented is a multiplayer game, where the client needs generate a playing map, find the treassure hidden on this map by the server and bring this treassure to the castle on the map of the oponnent. The server needs to manage the games of different clients, validate inputs and perform simmilar administrative tasks.
 
 # Results of the project
 The grading was done seperately on the client and on the server.
