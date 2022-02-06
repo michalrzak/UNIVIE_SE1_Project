@@ -10,4 +10,4 @@ The theme was to create a client and a server of a simple game. The game to be i
 The grading was done seperately on the client and on the server.
 The client was awarded 24,58/25 points and 1 bonus point. The implementation can be found [here](./Source/Teilaufgabe%202%20-%20Client).
 
-The server was awarded 19/19 points and 2.4 bonus points (for implementing more functionality than was necessery). The implementation can be found [here](./Source/Teilaufgabe%203%20-%20Client).
+The server was awarded 19/19 points and 2.4 bonus points (for implementing more functionality than was necessery). The implementation can be found [here](./Source/Teilaufgabe%203%20-%20Server).
